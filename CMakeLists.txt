@@ -3,3 +3,6 @@ project( MusicSheet )
 find_package( OpenCV REQUIRED )
 add_executable( MusicSheet MusicSheet.cpp )
 target_link_libraries( MusicSheet ${OpenCV_LIBS} )
+
+include_directories( "${PROJECT_SOURCE_DIR}/libs" )
+add_subdirectory( libs )
