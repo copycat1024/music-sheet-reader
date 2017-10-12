@@ -1,7 +1,5 @@
-#ifndef CC_MUSIC_SHEET
-#define CC_MUSIC_SHEET
-
-#include <opencv2/core/core.hpp>
+#ifndef CC_MUSIC_MAIN
+#define CC_MUSIC_MAIN
 
 enum TaskNumber {
   NO_ARGUMENT,

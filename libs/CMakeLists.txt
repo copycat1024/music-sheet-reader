@@ -4,6 +4,8 @@ add_library(CcOpencvUltils
 )
 
 add_library(CcMusicSheet
-  cc_music_sheet.hh
-  cc_music_sheet.cc
+  cc_music_main.hh
+  cc_music_main.cc
+  cc_music_minor.hh
+  cc_music_minor.cc
 )

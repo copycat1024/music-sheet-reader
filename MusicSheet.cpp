@@ -1,7 +1,6 @@
 #include <iostream>
-#include "cc_music_sheet.hh"
+#include "cc_music_main.hh"
 
-using namespace cv;
 using namespace std;
 
 int main(int argc, char** argv){
