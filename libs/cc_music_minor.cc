@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
@@ -58,13 +59,80 @@ vector<Vec4i> getSheetLines(Mat image){
   return lines;
 }
 
-Mat makeShowImage(Mat image, vector<Vec4i> lines){
+Mat makeShowImage(Mat image, vector<Vec4i> lines, Scalar color){
   Mat res;
-  cvtColor(image, res, CV_GRAY2BGR);
+  if (image.channels() == 1){
+    cvtColor(image, res, CV_GRAY2BGR);
+  } else {
+    res = image;
+  }
   for( size_t i = 0; i < lines.size(); i++ ){
     Vec4i l = lines[i];
-    line(res, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(0,0,255), 1, CV_AA);
-//    cout << l[0] << ' ' << l[1] << ' ' << l[2] << ' ' << l[3] << endl;
+    line(res, Point(l[0], l[1]), Point(l[2], l[3]), color, 1, CV_AA);
   }
+  return res;
+}
+
+#ifdef DEBUG1
+void printVec4i(Vec4i l){
+  for (int j = 0; j<4; j++){
+    cout.width(5);
+    cout << l[j];
+  }
+  cout << endl;
+}
+#endif
+
+vector<Vec4i> locateFrames(vector<Vec4i> lines){
+  vector<Vec4i> mid, res;
+  size_t i,j;
+  int min_x, max_x, min_y, max_y;
+
+  auto cmp = [](const Vec4i& l, const Vec4i& r){
+    return l[1]<r[1];
+  };
+  sort(lines.begin(), lines.end(), cmp);
+
+  for(i = 0; i<lines.size(); i++){
+    if (i==0){
+      mid.push_back(lines[i]);
+#ifdef DEBUG1
+      cout << "IN  "; printVec4i(lines[i]);
+#endif
+    } else {
+      if (lines[i][1]!=lines[i-1][1]+1)
+        mid.push_back(lines[i]);
+#ifdef DEBUG1
+      if (lines[i][1]!=lines[i-1][1]+1){
+        cout << "IN  "; printVec4i(lines[i]);
+      } else {
+        cout << "OUT "; printVec4i(lines[i]);
+      }
+#endif
+    }
+  }
+
+  if (mid.size()%5!=0){
+    cout << "Number does not match." << endl;
+    cout << "Found: " << mid.size() << endl;
+    return vector<Vec4i>();
+  }
+
+  for (i=0; i<mid.size(); i++)
+    if (i%5 == 0){
+        min_x = mid[i][0];
+        min_y = mid[i][1];
+        max_x = mid[i][2];
+        max_y = mid[i][3];
+    } else {
+      if (min_x > mid[i][0]) min_x = mid[i][0];
+      if (min_y > mid[i][1]) min_y = mid[i][1];
+      if (max_x < mid[i][2]) max_x = mid[i][2];
+      if (max_y < mid[i][3]) max_y = mid[i][3];
+      if (i%5 == 4){
+        res.push_back(Vec4i(min_x, min_y, max_x, max_y));
+      }
+    }
+
   return res;
 }

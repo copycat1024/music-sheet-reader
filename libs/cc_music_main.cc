@@ -25,19 +25,18 @@ void processImage(char* image_name){
     return;
   }
 
-
   auto lines = getSheetLines(image);
-  cout << "Found " << lines.size() << " lines."<< endl;
-
-  auto cmp = [](const Vec4i& l, const Vec4i& r){
-    return l[1]>r[1];
-  };
-  sort(lines.begin(), lines.end(), cmp);
-
-  show_image = makeShowImage(image, lines);
-  //  imwrite( "new_image.jpg", B );
+  cout << "Found " << lines.size() << " lines." << endl;
+  auto frames = locateFrames(lines);
+  cout << "Found " << frames.size() << " frames." << endl;
 
   showImage("Original", image);
-  showImage("Process", show_image);
+
+  show_image = makeShowImage(image, lines, Scalar(0,0,255));
+  showImage("Process1", show_image);
+
+  show_image = makeShowImage(show_image, frames, Scalar(0,255,0));
+  showImage("Process2", show_image);
+
   showHold();
 }
