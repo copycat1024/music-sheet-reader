@@ -8,7 +8,7 @@
 using namespace std;
 using namespace cv;
 
-Vec4i locateSymbolsX(Mat, Vec4i);
+vector<Vec4i> locateSymbolsX(Mat, Vec4i);
 
 vector<Vec4i> locateSheetLines(Mat image){
   vector<Vec4i> lines;
@@ -110,7 +110,7 @@ vector<Vec4i> locateSymbols(Mat image, Vec4i frame){
   return res;
 }
 
-Vec4i locateSymbolsX(Mat image, Vec4i frame){
+vector<Vec4i> locateSymbolsX(Mat image, Vec4i frame){
   vector<Vec4i> res;
   vector<int> weight;
   int i,j;
@@ -136,6 +136,7 @@ Vec4i locateSymbolsX(Mat image, Vec4i frame){
       streak = true;
     }
     if (a == 0 && streak){
+      streak = false;
       res.push_back(Vec4i(x1, ya, x2, j));
     }
   }
