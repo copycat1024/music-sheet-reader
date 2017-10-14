@@ -3,6 +3,7 @@
 #include "cc_music_edit.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 
 using namespace std;
 using namespace cv;
@@ -12,11 +13,10 @@ vector<Vec4i> locateSheetLines(Mat image){
   Mat temp;
 
   Mat kernel = (Mat_<float>(3,3) <<  0, -1, 0, 0, 3, 0, 0, -1, 0);
-//  filter2D(image, temp, image.depth(), kernel);
-//  image = temp;
+  filter2D(image, temp, image.depth(), kernel);
+  image = temp;
 
   polarize(image, 128);
-  showImage("Debug", image);
 
   int threshold = image.cols / 10;
   int minLen = image.cols / 2;
@@ -64,10 +64,42 @@ vector<Vec4i> locateFrames(vector<Vec4i> lines){
       if (max_y < mid[i][3]) max_y = mid[i][3];
       if (i%5 == 4){
         int space = (max_y - min_y)/2;
-        int pad = 1;
-        res.push_back(Vec4i(min_x - pad, min_y - space, max_x + pad, max_y + space));
+        res.push_back(Vec4i(min_x, min_y - space, max_x + 1, max_y + space));
       }
     }
 
+  return res;
+}
+
+vector<Vec4i> locateSymbols(Mat image, Vec4i frame){
+  vector<Vec4i> res;
+  vector<int> weight;
+  int i,j;
+  int x1 = frame[0];
+  int y1 = frame[1];
+  int x2 = frame[2];
+  int y2 = frame[3];
+
+  weight.resize(x2 - x1 + 1, 0);
+  for (i=y1; i<=y2; i++){
+    uchar* row = image.ptr<uchar>(i);
+    for (j=x1; j<=x2; j++){
+      if (row[j] == 255) weight[j-x1]++;
+    }
+  }
+
+  bool streak = false;
+  int xa = 0;
+  for (j=x1; j<=x2; j++){
+    int a = weight[j-x1];
+    if (a != 0 && !streak){
+      xa = j;
+      streak = true;
+    }
+    if (a == 0 && streak){
+      streak = false;
+      res.push_back(Vec4i(xa, y1, j, y2));
+    }
+  }
   return res;
 }

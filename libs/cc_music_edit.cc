@@ -2,7 +2,6 @@
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 
-
 using namespace cv;
 using namespace std;
 
@@ -14,13 +13,19 @@ void polarize(Mat image, int threshold){
   LUT(image, table, image);
 }
 
+void inverse(Mat image){
+  Mat table(1, 256, CV_8U);
+  uchar* p = table.data;
+  for(int i = 0; i < 256; ++i)
+    p[i] = 255 - i;
+  LUT(image, table, image);
+}
+
+
 void removeLine(Mat image, Vec4i line){
   int x1 = line[0];
   int y = line[1];
   int x2 = line[2];
-  cout << x1 << endl;
-  cout << x2 << endl;
-  cout << y << endl;
   uchar* top = image.ptr<uchar>(y-1);
   uchar* mid = image.ptr<uchar>(y  );
   uchar* bot = image.ptr<uchar>(y+1);
@@ -40,7 +45,7 @@ void drawLines(Mat image, vector<Vec4i> lines, Scalar color){
 void drawRects(Mat image, vector<Vec4i> lines, Scalar color){
   for( size_t i = 0; i < lines.size(); i++ ){
     Vec4i l = lines[i];
-    rectangle(image, Point(l[0], l[1]), Point(l[2], l[3]), color);
+    rectangle(image, Point(l[0] - 1, l[1] - 1), Point(l[2] + 1, l[3] + 1), color);
   }
   return;
 }

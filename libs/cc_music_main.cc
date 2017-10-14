@@ -34,18 +34,22 @@ void processImage(char* image_name){
 
   showImage("Original", image);
 
+  auto temp = image.clone();
+
   for (auto l : lines)
-    removeLine(image, l);
+    removeLine(temp, l);
 
-
-  cvtColor(image, show_image, CV_GRAY2BGR);
+  polarize(temp, 128);
+  cvtColor(temp, show_image, CV_GRAY2BGR);
 
   drawRects(show_image, frames, Scalar(0,255,0));
   showImage("Frames", show_image);
 
-  auto f = frames[0];
-  auto crop = image(Rect(f[0], f[1], f[2]-f[0], f[3]-f[1]));
-  showImage("Crop", crop);
+  auto n = locateSymbols(temp, frames[0]);
+  cout << "Found " << n.size() << " symbols." << endl;
+  drawRects(show_image, n, Scalar(0,0,255));
+  showImage("Symbol", show_image);
 
   showHold();
+
 }
