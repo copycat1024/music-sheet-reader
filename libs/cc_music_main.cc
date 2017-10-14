@@ -27,29 +27,29 @@ void processImage(char* image_name){
     return;
   }
 
+  showImage("Original", image);
+  auto temp = image.clone();
+
   auto lines = locateSheetLines(image);
   cout << "Found " << lines.size() << " lines." << endl;
   auto frames = locateFrames(lines);
   cout << "Found " << frames.size() << " frames." << endl;
+  removeAllLines(temp, lines);
+/*
+  auto ls = locateFrameLines(temp, frames[0]);
+  cout << "Found " << ls.size() << " frame lines." << endl;
+*/
+  auto n = locateSymbols(temp, frames[0]);
+  cout << "Found " << n.size() << " symbols." << endl;
 
-  showImage("Original", image);
-
-  auto temp = image.clone();
-
-  for (auto l : lines)
-    removeLine(temp, l);
-
-  polarize(temp, 128);
-  cvtColor(temp, show_image, CV_GRAY2BGR);
+//  polarize(temp, 128);
+  cvtColor(image, show_image, CV_GRAY2BGR);
 
   drawRects(show_image, frames, Scalar(0,255,0));
   showImage("Frames", show_image);
 
-  auto n = locateSymbols(temp, frames[0]);
-  cout << "Found " << n.size() << " symbols." << endl;
   drawRects(show_image, n, Scalar(0,0,255));
   showImage("Symbol", show_image);
 
   showHold();
-
 }
