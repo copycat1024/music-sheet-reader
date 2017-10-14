@@ -40,7 +40,7 @@ void showHold(){
   waitKey();
 }
 
-vector<Vec4i> getSheetLines(Mat image){
+vector<Vec4i> locateSheetLines(Mat image){
   vector<Vec4i> lines;
   Mat temp;
 
@@ -59,29 +59,13 @@ vector<Vec4i> getSheetLines(Mat image){
   return lines;
 }
 
-Mat makeShowImage(Mat image, vector<Vec4i> lines, Scalar color){
-  Mat res;
-  if (image.channels() == 1){
-    cvtColor(image, res, CV_GRAY2BGR);
-  } else {
-    res = image;
-  }
+void drawLines(Mat image, vector<Vec4i> lines, Scalar color){
   for( size_t i = 0; i < lines.size(); i++ ){
     Vec4i l = lines[i];
-    line(res, Point(l[0], l[1]), Point(l[2], l[3]), color, 1, CV_AA);
+    line(image, Point(l[0], l[1]), Point(l[2], l[3]), color, 1, CV_AA);
   }
-  return res;
+  return;
 }
-
-#ifdef DEBUG1
-void printVec4i(Vec4i l){
-  for (int j = 0; j<4; j++){
-    cout.width(5);
-    cout << l[j];
-  }
-  cout << endl;
-}
-#endif
 
 vector<Vec4i> locateFrames(vector<Vec4i> lines){
   vector<Vec4i> mid, res;
@@ -96,19 +80,9 @@ vector<Vec4i> locateFrames(vector<Vec4i> lines){
   for(i = 0; i<lines.size(); i++){
     if (i==0){
       mid.push_back(lines[i]);
-#ifdef DEBUG1
-      cout << "IN  "; printVec4i(lines[i]);
-#endif
     } else {
       if (lines[i][1]!=lines[i-1][1]+1)
         mid.push_back(lines[i]);
-#ifdef DEBUG1
-      if (lines[i][1]!=lines[i-1][1]+1){
-        cout << "IN  "; printVec4i(lines[i]);
-      } else {
-        cout << "OUT "; printVec4i(lines[i]);
-      }
-#endif
     }
   }
 

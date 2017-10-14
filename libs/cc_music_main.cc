@@ -25,17 +25,19 @@ void processImage(char* image_name){
     return;
   }
 
-  auto lines = getSheetLines(image);
+  auto lines = locateSheetLines(image);
   cout << "Found " << lines.size() << " lines." << endl;
   auto frames = locateFrames(lines);
   cout << "Found " << frames.size() << " frames." << endl;
 
   showImage("Original", image);
 
-  show_image = makeShowImage(image, lines, Scalar(0,0,255));
+  cvtColor(image, show_image, CV_GRAY2BGR);
+
+  drawLines(show_image, lines, Scalar(0,0,255));
   showImage("Process1", show_image);
 
-  show_image = makeShowImage(show_image, frames, Scalar(0,255,0));
+  drawLines(show_image, frames, Scalar(0,255,0));
   showImage("Process2", show_image);
 
   auto f = frames[0];

@@ -15,8 +15,8 @@ cv::Mat polarize(cv::Mat, int);
 cv::Mat loadGreyImage(char*);
 void showImage(std::string, cv::Mat);
 void showHold();
-std::vector<cv::Vec4i> getSheetLines(cv::Mat);
-cv::Mat makeShowImage(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
+std::vector<cv::Vec4i> locateSheetLines(cv::Mat);
+void drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 std::vector<cv::Vec4i> locateFrames(std::vector<cv::Vec4i>);
 
 #endif
