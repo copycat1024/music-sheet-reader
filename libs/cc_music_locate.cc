@@ -1,38 +1,32 @@
 #include "cc_music_locate.hh"
 #include "cc_music_io.hh"
-#include <string>
+#include "cc_music_edit.hh"
 #include <iostream>
-#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
 using namespace std;
 using namespace cv;
-
-Mat polarize(Mat image, int threshold){
-  Mat res;
-  Mat table(1, 256, CV_8U);
-  uchar* p = table.data;
-  for(int i = 0; i < 256; ++i)
-    p[i] = i<threshold ? 255 : 0;
-  LUT(image, table, res);
-  return res;
-}
 
 vector<Vec4i> locateSheetLines(Mat image){
   vector<Vec4i> lines;
   Mat temp;
 
   Mat kernel = (Mat_<float>(3,3) <<  0, -1, 0, 0, 3, 0, 0, -1, 0);
-  filter2D(image, temp, image.depth(), kernel);
-  image = temp;
+//  filter2D(image, temp, image.depth(), kernel);
+//  image = temp;
 
-  image = polarize(image, 128);
+  polarize(image, 128);
   showImage("Debug", image);
 
   int threshold = image.cols / 10;
   int minLen = image.cols / 2;
   int maxGap = 10;
   HoughLinesP(image, lines, 1, CV_PI/180, threshold, minLen, maxGap);
+
+  auto cmp = [](const Vec4i& l, const Vec4i& r){
+    return l[1]<r[1];
+  };
+  sort(lines.begin(), lines.end(), cmp);
 
   return lines;
 }
@@ -41,11 +35,6 @@ vector<Vec4i> locateFrames(vector<Vec4i> lines){
   vector<Vec4i> mid, res;
   size_t i,j;
   int min_x, max_x, min_y, max_y;
-
-  auto cmp = [](const Vec4i& l, const Vec4i& r){
-    return l[1]<r[1];
-  };
-  sort(lines.begin(), lines.end(), cmp);
 
   for(i = 0; i<lines.size(); i++){
     if (i==0){
@@ -75,7 +64,8 @@ vector<Vec4i> locateFrames(vector<Vec4i> lines){
       if (max_y < mid[i][3]) max_y = mid[i][3];
       if (i%5 == 4){
         int space = (max_y - min_y)/2;
-        res.push_back(Vec4i(min_x - 1, min_y - space, max_x + 1, max_y + space));
+        int pad = 1;
+        res.push_back(Vec4i(min_x - pad, min_y - space, max_x + pad, max_y + space));
       }
     }
 

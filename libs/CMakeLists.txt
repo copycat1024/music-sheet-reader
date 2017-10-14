@@ -10,4 +10,6 @@ add_library(CcMusicSheet
   cc_music_io.cc
   cc_music_locate.hh
   cc_music_locate.cc
+  cc_music_edit.hh
+  cc_music_edit.cc
 )

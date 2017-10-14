@@ -31,11 +31,3 @@ void showImage(string title, Mat pic){
 void showHold(){
   waitKey();
 }
-
-void drawLines(Mat image, vector<Vec4i> lines, Scalar color){
-  for( size_t i = 0; i < lines.size(); i++ ){
-    Vec4i l = lines[i];
-    line(image, Point(l[0], l[1]), Point(l[2], l[3]), color, 1, CV_AA);
-  }
-  return;
-}

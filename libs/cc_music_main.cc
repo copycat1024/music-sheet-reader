@@ -2,6 +2,7 @@
 #include "cc_music_main.hh"
 #include "cc_music_io.hh"
 #include "cc_music_locate.hh"
+#include "cc_music_edit.hh"
 #include "cc_opencv_ultils.hh"
 
 using namespace std;
@@ -33,13 +34,14 @@ void processImage(char* image_name){
 
   showImage("Original", image);
 
+  for (auto l : lines)
+    removeLine(image, l);
+
+
   cvtColor(image, show_image, CV_GRAY2BGR);
 
-  drawLines(show_image, lines, Scalar(0,0,255));
-  showImage("Process1", show_image);
-
-  drawLines(show_image, frames, Scalar(0,255,0));
-  showImage("Process2", show_image);
+  drawRects(show_image, frames, Scalar(0,255,0));
+  showImage("Frames", show_image);
 
   auto f = frames[0];
   auto crop = image(Rect(f[0], f[1], f[2]-f[0], f[3]-f[1]));
