@@ -38,5 +38,9 @@ void processImage(char* image_name){
   show_image = makeShowImage(show_image, frames, Scalar(0,255,0));
   showImage("Process2", show_image);
 
+  auto f = frames[0];
+  auto crop = image(Rect(f[0], f[1], f[2]-f[0], f[3]-f[1]));
+  showImage("Crop", crop);
+
   showHold();
 }

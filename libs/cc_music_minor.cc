@@ -130,7 +130,8 @@ vector<Vec4i> locateFrames(vector<Vec4i> lines){
       if (max_x < mid[i][2]) max_x = mid[i][2];
       if (max_y < mid[i][3]) max_y = mid[i][3];
       if (i%5 == 4){
-        res.push_back(Vec4i(min_x, min_y, max_x, max_y));
+        int space = (max_y - min_y)/2;
+        res.push_back(Vec4i(min_x - 1, min_y - space, max_x + 1, max_y + space));
       }
     }
 
