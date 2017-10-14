@@ -6,6 +6,8 @@ add_library(CcOpencvUltils
 add_library(CcMusicSheet
   cc_music_main.hh
   cc_music_main.cc
-  cc_music_minor.hh
-  cc_music_minor.cc
+  cc_music_io.hh
+  cc_music_io.cc
+  cc_music_locate.hh
+  cc_music_locate.cc
 )

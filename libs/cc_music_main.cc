@@ -1,6 +1,7 @@
 #include <iostream>
 #include "cc_music_main.hh"
-#include "cc_music_minor.hh"
+#include "cc_music_io.hh"
+#include "cc_music_locate.hh"
 #include "cc_opencv_ultils.hh"
 
 using namespace std;
