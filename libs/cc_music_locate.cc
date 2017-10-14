@@ -8,6 +8,8 @@
 using namespace std;
 using namespace cv;
 
+Vec4i locateSymbolsX(Mat, Vec4i);
+
 vector<Vec4i> locateSheetLines(Mat image){
   vector<Vec4i> lines;
   Mat temp;
@@ -72,7 +74,7 @@ vector<Vec4i> locateFrames(vector<Vec4i> lines){
 }
 
 vector<Vec4i> locateSymbols(Mat image, Vec4i frame){
-  vector<Vec4i> res;
+  vector<Vec4i> res, resx;
   vector<int> weight;
   int i,j;
   int x1 = frame[0];
@@ -98,7 +100,43 @@ vector<Vec4i> locateSymbols(Mat image, Vec4i frame){
     }
     if (a == 0 && streak){
       streak = false;
-      res.push_back(Vec4i(xa, y1, j, y2));
+      resx.push_back(Vec4i(xa, y1, j, y2));
+    }
+  }
+  for (Vec4i v : resx){
+    vector<Vec4i> r = locateSymbolsX(image, v);
+    res.insert(res.end(), r.begin(), r.end());
+  }
+  return res;
+}
+
+Vec4i locateSymbolsX(Mat image, Vec4i frame){
+  vector<Vec4i> res;
+  vector<int> weight;
+  int i,j;
+  int x1 = frame[0];
+  int y1 = frame[1];
+  int x2 = frame[2];
+  int y2 = frame[3];
+
+  weight.resize(y2 - y1 + 1, 0);
+  for (i=y1; i<=y2; i++){
+    uchar* row = image.ptr<uchar>(i);
+    for (j=x1; j<=x2; j++){
+      if (row[j] == 255) weight[i-y1]++;
+    }
+  }
+
+  bool streak = false;
+  int ya = 0;
+  for (j=y1; j<=y2; j++){
+    int a = weight[j-y1];
+    if (a != 0 && !streak){
+      ya = j;
+      streak = true;
+    }
+    if (a == 0 && streak){
+      res.push_back(Vec4i(x1, ya, x2, j));
     }
   }
   return res;
