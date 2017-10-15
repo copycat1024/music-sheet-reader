@@ -7,12 +7,16 @@ using namespace std;
 
 void removeLine(Mat, Vec4i, int);
 
-void polarize(Mat image, int threshold){
-  Mat table(1, 256, CV_8U);
-  uchar* p = table.data;
-  for(int i = 0; i < 256; ++i)
-    p[i] = i<threshold ? 255 : 0;
-  LUT(image, table, image);
+Mat polarize(Mat image){
+  Mat res;
+  adaptiveThreshold(~image, res, 255, CV_ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 15, -2);
+  return res;
+}
+
+void applyMorphFilter(Mat binary_image, int x, int y){
+  Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
+  erode(binary_image, binary_image, morphStructure, Point(-1, -1));
+  dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
 }
 
 void inverse(Mat image){

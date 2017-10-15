@@ -14,16 +14,14 @@ vector<Vec4i> locateSheetLines(Mat image){
   vector<Vec4i> lines;
   Mat temp;
 
-  Mat kernel = (Mat_<float>(3,3) <<  0, -1, 0, 0, 3, 0, 0, -1, 0);
-  filter2D(image, temp, image.depth(), kernel);
-  image = temp;
+  int line_min_size = temp.cols / 10;
+  applyMorphFilter(temp, line_min_size, 1);
+  showImage(temp);
 
-  polarize(image, 128);
-
-  int threshold = image.cols / 10;
-  int minLen = image.cols / 2;
+  int threshold = temp.cols / 10;
+  int minLen = temp.cols / 2;
   int maxGap = 10;
-  HoughLinesP(image, lines, 1, CV_PI/180, threshold, minLen, maxGap);
+  HoughLinesP(temp, lines, 1, CV_PI/180, threshold, minLen, maxGap);
 
   auto cmp = [](const Vec4i& l, const Vec4i& r){
     return l[1]<r[1];
@@ -82,7 +80,7 @@ vector<Vec4i> locateFrameLines(Mat input_image, Vec4i frame){
   Mat image = input_image.clone();
   image = image(Rect(x1, y1, x2-x1, y2-y1));
 
-  polarize(image, 128);
+  image = polarize(image);
 
   int threshold = image.rows / 4;
   int minLen = image.rows / 4;
@@ -118,7 +116,7 @@ vector<Vec4i> locateSymbols(Mat input_image, Vec4i frame){
   filter2D(image, temp, image.depth(), kernel);
   image = temp;
 
-  polarize(image, 128);
+  image = polarize(image);
   weight.resize(x2 - x1 + 1, 0);
   for (i=y1; i<=y2; i++){
     uchar* row = image.ptr<uchar>(i);

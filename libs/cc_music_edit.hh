@@ -7,8 +7,9 @@
 
 void drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 void drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
+void applyMorphFilter(cv::Mat, int, int);
 void removeAllLines(cv::Mat, std::vector<cv::Vec4i>);
-void polarize(cv::Mat, int);
+cv::Mat polarize(cv::Mat);
 void inverse(cv::Mat);
 
 #endif
