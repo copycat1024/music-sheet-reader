@@ -12,16 +12,17 @@ vector<Vec4i> locateSymbolsX(Mat, Vec4i);
 
 vector<Vec4i> locateSheetLines(Mat image){
   vector<Vec4i> lines;
-  Mat temp;
+//  Mat temp = image.clone();
+  Mat temp = image;
 
+  cout << "locateSheetLines" << endl;
   int line_min_size = temp.cols / 10;
   applyMorphFilter(temp, line_min_size, 1);
-  showImage(temp);
 
   int threshold = temp.cols / 10;
   int minLen = temp.cols / 2;
   int maxGap = 10;
-  HoughLinesP(temp, lines, 1, CV_PI/180, threshold, minLen, maxGap);
+  HoughLinesP(temp, lines, 1, CV_PI/2, threshold, minLen, maxGap);
 
   auto cmp = [](const Vec4i& l, const Vec4i& r){
     return l[1]<r[1];

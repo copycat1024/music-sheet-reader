@@ -1,8 +1,7 @@
 #ifndef CC_MUSIC_MAIN
 #define CC_MUSIC_MAIN
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+namespace cc {
 
 enum TaskNumber {
   NO_ARGUMENT,
@@ -10,7 +9,11 @@ enum TaskNumber {
   PROCESS_INPUT_FILE
 };
 
-TaskNumber handleArguments(int, char**);
-void processImage(char*);
+class MusicSheetReaderProgram {
+public:
+  TaskNumber handleArguments(int, char**);
+  void processImage(char*);
+};
 
+}
 #endif

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include "cc_music_main.hh"
 #include "cc_music_io.hh"
 #include "cc_music_locate.hh"
@@ -8,26 +10,60 @@
 using namespace std;
 using namespace cv;
 
-TaskNumber handleArguments(int argc, char** argv){
+namespace cc {
+
+TaskNumber MusicSheetReaderProgram::handleArguments(int argc, char** argv){
   if (argc < 2) return NO_ARGUMENT;
   if (!fileExist(argv[1])) return INPUT_FILE_ERROR;
   return PROCESS_INPUT_FILE;
 }
 
-void processImage(char* image_name){
+void MusicSheetReaderProgram::processImage(char* image_name){
   Mat image = loadGreyImage(image_name);
   if(!image.data){
     cout << "No image data!" << endl;
     return;
   }
-  imshow("gray", image);
+  showImage("gray", image);
   Mat binary_image = polarize(image);
-  imshow("binary", binary_image);
+//  showImage("binary", binary_image);
+  showImage("bin", binary_image);
+  showHold();
+  Mat sheet_lines_image = binary_image.clone();
+  auto lines = locateSheetLines(sheet_lines_image);
+  cout << "Found " << lines.size() << " lines." << endl;
+//  showImage("sheets", sheet_lines_image);
+  auto frames = locateFrames(lines);
+  cout << "Found " << frames.size() << " frames." << endl;
+  Mat temp = image.clone();
 
-  auto lines = locateSheetLines(binary_image);
-  waitKey(0);
+  temp = polarize(temp);
+//  Mat A = temp - sheet_lines_image/2;
+  Mat A = temp;
+
+  Mat morphStructure = getStructuringElement(MORPH_RECT, Size(1,3));
+  erode(A, A, morphStructure, Point(-1, -1));
+  dilate(A, A, morphStructure, Point(-1, -1));
+  morphStructure = getStructuringElement(MORPH_RECT, Size(3,1));
+  erode(A, A, morphStructure, Point(-1, -1));
+  dilate(A, A, morphStructure, Point(-1, -1));
+  showImage("Image A",A);
+
+//  removeAllLines(temp, lines);
+//  temp = polarize(temp);
+  Mat show_image;
+//  applyMorphFilter(temp, 1, 3);
+  cvtColor(temp, show_image, CV_GRAY2BGR);
+  drawRects(show_image, frames, Scalar(0,255,0));
+  cout << "Show framse" << endl;
+//  showImage("Frames", show_image);
+
+  showHold();
   return;
 }
+
+}
+// --------------------- end of namespace
 
 void processImage1(char* image_name){
   Mat image = loadGreyImage(image_name);

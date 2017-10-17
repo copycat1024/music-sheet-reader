@@ -9,7 +9,5 @@ bool fileExist(char*);
 cv::Mat loadGreyImage(char*);
 void showImage(std::string, cv::Mat);
 void showHold();
-void drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
-void drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 
 #endif
