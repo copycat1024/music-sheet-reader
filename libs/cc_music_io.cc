@@ -1,5 +1,5 @@
-#include <fstream>
 #include "cc_music_io.hh"
+#include <fstream>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string>
@@ -10,16 +10,19 @@
 using namespace std;
 using namespace cv;
 
-bool fileExist(char* file_name){
+namespace cc{
+
+bool MusicSheetReaderIO::fileExist(const char* file_name){
   ifstream f(file_name);
   return f.good();
 }
 
-Mat loadGreyImage(char* image_name){
-  return imread(image_name, CV_LOAD_IMAGE_GRAYSCALE);
+bool MusicSheetReaderIO::loadGreyImage(const char* image_name, Mat& image){
+  image = imread(image_name, CV_LOAD_IMAGE_GRAYSCALE);
+  return image.data;
 }
 
-void showImage(string title, Mat pic){
+void MusicSheetReaderIO::showImage(string title, Mat pic){
   int dev_null = open("/dev/null", O_RDWR);
   int err_old = dup(STDERR_FILENO);
   dup2(dev_null, STDERR_FILENO);
@@ -28,6 +31,8 @@ void showImage(string title, Mat pic){
   dup2(err_old, STDERR_FILENO);
 }
 
-void showHold(){
+void MusicSheetReaderIO::showHold(){
   waitKey();
+}
+
 }

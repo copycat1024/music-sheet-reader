@@ -9,12 +9,21 @@ void removeLine(Mat, Vec4i, int);
 
 Mat polarize(Mat image){
   Mat res;
-  adaptiveThreshold(~image, res, 255, CV_ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 15, -2);
+  adaptiveThreshold(~image, res, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, -2);
   return res;
 }
 
 void applyMorphFilter(Mat binary_image, int x, int y){
   Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
+  erode(binary_image, binary_image, morphStructure, Point(-1, -1));
+  dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
+}
+
+void applyMorphFilter2(Mat binary_image, int x){
+  Mat morphStructure = getStructuringElement(MORPH_RECT, Size(1,x));
+  erode(binary_image, binary_image, morphStructure, Point(-1, -1));
+  dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
+  morphStructure = getStructuringElement(MORPH_RECT, Size(x,1));
   erode(binary_image, binary_image, morphStructure, Point(-1, -1));
   dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
 }

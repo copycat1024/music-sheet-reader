@@ -13,58 +13,61 @@ using namespace cv;
 namespace cc {
 
 TaskNumber MusicSheetReaderProgram::handleArguments(int argc, char** argv){
+  MusicSheetReaderIO io;
   if (argc < 2) return NO_ARGUMENT;
-  if (!fileExist(argv[1])) return INPUT_FILE_ERROR;
+  if (!io.fileExist(argv[1])) return INPUT_FILE_ERROR;
   return PROCESS_INPUT_FILE;
 }
 
 void MusicSheetReaderProgram::processImage(char* image_name){
-  Mat image = loadGreyImage(image_name);
-  if(!image.data){
+  MusicSheetReaderIO io;
+  MusicSheetReaderLocator loc;
+
+  Mat input_image;
+  Mat binary_image;
+  Mat show_image;
+  Mat sheet_lines_image;
+  Mat symbols_image;
+
+  if(!io.loadGreyImage(image_name, input_image)){
     cout << "No image data!" << endl;
     return;
   }
-  showImage("gray", image);
-  Mat binary_image = polarize(image);
-//  showImage("binary", binary_image);
-  showImage("bin", binary_image);
-  showHold();
-  Mat sheet_lines_image = binary_image.clone();
-  auto lines = locateSheetLines(sheet_lines_image);
+  io.showImage("Input", input_image);
+
+  binary_image = polarize(input_image);
+  io.showImage("Binary threshold", binary_image);
+
+  loc.locateMusicSheetFrom(binary_image);
+  sheet_lines_image = loc.imageSheetLines();
+  auto lines = loc.Lines();
   cout << "Found " << lines.size() << " lines." << endl;
-//  showImage("sheets", sheet_lines_image);
-  auto frames = locateFrames(lines);
+  io.showImage("Sheet lines", sheet_lines_image);
+
+  auto frames = loc.Frames();
   cout << "Found " << frames.size() << " frames." << endl;
-  Mat temp = image.clone();
+  if (!loc.Success()){
+    io.showHold();
+    return;
+  }
 
-  temp = polarize(temp);
-//  Mat A = temp - sheet_lines_image/2;
-  Mat A = temp;
+  symbols_image = binary_image.clone();
+  auto symbols = locateSymbols(symbols_image, frames[0]);
+//  io.showImage("A", A);
 
-  Mat morphStructure = getStructuringElement(MORPH_RECT, Size(1,3));
-  erode(A, A, morphStructure, Point(-1, -1));
-  dilate(A, A, morphStructure, Point(-1, -1));
-  morphStructure = getStructuringElement(MORPH_RECT, Size(3,1));
-  erode(A, A, morphStructure, Point(-1, -1));
-  dilate(A, A, morphStructure, Point(-1, -1));
-  showImage("Image A",A);
-
-//  removeAllLines(temp, lines);
-//  temp = polarize(temp);
-  Mat show_image;
-//  applyMorphFilter(temp, 1, 3);
-  cvtColor(temp, show_image, CV_GRAY2BGR);
+  cvtColor(input_image, show_image, CV_GRAY2BGR);
   drawRects(show_image, frames, Scalar(0,255,0));
-  cout << "Show framse" << endl;
-//  showImage("Frames", show_image);
+  drawRects(show_image, symbols, Scalar(255,0,255));
+  io.showImage("Result", show_image);
 
-  showHold();
+  io.showHold();
+
   return;
 }
 
 }
 // --------------------- end of namespace
-
+/*
 void processImage1(char* image_name){
   Mat image = loadGreyImage(image_name);
 
@@ -134,3 +137,4 @@ void processImage1(char* image_name){
   waitKey(0);
   return;
 }
+*/

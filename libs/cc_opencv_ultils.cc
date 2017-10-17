@@ -61,3 +61,15 @@ string typeToStr(const Mat& mat){
     default: return "Invalid type of matrix!";
     }
 }
+
+IntSegment::IntSegment(Vec4i v){
+  x1 = v[0];
+  y1 = v[1];
+  x2 = v[2];
+  y2 = v[3];
+}
+
+IntSegment IntSegment::operator=(Vec4i v){
+  IntSegment res(v);
+  return res;
+}

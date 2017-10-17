@@ -106,18 +106,13 @@ vector<Vec4i> locateFrameLines(Mat input_image, Vec4i frame){
 vector<Vec4i> locateSymbols(Mat input_image, Vec4i frame){
   vector<Vec4i> res, resx;
   vector<int> weight;
-  Mat image = input_image.clone(), temp;
+  Mat image = input_image;
   int i,j;
   int x1 = frame[0];
   int y1 = frame[1];
   int x2 = frame[2];
   int y2 = frame[3];
 
-  Mat kernel = (Mat_<float>(3,3) <<  0, 0, 0, -1, 3, -1, 0, 0, 0);
-  filter2D(image, temp, image.depth(), kernel);
-  image = temp;
-
-  image = polarize(image);
   weight.resize(x2 - x1 + 1, 0);
   for (i=y1; i<=y2; i++){
     uchar* row = image.ptr<uchar>(i);
@@ -130,7 +125,6 @@ vector<Vec4i> locateSymbols(Mat input_image, Vec4i frame){
   int xa = 0;
   for (j=x1; j<=x2; j++){
     int a = weight[j-x1];
-    cout << a << endl;
     if (a != 0 && !streak){
       xa = j;
       streak = true;
@@ -178,4 +172,27 @@ vector<Vec4i> locateSymbolsX(Mat image, Vec4i frame){
     }
   }
   return res;
+}
+
+void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
+  _sheet_lines_image = image.clone();
+  _lines = locateSheetLines(_sheet_lines_image);
+  _frames = locateFrames(_lines);
+  _success = _frames.size() > 0;
+}
+
+cv::Mat MusicSheetReaderLocator::imageSheetLines(){
+  return _sheet_lines_image;
+}
+
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
+  return _lines;
+}
+
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Frames(){
+  return _frames;
+}
+
+bool MusicSheetReaderLocator::Success(){
+  return _success;
 }

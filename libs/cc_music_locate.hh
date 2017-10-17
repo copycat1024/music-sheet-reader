@@ -9,4 +9,17 @@ std::vector<cv::Vec4i> locateSheetLines(cv::Mat);
 std::vector<cv::Vec4i> locateFrameLines(cv::Mat, cv::Vec4i);
 std::vector<cv::Vec4i> locateSymbols(cv::Mat image, cv::Vec4i frame);
 
+class MusicSheetReaderLocator {
+public:
+  void locateMusicSheetFrom(cv::Mat);
+  cv::Mat imageSheetLines();
+  std::vector<cv::Vec4i> Lines();
+  std::vector<cv::Vec4i> Frames();
+  bool Success();
+private:
+  std::vector<cv::Vec4i> _lines, _frames;
+  cv::Mat _sheet_lines_image;
+  bool _success;
+};
+
 #endif
