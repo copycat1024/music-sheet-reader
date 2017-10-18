@@ -10,14 +10,14 @@ using namespace cv;
 
 vector<Vec4i> locateSymbolsX(Mat, Vec4i);
 
-vector<Vec4i> locateSheetLines(Mat image){
-  vector<Vec4i> lines;
+void MusicSheetReaderLocator::locateSheetLines(Mat image){
+  vector<Vec4i> lines, mid;
 //  Mat temp = image.clone();
   Mat temp = image;
 
   cout << "locateSheetLines" << endl;
-  int line_min_size = temp.cols / 10;
-  applyMorphFilter(temp, line_min_size, 1);
+  int line_min_size = 10;
+//  applyMorphFilter(temp, line_min_size, 1);
 
   int threshold = temp.cols / 10;
   int minLen = temp.cols / 2;
@@ -29,22 +29,32 @@ vector<Vec4i> locateSheetLines(Mat image){
   };
   sort(lines.begin(), lines.end(), cmp);
 
-  return lines;
+  int i,c=0,s=0;
+  for(i = 0; i<lines.size(); i++){
+    if (i==0){
+      mid.push_back(lines[i]);
+    } else {
+      if (lines[i][1]!=lines[i-1][1]+1){
+        c++;
+        if (c%5 != 0){
+          s+=lines[i][1]-lines[i-1][1];
+        }
+        mid.push_back(lines[i]);
+      }
+    }
+  }
+  cout << "c = " << c << endl;
+  cout << "s = " << s << endl;
+  _gap_size = s/((c+1.)*5./4.);
+  cout << "G = " << _gap_size << endl;
+  _lines = mid;
 }
 
 vector<Vec4i> locateFrames(vector<Vec4i> lines){
   vector<Vec4i> mid, res;
   size_t i,j;
   int min_x, max_x, min_y, max_y;
-
-  for(i = 0; i<lines.size(); i++){
-    if (i==0){
-      mid.push_back(lines[i]);
-    } else {
-      if (lines[i][1]!=lines[i-1][1]+1)
-        mid.push_back(lines[i]);
-    }
-  }
+  mid = lines;
 
   if (mid.size()%5!=0){
     cout << "Number does not match." << endl;
@@ -176,7 +186,7 @@ vector<Vec4i> locateSymbolsX(Mat image, Vec4i frame){
 
 void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
   _sheet_lines_image = image.clone();
-  _lines = locateSheetLines(_sheet_lines_image);
+  locateSheetLines(_sheet_lines_image);
   _frames = locateFrames(_lines);
   _success = _frames.size() > 0;
 }
@@ -193,6 +203,52 @@ std::vector<cv::Vec4i> MusicSheetReaderLocator::Frames(){
   return _frames;
 }
 
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
+  return _symbols;
+}
+
 bool MusicSheetReaderLocator::Success(){
   return _success;
+}
+
+void MusicSheetReaderLocator::locateSymbols(Mat i_image, Vec4i frame){
+  vector<vector<Point> > contours;
+  vector<Vec4i> hierarchy;
+  RNG rng(12345);
+  Mat image = i_image(Rect(frame[0], frame[1], frame[2]-frame[0], frame[3]-frame[1]));
+
+  applyMorphFilter2(image,3);
+
+  findContours(image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+
+  /// Draw contours
+  Mat drawing = Mat::zeros(image.size(), CV_8UC3);
+  Mat drawing2 = Mat::zeros(image.size(), CV_8UC3);
+  for( int i = 0; i< contours.size(); i++ ){
+    Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+    drawContours( drawing2, contours, i, color, 1, 8, hierarchy, 0, Point() );
+    int x1,x2,y1,y2;
+    x1 = contours[i][0].x;
+    x2 = contours[i][0].x;
+    y1 = contours[i][0].y;
+    y2 = contours[i][0].y;
+    for (int j=1; j<contours[i].size(); j++){
+      if (x1>contours[i][j].x) x1 = contours[i][j].x;
+      if (x2<contours[i][j].x) x2 = contours[i][j].x;
+      if (y1>contours[i][j].y) y1 = contours[i][j].y;
+      if (y2<contours[i][j].y) y2 = contours[i][j].y;
+    }
+    rectangle(drawing, Point(x1,y1), Point(x2,y2), color);
+    if (x2-x1<10 && x2-x1>7 && y2-y1>4){
+      _symbols.push_back(Vec4i(frame[0]+x1, frame[1]+y1, frame[0]+x2, frame[1]+y2));
+      cout << x2-x1 << 'x' << y2-y1 << endl;
+    }
+  }
+
+  /// Show in a window
+  namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
+  namedWindow( "Contours2", CV_WINDOW_AUTOSIZE );
+  imshow( "Contours", drawing );
+  imshow( "Contours2", drawing2 );
+  waitKey();
 }

@@ -51,8 +51,10 @@ void MusicSheetReaderProgram::processImage(char* image_name){
     return;
   }
 
-  symbols_image = binary_image.clone();
-  auto symbols = locateSymbols(symbols_image, frames[0]);
+  loc.locateSymbols(binary_image, frames[0]);
+  auto symbols = loc.Symbols();
+//  symbols_image = binary_image.clone();
+//  auto symbols = locateSymbols(symbols_image, frames[0]);
 //  io.showImage("A", A);
 
   cvtColor(input_image, show_image, CV_GRAY2BGR);
@@ -61,6 +63,7 @@ void MusicSheetReaderProgram::processImage(char* image_name){
   io.showImage("Result", show_image);
 
   io.showHold();
+
 
   return;
 }
