@@ -22,12 +22,7 @@ void applyMorphFilter(Mat binary_image, int x, int y){
 }
 
 void applyMorphFilter2(Mat binary_image, int x){
-  Mat morphStructure = getStructuringElement(MORPH_RECT, Size(1,x));
-  erode(binary_image, binary_image, morphStructure, Point(-1, -1));
-  dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
-  morphStructure = getStructuringElement(MORPH_RECT, Size(x,1));
-  erode(binary_image, binary_image, morphStructure, Point(-1, -1));
-  dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
+  applyMorphFilter(binary_image, x, x);
 }
 
 void inverse(Mat image){

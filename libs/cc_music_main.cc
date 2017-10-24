@@ -34,11 +34,10 @@ void MusicSheetReaderProgram::processImage(char* image_name){
     return;
   }
   io.showImage("Input", input_image);
+/*
+  loc.locateMusicSheetFrom(input_image);
+  io.showImage("Binary threshold", loc.imageBinary());
 
-  binary_image = polarize(input_image);
-  io.showImage("Binary threshold", binary_image);
-
-  loc.locateMusicSheetFrom(binary_image);
   sheet_lines_image = loc.imageSheetLines();
   auto lines = loc.Lines();
   cout << "Found " << lines.size() << " lines." << endl;
@@ -51,17 +50,17 @@ void MusicSheetReaderProgram::processImage(char* image_name){
     return;
   }
 
-  loc.locateSymbols(binary_image, frames[0]);
+  
+  loc.locateSymbols(frames[0]);
   auto symbols = loc.Symbols();
-//  symbols_image = binary_image.clone();
-//  auto symbols = locateSymbols(symbols_image, frames[0]);
-//  io.showImage("A", A);
 
   cvtColor(input_image, show_image, CV_GRAY2BGR);
   drawRects(show_image, frames, Scalar(0,255,0));
   drawRects(show_image, symbols, Scalar(255,0,255));
   io.showImage("Result", show_image);
-
+*/
+  loc.locateSymbols2(input_image);
+  
   io.showHold();
 
 
