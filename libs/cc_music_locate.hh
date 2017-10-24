@@ -4,6 +4,8 @@
 #include <opencv2/core/core.hpp>
 #include <vector>
 
+namespace cc {
+
 std::vector<cv::Vec4i> locateFrames(std::vector<cv::Vec4i>);
 std::vector<cv::Vec4i> locateFrameLines(cv::Mat, cv::Vec4i);
 std::vector<cv::Vec4i> locateSymbols(cv::Mat image, cv::Vec4i frame);
@@ -25,4 +27,5 @@ private:
   float _gap_size;
 };
 
+}
 #endif

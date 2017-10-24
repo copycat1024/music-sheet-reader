@@ -5,6 +5,8 @@
 using namespace cv;
 using namespace std;
 
+namespace cc {
+
 void removeLine(Mat, Vec4i, int);
 
 Mat polarize(Mat image){
@@ -69,7 +71,7 @@ void removeAllLines(Mat image, vector<Vec4i> lines){
 }
 
 void drawLines(Mat image, vector<Vec4i> lines, Scalar color){
-  for( size_t i = 0; i < lines.size(); i++ ){
+  for( std::size_t i = 0; i < lines.size(); i++ ){
     Vec4i l = lines[i];
     line(image, Point(l[0], l[1]), Point(l[2], l[3]), color);
   }
@@ -77,9 +79,11 @@ void drawLines(Mat image, vector<Vec4i> lines, Scalar color){
 }
 
 void drawRects(Mat image, vector<Vec4i> lines, Scalar color){
-  for( size_t i = 0; i < lines.size(); i++ ){
+  for( std::size_t i = 0; i < lines.size(); i++ ){
     Vec4i l = lines[i];
     rectangle(image, Point(l[0] - 1, l[1] - 1), Point(l[2] + 1, l[3] + 1), color);
   }
   return;
+}
+
 }

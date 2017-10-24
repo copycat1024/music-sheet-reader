@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+namespace cc{
+
 void drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 void drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 void applyMorphFilter(cv::Mat, int, int);
@@ -12,5 +14,7 @@ void applyMorphFilter2(cv::Mat, int);
 void removeAllLines(cv::Mat, std::vector<cv::Vec4i>);
 cv::Mat polarize(cv::Mat);
 void inverse(cv::Mat);
+
+}
 
 #endif

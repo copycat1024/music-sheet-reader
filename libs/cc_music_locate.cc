@@ -8,6 +8,8 @@
 using namespace std;
 using namespace cv;
 
+namespace cc {
+
 vector<Vec4i> locateSymbolsX(Mat, Vec4i);
 
 void MusicSheetReaderLocator::locateSheetLines(Mat image){
@@ -251,4 +253,6 @@ void MusicSheetReaderLocator::locateSymbols(Mat i_image, Vec4i frame){
   imshow( "Contours", drawing );
   imshow( "Contours2", drawing2 );
   waitKey();
+}
+
 }
