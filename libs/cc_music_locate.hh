@@ -6,9 +6,6 @@
 
 namespace cc {
 
-std::vector<cv::Vec4i> locateFrameLines(cv::Mat, cv::Vec4i);
-std::vector<cv::Vec4i> locateSymbols(cv::Mat image, cv::Vec4i frame);
-
 class MusicSheetReaderLocator {
 public:
   void locateMusicSheetFrom(cv::Mat);
@@ -18,7 +15,7 @@ public:
   std::vector<cv::Vec4i> Frames();
   std::vector<cv::Vec4i> Symbols();
   bool Success();
-  void locateSymbols(cv::Vec4i);
+  void locateContours(cv::Mat);
   void locateSymbols2(cv::Mat);
 private:
   std::vector<cv::Vec4i> _lines, _frames, _symbols;
@@ -27,7 +24,7 @@ private:
   float _gap_size;
   void _locateSheetLines(cv::Mat);
   void _locateFrames(std::vector<cv::Vec4i>);
-  
+
 };
 
 }
