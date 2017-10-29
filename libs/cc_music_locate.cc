@@ -77,10 +77,19 @@ void MusicSheetReaderLocator::_locateFrames(vector<Vec4i> lines){
 }
 
 void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
+
+  // Initialize success status
+  // This flag will be set to false by the following co-routine
   _success = true;
+
+  // Convert greyscale image to binary image by adaptive threshold
   _binary_image = polarize(image);
+
+  // _locateSheetLines apply Morph to make sheet lines image
   _sheet_lines_image = _binary_image.clone();
   _locateSheetLines(_sheet_lines_image);
+
+  // locate frames from list of sheet lines
   _locateFrames(_lines);
 }
 
@@ -108,12 +117,15 @@ bool MusicSheetReaderLocator::Success(){
   return _success;
 }
 
-void MusicSheetReaderLocator::locateContours(Mat image){
-  vector<vector<Point> > contours;
+void MusicSheetReaderLocator::locateContours(Vec4i frame){
+  Mat image = _binary_image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
+  vector<vector<Point>> contours;
   vector<Vec4i> hierarchy;
   RNG rng(12345);
 
-  findContours(image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+  applyMorphFilter2(image, 3);
+
+  findContours(image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
   /// Draw contours
   Mat drawing = Mat::zeros(image.size(), CV_8UC3);
@@ -133,9 +145,8 @@ void MusicSheetReaderLocator::locateContours(Mat image){
       if (y2<contours[i][j].y) y2 = contours[i][j].y;
     }
     rectangle(drawing, Point(x1,y1), Point(x2,y2), color);
-//    if (x2-x1<10 && x2-x1>7 && y2-y1>4){
-    if (true){
-     _symbols.push_back(Vec4i(frame[0]+x1, frame[1]+y1, frame[0]+x2, frame[1]+y2));
+    if (x2-x1<10 && x2-x1>7 && y2-y1>4){
+      _symbols.push_back(Vec4i(frame[0]+x1, frame[1]+y1, frame[0]+x2, frame[1]+y2));
       cout << x2-x1 << 'x' << y2-y1 << endl;
     }
   }
@@ -148,25 +159,25 @@ void MusicSheetReaderLocator::locateContours(Mat image){
   imshow("Ori", image);
   waitKey();
 
-}
 
-float urg(Mat);
-float urg2(Mat);
+}
 
 void MusicSheetReaderLocator::locateSymbols2(Mat image){
   cout << "Lots" << endl;
-  Mat templ, res, p;
-  templ = imread("N2.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-  matchTemplate(image, templ, p, TM_CCOEFF_NORMED);
-  normalize(p, p, 0, 100, NORM_MINMAX, -1, Mat() );
-  Mat k;
-  p.convertTo(k, CV_8UC1);
-  threshold(k, res, 80, 255, 0);
+  Mat pattern, result, result_f;
+  pattern = imread("N2.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+  matchTemplate(image, pattern, result_f, CV_TM_CCOEFF);
+  normalize(result_f, result_f, 0, 255, NORM_MINMAX, -1, Mat() );
+  result_f.convertTo(result, CV_8UC1);
+  threshold(result, result, 64*3, 255, 0);
 
-  cout << depthToStr(p) << endl;
-  cout << depthToStr(res) << endl;
-  imshow("Res", res);
-  imshow("p", k);
+  int i,j;
+  for (i=0; i<result.rows; i++)
+    for (j=0; j<result.cols; j++)
+      if (result.at<uchar>(i,j)>0)
+        cout << result_f.at<float>(i,j) << endl;
+
+  imshow("p", result);
   return;
 }
 
