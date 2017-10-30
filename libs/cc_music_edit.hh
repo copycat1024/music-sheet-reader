@@ -14,6 +14,7 @@ void applyMorphFilter2(cv::Mat, int);
 void removeAllLines(cv::Mat, std::vector<cv::Vec4i>);
 cv::Mat polarize(cv::Mat);
 void inverse(cv::Mat);
+std::vector<cv::Mat> splitFrames(cv::Mat, std::vector<cv::Vec4i>);
 
 }
 

@@ -55,7 +55,7 @@ void MusicSheetReaderProgram::processImage(char* image_name){
   drawRects(show_image, symbols, Scalar(255,0,255));
   io.showImage("Result", show_image);
 
-//  loc.locateSymbols2(input_image);
+  loc.locateSymbols2(input_image);
   
   io.showHold();
   return;

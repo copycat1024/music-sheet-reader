@@ -81,4 +81,14 @@ void drawRects(Mat image, vector<Vec4i> lines, Scalar color){
   return;
 }
 
+vector<Mat> splitFrames(Mat src, vector<Vec4i> frames){
+  vector<Mat> res;
+  for (auto v: frames){
+    auto f = src(Rect(v[0], v[1], v[2] - v[0], v[3] - v[1]));
+    res.push_back(f);
+  }
+  return res;
+}
+
+
 }

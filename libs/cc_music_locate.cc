@@ -165,18 +165,19 @@ void MusicSheetReaderLocator::locateContours(Vec4i frame){
 void MusicSheetReaderLocator::locateSymbols2(Mat image){
   cout << "Lots" << endl;
   Mat pattern, result, result_f;
-  pattern = imread("N2.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+  pattern = imread("N4.jpg", CV_LOAD_IMAGE_GRAYSCALE);
   matchTemplate(image, pattern, result_f, CV_TM_CCOEFF);
   normalize(result_f, result_f, 0, 255, NORM_MINMAX, -1, Mat() );
   result_f.convertTo(result, CV_8UC1);
-  threshold(result, result, 64*3, 255, 0);
+  threshold(result, result, 64*2, 255, 0);
 
+/*
   int i,j;
   for (i=0; i<result.rows; i++)
     for (j=0; j<result.cols; j++)
       if (result.at<uchar>(i,j)>0)
         cout << result_f.at<float>(i,j) << endl;
-
+*/
   imshow("p", result);
   return;
 }
