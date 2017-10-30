@@ -29,8 +29,8 @@ public:
   // check if locateMusicSheetFrom can locate
   bool Success();
 
-  // use to locate black note
-  void locateContours(cv::Vec4i);
+  // use to locate symbols
+  void locateSymbols(cv::Vec4i);
 
   // developing function
   void locateSymbols2(cv::Mat);
@@ -41,7 +41,8 @@ private:
   float _gap_size;
   void _locateSheetLines(cv::Mat);
   void _locateFrames(std::vector<cv::Vec4i>);
-
+  void _locateContours(cv::Vec4i, cv::Mat);
+  
 };
 
 }

@@ -11,6 +11,32 @@ using namespace cv;
 
 namespace cc {
 
+// Interfaces
+cv::Mat MusicSheetReaderLocator::imageSheetLines(){
+  return _sheet_lines_image;
+}
+ 
+cv::Mat MusicSheetReaderLocator::imageBinary(){
+  return _binary_image;
+}
+  
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
+  return _lines;
+}
+  
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Frames(){
+  return _frames;
+}
+  
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
+  return _symbols;
+}
+  
+bool MusicSheetReaderLocator::Success(){
+  return _success;
+}
+    
+// Heavy-lifting code
 void MusicSheetReaderLocator::_locateSheetLines(Mat image){
   vector<Vec4i> lines, mid;
   Mat temp = image;
@@ -93,38 +119,18 @@ void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
   _locateFrames(_lines);
 }
 
-cv::Mat MusicSheetReaderLocator::imageSheetLines(){
-  return _sheet_lines_image;
-}
-
-cv::Mat MusicSheetReaderLocator::imageBinary(){
-  return _binary_image;
-}
-
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
-  return _lines;
-}
-
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Frames(){
-  return _frames;
-}
-
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
-  return _symbols;
-}
-
-bool MusicSheetReaderLocator::Success(){
-  return _success;
-}
-
-void MusicSheetReaderLocator::locateContours(Vec4i frame){
+void MusicSheetReaderLocator::locateSymbols(Vec4i frame){
   Mat image = _binary_image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
+  applyMorphFilter2(image, 3);
+  _locateContours(frame, image);
+}
+
+void MusicSheetReaderLocator::_locateContours(Vec4i frame, Mat image){
   vector<vector<Point>> contours;
   vector<Vec4i> hierarchy;
   RNG rng(12345);
 
-  applyMorphFilter2(image, 3);
-
+  
   findContours(image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
   /// Draw contours

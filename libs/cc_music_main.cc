@@ -47,7 +47,7 @@ void MusicSheetReaderProgram::processImage(char* image_name){
     return;
   }
   
-  loc.locateContours(frames[0]);
+  loc.locateSymbols(frames[0]);
   auto symbols = loc.Symbols();
 
   cvtColor(input_image, show_image, CV_GRAY2BGR);
