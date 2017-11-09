@@ -8,7 +8,12 @@ namespace cc {
 
 class MusicSheetReaderLinesLocator {
 public:
-	void locateLinesFrom(cv::Mat, std::vector<cv::Vec4i>);
+	bool locateLinesFrom(cv::Mat, std::vector<cv::Vec4i>);
+	std::vector<cv::Vec4i> Lines() const;
+private:
+	int _left_x, _right_x;
+	void _locateLinesFromFrame(cv::Mat, cv::Vec4i);
+	std::vector<int> _lines;
 };
 
 }

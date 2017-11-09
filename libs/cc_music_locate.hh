@@ -11,7 +11,7 @@ namespace cc {
 class MusicSheetReaderLocator {
 public:
 	// take greyscale image of music sheet
-	void locateMusicSheetFrom(cv::Mat);
+	bool locateMusicSheetFrom(cv::Mat);
 
 	// get binary image
 	cv::Mat imageBinary();

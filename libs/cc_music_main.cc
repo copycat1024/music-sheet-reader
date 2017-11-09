@@ -38,17 +38,15 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 	}
 	io.showImage("Input", input_image);
 
-	loc.locateMusicSheetFrom(input_image);
-
-	auto lines = loc.Lines();
-	cout << "Found " << lines.size() << " lines." << endl;
-
-	auto frames = loc.Frames();
-	cout << "Found " << frames.size() << " frames." << endl;
-	if (!loc.Success()){
+	if (!loc.locateMusicSheetFrom(input_image)){
 		io.showHold();
 		return;
 	}
+
+	auto frames = loc.Frames();
+	cout << "Found " << frames.size() << " frames." << endl;
+	auto lines = loc.Lines();
+	cout << "Found " << lines.size() << " lines." << endl;
 
 //	loc.locateSymbols(frames[0]);
 //	auto symbols = loc.Symbols();

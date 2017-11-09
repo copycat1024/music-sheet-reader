@@ -18,7 +18,7 @@ cv::Mat MusicSheetReaderLocator::imageBinary(){
 }
 
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
-	return _frames.Lines();
+	return _lines.Lines();
 }
 
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Frames(){
@@ -35,16 +35,24 @@ bool MusicSheetReaderLocator::Success(){
 
 // Heavy-lifting code
 
-void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
+bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 
 	// Convert greyscale image to binary image by adaptive threshold
 	_binary_image = polarize(image);
 
 	// Locate frames from binary image
-	_success = 	_frames.locateFramesFrom(_binary_image);
+	if (!_frames.locateFramesFrom(_binary_image)){
+		cout << "Locate frames failed." << endl;
+		return false;
+	}
 
-	if (_success)
-		_lines.locateLinesFrom(image, _frames.Frames());
+	// Locate lines from greyscale image
+	if (!_lines.locateLinesFrom(image, _frames.Frames())){
+		cout << "Locate lines failed." << endl;
+		return false;
+	}
+	
+	return true;
 }
 
 void MusicSheetReaderLocator::locateSymbols(Vec4i frame){
