@@ -29,12 +29,7 @@ std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
 	return _symbols;
 }
 
-bool MusicSheetReaderLocator::Success(){
-	return _success;
-}
-
 // Heavy-lifting code
-
 bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 
 	// Convert greyscale image to binary image by adaptive threshold
@@ -51,7 +46,7 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 		cout << "Locate lines failed." << endl;
 		return false;
 	}
-	
+
 	return true;
 }
 

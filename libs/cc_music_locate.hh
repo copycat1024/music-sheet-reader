@@ -25,9 +25,6 @@ public:
 	// get list of located symbols
 	std::vector<cv::Vec4i> Symbols();
 
-	// check if locateMusicSheetFrom can locate
-	bool Success();
-
 	// use to locate symbols
 	void locateSymbols(cv::Vec4i);
 
