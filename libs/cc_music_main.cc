@@ -4,7 +4,7 @@
 #include "cc_music_main.hh"
 #include "cc_music_io.hh"
 #include "cc_music_locate.hh"
-#include "cc_music_edit.hh"
+#include "cc_music_present.hh"
 #include "cc_opencv_ultils.hh"
 
 using namespace std;
@@ -50,15 +50,15 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 		return;
 	}
 
-	loc.locateSymbols(frames[0]);
-	auto symbols = loc.Symbols();
+//	loc.locateSymbols(frames[0]);
+//	auto symbols = loc.Symbols();
 
 	cvtColor(input_image, show_image, CV_GRAY2BGR);
 	drawRects(show_image, frames, Scalar(0,255,0));
-	drawRects(show_image, symbols, Scalar(255,0,255));
+//	drawRects(show_image, symbols, Scalar(255,0,255));
 	io.showImage("Result", show_image);
 
-	loc.locateSymbols2(input_image);
+//	loc.locateSymbols2(input_image);
 
 	// Clock ends
 	t = ((double)getTickCount() - t)/getTickFrequency();

@@ -19,6 +19,9 @@ add_library(CcMusicSheet
 	cc_music_frames.cc
 
 	# Editting functions
-	cc_music_edit.hh
-	cc_music_edit.cc
+	cc_music_transform.hh
+	cc_music_transform.cc
+	cc_music_present.hh
+	cc_music_present.cc
+
 )
