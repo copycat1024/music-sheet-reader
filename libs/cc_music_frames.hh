@@ -8,11 +8,11 @@ namespace cc {
 
 class MusicSheetReaderFramesLocator {
 public:
-	// get list of sheet lines in Vec4i
-	std::vector<cv::Vec4i> Lines();
+	// get list of sheet lines
+	std::vector<cv::Vec4i> Lines() const;
 
 	// get list of located frames
-	std::vector<cv::Vec4i> Frames();
+	std::vector<cv::Vec4i> Frames() const;
 
 	// take binary image of music sheet
 	bool locateFramesFrom(cv::Mat);

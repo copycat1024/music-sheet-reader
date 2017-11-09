@@ -10,17 +10,17 @@ using namespace cv;
 
 namespace cc {
 
-std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Lines(){
+std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Lines() const{
 	return _lines;
 }
 
-std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Frames(){
+std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Frames() const{
 	return _frames;
 }
 
 bool MusicSheetReaderFramesLocator::locateFramesFrom(Mat binary_image){
 
-	// _locateSheetLines apply Morph to make sheet lines image
+	// use Hough transform to find the sheet lines
 	_sheet_lines_image = binary_image.clone();
 	auto hough_line = _locateSheetLines(_sheet_lines_image);
 

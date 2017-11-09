@@ -13,10 +13,6 @@ using namespace cv;
 namespace cc {
 
 // Interfaces
-cv::Mat MusicSheetReaderLocator::imageSheetLines(){
-	return _sheet_lines_image;
-}
-
 cv::Mat MusicSheetReaderLocator::imageBinary(){
 	return _binary_image;
 }

@@ -17,6 +17,8 @@ add_library(CcMusicSheet
 	cc_music_locate.cc
 	cc_music_frames.hh #locate frames
 	cc_music_frames.cc
+	cc_music_lines.hh  #locate lines
+	cc_music_lines.cc
 
 	# Editting functions
 	cc_music_transform.hh

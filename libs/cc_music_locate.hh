@@ -12,9 +12,6 @@ public:
 	// take greyscale image of music sheet
 	void locateMusicSheetFrom(cv::Mat);
 
-	// get image of the sheet lines
-	cv::Mat imageSheetLines();
-
 	// get binary image
 	cv::Mat imageBinary();
 
@@ -37,8 +34,9 @@ public:
 	void locateSymbols2(cv::Mat);
 private:
 	MusicSheetReaderFramesLocator _frames;
+
 	std::vector<cv::Vec4i> _symbols;
-	cv::Mat _sheet_lines_image, _binary_image;
+	cv::Mat _binary_image;
 	bool _success;
 	void _locateContours(cv::Vec4i, cv::Mat);
 };
