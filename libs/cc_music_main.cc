@@ -20,6 +20,9 @@ TaskNumber MusicSheetReaderProgram::handleArguments(int argc, char** argv){
 }
 
 void MusicSheetReaderProgram::processImage(char* image_name){
+	// Clock start
+	double t = (double)getTickCount();
+
 	MusicSheetReaderIO io;
 	MusicSheetReaderLocator loc;
 
@@ -46,7 +49,7 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 		io.showHold();
 		return;
 	}
-	
+
 	loc.locateSymbols(frames[0]);
 	auto symbols = loc.Symbols();
 
@@ -56,8 +59,14 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 	io.showImage("Result", show_image);
 
 	loc.locateSymbols2(input_image);
-	
+
+	// Clock ends
+	t = ((double)getTickCount() - t)/getTickFrequency();
+
 	io.showHold();
+
+	cout << "Times passed in seconds: " << t << endl;
+
 	return;
 }
 

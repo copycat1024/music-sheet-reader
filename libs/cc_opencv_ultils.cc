@@ -4,9 +4,9 @@ using namespace std;
 using namespace cv;
 
 string depthToStr(const Mat& mat){
-		const int depth = mat.depth();
+	const int depth = mat.depth();
 
-		switch (depth){
+	switch (depth){
 		case CV_8U:  return "CV_8U";
 		case CV_8S:  return "CV_8S";
 		case CV_16U: return "CV_16U";
@@ -16,13 +16,13 @@ string depthToStr(const Mat& mat){
 		case CV_64F: return "CV_64F";
 
 		default: return "Invalid depth type of matrix!";
-		}
+	}
 }
 
 string typeToStr(const Mat& mat){
-		const int mtype = mat.type();
+	const int mtype = mat.type();
 
-		switch (mtype){
+	switch (mtype){
 		case CV_8UC1:  return "CV_8UC1";
 		case CV_8UC2:  return "CV_8UC2";
 		case CV_8UC3:  return "CV_8UC3";
@@ -59,7 +59,7 @@ string typeToStr(const Mat& mat){
 		case CV_64FC4: return "CV_64FC4";
 
 		default: return "Invalid type of matrix!";
-		}
+	}
 }
 
 IntSegment::IntSegment(Vec4i v){

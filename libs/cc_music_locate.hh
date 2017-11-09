@@ -3,6 +3,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <vector>
+#include "cc_music_frames.hh"
 
 namespace cc {
 
@@ -35,15 +36,13 @@ public:
 	// developing function
 	void locateSymbols2(cv::Mat);
 private:
-	std::vector<cv::Vec4i> _lines, _frames, _symbols;
+	MusicSheetReaderFramesLocator _frames;
+	std::vector<cv::Vec4i> _symbols;
 	cv::Mat _sheet_lines_image, _binary_image;
 	bool _success;
-	float _gap_size;
-	void _locateSheetLines(cv::Mat);
-	void _locateFrames(std::vector<cv::Vec4i>);
 	void _locateContours(cv::Vec4i, cv::Mat);
-	
 };
 
 }
+
 #endif
