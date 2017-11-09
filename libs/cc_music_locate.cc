@@ -43,6 +43,8 @@ void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	// Locate frames from binary image
 	_success = 	_frames.locateFramesFrom(_binary_image);
 
+	if (_success)
+		_lines.locateLinesFrom(image, _frames.Frames());
 }
 
 void MusicSheetReaderLocator::locateSymbols(Vec4i frame){

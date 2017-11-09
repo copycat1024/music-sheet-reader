@@ -4,6 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <vector>
 #include "cc_music_frames.hh"
+#include "cc_music_lines.hh"
 
 namespace cc {
 
@@ -34,6 +35,7 @@ public:
 	void locateSymbols2(cv::Mat);
 private:
 	MusicSheetReaderFramesLocator _frames;
+	MusicSheetReaderLinesLocator _lines;
 
 	std::vector<cv::Vec4i> _symbols;
 	cv::Mat _binary_image;
