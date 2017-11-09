@@ -10,9 +10,9 @@ std::string depthToStr(const cv::Mat&);
 
 class IntSegment {
 public:
-  int x1,x2,y1,y2;
-  IntSegment(cv::Vec4i);
-  IntSegment operator=(cv::Vec4i);
+	int x1,x2,y1,y2;
+	IntSegment(cv::Vec4i);
+	IntSegment operator=(cv::Vec4i);
 };
 
 typedef std::vector<IntSegment> IntSegmentArray;

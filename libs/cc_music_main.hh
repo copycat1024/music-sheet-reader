@@ -4,15 +4,15 @@
 namespace cc {
 
 enum TaskNumber {
-  NO_ARGUMENT,
-  INPUT_FILE_ERROR,
-  PROCESS_INPUT_FILE
+	NO_ARGUMENT,
+	INPUT_FILE_ERROR,
+	PROCESS_INPUT_FILE
 };
 
 class MusicSheetReaderProgram {
 public:
-  TaskNumber handleArguments(int, char**);
-  void processImage(char*);
+	TaskNumber handleArguments(int, char**);
+	void processImage(char*);
 };
 
 }
