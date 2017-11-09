@@ -55,8 +55,11 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 
 	cvtColor(input_image, show_image, CV_GRAY2BGR);
 	drawRects(show_image, frames, Scalar(0,255,0));
-//	drawRects(show_image, symbols, Scalar(255,0,255));
+	drawLines(show_image, lines, Scalar(255,0,255));
+
+	auto fl = splitFrames(input_image, frames);
 	io.showImage("Result", show_image);
+	io.showImage("Frame 0", fl[0]);
 
 //	loc.locateSymbols2(input_image);
 

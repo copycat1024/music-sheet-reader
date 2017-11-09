@@ -1,5 +1,4 @@
 #include "cc_music_locate.hh"
-#include "cc_music_io.hh"
 #include "cc_music_transform.hh"
 #include "cc_opencv_ultils.hh"
 #include <iostream>
@@ -75,7 +74,8 @@ void MusicSheetReaderFramesLocator::_locateSheetLines(Mat image){
 void MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
 	vector<Vec4i> mid, res;
 	int i;
-	int min_x, max_x, min_y, max_y;
+	int left_x, right_x, top_y, bottom_y;
+
 	mid = lines;
 
 	if (mid.size()%5!=0){
@@ -85,22 +85,24 @@ void MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
 		return;
 	}
 
-	for (i=0; i<mid.size(); i++)
-		if (i%5 == 0){
-				min_x = mid[i][0];
-				min_y = mid[i][1];
-				max_x = mid[i][2];
-				max_y = mid[i][3];
-		} else {
-			if (min_x > mid[i][0]) min_x = mid[i][0];
-			if (min_y > mid[i][1]) min_y = mid[i][1];
-			if (max_x < mid[i][2]) max_x = mid[i][2];
-			if (max_y < mid[i][3]) max_y = mid[i][3];
-			if (i%5 == 4){
-				int space = (max_y - min_y)*3/8 + 1;
-				res.push_back(Vec4i(min_x, min_y - space, max_x + 1, max_y + space));
-			}
+	left_x = mid[i][0];
+	right_x = mid[i][2];
+
+	for (i=0; i<mid.size(); i++){
+		if (left_x < mid[i][0]) left_x = mid[i][0];
+		if (right_x < mid[i][2]) right_x = mid[i][2];
+		if (mid[i][1] != mid[i][3]) {
+			cout << "Line " << i << " is crooked." << endl;
+			cout << mid[i][1] << ' ' << mid[i][3] << endl;
+			return;
 		}
+	}
+
+	for (i=0; i<mid.size()/5; i++){
+		top_y = mid[i*5][1];
+		bottom_y = mid[i*5 + 4][1];
+		res.push_back(Vec4i(left_x, top_y, right_x, bottom_y));
+	}
 
 	// Results
 	_frames = res;

@@ -52,7 +52,7 @@ void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 
 void MusicSheetReaderLocator::locateSymbols(Vec4i frame){
 	Mat image = _binary_image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
-	applyMorphFilter2(image, 3);
+	image = applyMorphFilter(image, 3);
 	_locateContours(frame, image);
 }
 

@@ -15,14 +15,16 @@ Mat polarize(Mat image){
 	return res;
 }
 
-void applyMorphFilter(Mat binary_image, int x, int y){
+Mat applyMorphFilter(Mat binary_image, int x, int y){
 	Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
-	erode(binary_image, binary_image, morphStructure, Point(-1, -1));
-	dilate(binary_image, binary_image, morphStructure, Point(-1, -1));
+	Mat a, r;
+	dilate(binary_image, a, morphStructure, Point(-1, -1));
+	erode(a, r, morphStructure, Point(-1, -1));
+	return r;
 }
 
-void applyMorphFilter2(Mat binary_image, int x){
-	applyMorphFilter(binary_image, x, x);
+Mat applyMorphFilter(Mat binary_image, int x){
+	return applyMorphFilter(binary_image, x, x);
 }
 
 void inverse(Mat image){
