@@ -45,8 +45,7 @@ void MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	_binary_image = polarize(image);
 
 	// Locate frames from binary image
-	_frames.locateFramesFrom(_binary_image);
-	_success = _frames.Success();
+	_success = 	_frames.locateFramesFrom(_binary_image);
 
 }
 

@@ -14,18 +14,14 @@ public:
 	// get list of located frames
 	std::vector<cv::Vec4i> Frames();
 
-	// check if locateFramesFrom can locate
-	bool Success();
-
 	// take binary image of music sheet
-	void locateFramesFrom(cv::Mat);
+	bool locateFramesFrom(cv::Mat);
 private:
 	std::vector<cv::Vec4i> _lines, _frames;
 	cv::Mat _sheet_lines_image;
 	float _gap_size;
-	bool _success;
-	void _locateSheetLines(cv::Mat);
-	void _locateFrames(std::vector<cv::Vec4i>);
+	std::vector<cv::Vec4i> _locateSheetLines(cv::Mat);
+	bool _locateFrames(std::vector<cv::Vec4i>);
 };
 
 }

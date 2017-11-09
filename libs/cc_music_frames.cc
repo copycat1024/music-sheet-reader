@@ -10,10 +10,6 @@ using namespace cv;
 
 namespace cc {
 
-bool MusicSheetReaderFramesLocator::Success(){
-	return _success;
-}
-
 std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Lines(){
 	return _lines;
 }
@@ -22,90 +18,90 @@ std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Frames(){
 	return _frames;
 }
 
-void MusicSheetReaderFramesLocator::locateFramesFrom(Mat binary_image){
-
-	// Initialize success status
-	// This flag will be set to false by the following co-routine
-	_success = true;
+bool MusicSheetReaderFramesLocator::locateFramesFrom(Mat binary_image){
 
 	// _locateSheetLines apply Morph to make sheet lines image
 	_sheet_lines_image = binary_image.clone();
-	_locateSheetLines(_sheet_lines_image);
+	auto hough_line = _locateSheetLines(_sheet_lines_image);
 
 	// locate frames from list of sheet lines
-	_locateFrames(_lines);
+	if (!_locateFrames(hough_line)) return false;
 
+	// if locateFrames succeeded
+	_lines = hough_line;
+	return true;
 }
 
-void MusicSheetReaderFramesLocator::_locateSheetLines(Mat image){
-	vector<Vec4i> lines, mid;
-	Mat temp = image;
+vector<Vec4i> MusicSheetReaderFramesLocator::_locateSheetLines(Mat image){
+	vector<Vec4i> lines; // direct result from HoughLinesP
+	vector<Vec4i> res;   // sanitized result
 
-	cout << "locateSheetLines" << endl;
+	// set up HoughLinesP
 	int line_min_size = 10;
-
-	int threshold = temp.cols / 10;
-	int minLen = temp.cols / 2;
+	int threshold = image.cols / 10;
+	int minLen = image.cols / 2;
 	int maxGap = 10;
-	HoughLinesP(temp, lines, 1, CV_PI/2, threshold, minLen, maxGap);
+	HoughLinesP(image, lines, 1, CV_PI/2, threshold, minLen, maxGap);
 
+	// sort the result base on y1
 	auto cmp = [](const Vec4i& l, const Vec4i& r){
 		return l[1]<r[1];
 	};
 	sort(lines.begin(), lines.end(), cmp);
 
+	// pick the fist line in a block of adjacent lines
 	int i,c=0,s=0;
-	mid.push_back(lines[0]);
+	res.push_back(lines[0]);
 	for(i = 1; i<lines.size(); i++){
 		if (lines[i][1]!=lines[i-1][1]+1){
 			c++;
 			if (c%5 != 0){
 				s+=lines[i][1]-lines[i-1][1];
 			}
-			mid.push_back(lines[i]);
+			res.push_back(lines[i]);
 		}
 	}
 
-	// Results
-	_gap_size = s/((c+1.)*5./4.);
-	_lines = mid;
+	// results
+	return res;
 }
 
-void MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
-	vector<Vec4i> mid, res;
+bool MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
+	vector<Vec4i> res; // list of frames
 	int i;
 	int left_x, right_x, top_y, bottom_y;
 
-	mid = lines;
-
-	if (mid.size()%5!=0){
+	// check if the number of lines devides to 5 (since there are 5 lines in a frame)
+	if (lines.size()%5!=0){
 		cout << "Number does not match." << endl;
-		cout << "Found: " << mid.size() << endl;
-		_success = false;
-		return;
+		cout << "Found: " << lines.size() << endl;
+		return false;
 	}
 
-	left_x = mid[i][0];
-	right_x = mid[i][2];
-
-	for (i=0; i<mid.size(); i++){
-		if (left_x < mid[i][0]) left_x = mid[i][0];
-		if (right_x < mid[i][2]) right_x = mid[i][2];
-		if (mid[i][1] != mid[i][3]) {
-			cout << "Line " << i << " is crooked." << endl;
-			cout << mid[i][1] << ' ' << mid[i][3] << endl;
-			return;
+	// get the left-est x1 and x2, these will be the coordinates for all frames
+	// also check if any line is sloped
+	left_x = lines[i][0];
+	right_x = lines[i][2];
+	for (i=0; i<lines.size(); i++){
+		if (left_x < lines[i][0]) left_x = lines[i][0];
+		if (right_x < lines[i][2]) right_x = lines[i][2];
+		if (lines[i][1] != lines[i][3]) {
+			cout << "Line " << i << " is sloped." << endl;
+			cout << lines[i][1] << ' ' << lines[i][3] << endl;
+			return false;
 		}
 	}
 
-	for (i=0; i<mid.size()/5; i++){
-		top_y = mid[i*5][1];
-		bottom_y = mid[i*5 + 4][1];
+	// get the y1 of the 1st and 5th line as the coordinates of each frame
+	for (i=0; i<lines.size()/5; i++){
+		top_y = lines[i*5][1];
+		bottom_y = lines[i*5 + 4][1];
 		res.push_back(Vec4i(left_x, top_y, right_x, bottom_y));
 	}
 
 	// Results
 	_frames = res;
+	return true;
 }
 
 }
