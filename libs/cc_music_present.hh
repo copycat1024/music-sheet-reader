@@ -8,7 +8,7 @@
 
 namespace cc{
 
-std::vector<cv::Mat> splitFrames(cv::Mat, std::vector<cv::Vec4i>);
+std::vector<cv::Mat> splitStaves(cv::Mat, std::vector<cv::Vec4i>);
 
 class MusicSheetReaderPresenter{
 public:
@@ -26,7 +26,7 @@ private:
 	void _drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 
-	void _presentFramesAndLines(MusicSheetReaderLocator);
+	void _presentStavesAndLines(MusicSheetReaderLocator);
 };
 
 }

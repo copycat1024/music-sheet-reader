@@ -19,8 +19,8 @@ public:
 	// get list of sheet lines in Vec4i
 	std::vector<cv::Vec4i> Lines();
 
-	// get list of located frames
-	std::vector<cv::Vec4i> Frames();
+	// get list of located staves
+	std::vector<cv::Vec4i> Staves();
 
 	// get list of located symbols
 	std::vector<cv::Vec4i> Symbols();
@@ -31,7 +31,7 @@ public:
 	// developing function
 	void locateSymbols2(cv::Mat);
 private:
-	MusicSheetReaderFramesLocator _frames;
+	MusicSheetReaderStavesLocator _staves;
 	MusicSheetReaderLinesLocator _lines;
 
 	std::vector<cv::Vec4i> _symbols;

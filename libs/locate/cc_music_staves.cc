@@ -10,29 +10,29 @@ using namespace cv;
 
 namespace cc {
 
-std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Lines() const{
+std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Lines() const{
 	return _lines;
 }
 
-std::vector<cv::Vec4i> MusicSheetReaderFramesLocator::Frames() const{
-	return _frames;
+std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Staves() const{
+	return _staves;
 }
 
-bool MusicSheetReaderFramesLocator::locateFramesFrom(Mat binary_image){
+bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 
 	// use Hough transform to find the sheet lines
 	_sheet_lines_image = binary_image.clone();
 	auto hough_line = _locateSheetLines(_sheet_lines_image);
 
-	// locate frames from list of sheet lines
-	if (!_locateFrames(hough_line)) return false;
+	// locate staves from list of sheet lines
+	if (!_locateStaves(hough_line)) return false;
 
-	// if locateFrames succeeded
+	// if locateStaves succeeded
 	_lines = hough_line;
 	return true;
 }
 
-vector<Vec4i> MusicSheetReaderFramesLocator::_locateSheetLines(Mat image){
+vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 	vector<Vec4i> lines; // direct result from HoughLinesP
 	vector<Vec4i> res;   // sanitized result
 
@@ -66,19 +66,19 @@ vector<Vec4i> MusicSheetReaderFramesLocator::_locateSheetLines(Mat image){
 	return res;
 }
 
-bool MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
-	vector<Vec4i> res; // list of frames
+bool MusicSheetReaderStavesLocator::_locateStaves(vector<Vec4i> lines){
+	vector<Vec4i> res; // list of staves
 	int i;
 	int left_x, right_x, top_y, bottom_y;
 
-	// check if the number of lines devides to 5 (since there are 5 lines in a frame)
+	// check if the number of lines devides to 5 (since there are 5 lines in a stave)
 	if (lines.size()%5!=0){
 		cout << "Number does not match." << endl;
 		cout << "Found: " << lines.size() << endl;
 		return false;
 	}
 
-	// get the left-est x1 and x2, these will be the coordinates for all frames
+	// get the left-est x1 and x2, these will be the coordinates for all staves
 	// also check if any line is sloped
 	left_x = lines[i][0];
 	right_x = lines[i][2];
@@ -92,7 +92,7 @@ bool MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
 		}
 	}
 
-	// get the y1 of the 1st and 5th line as the coordinates of each frame
+	// get the y1 of the 1st and 5th line as the coordinates of each stave
 	for (i=0; i<lines.size()/5; i++){
 		top_y = lines[i*5][1];
 		bottom_y = lines[i*5 + 4][1];
@@ -100,7 +100,7 @@ bool MusicSheetReaderFramesLocator::_locateFrames(vector<Vec4i> lines){
 	}
 
 	// Results
-	_frames = res;
+	_staves = res;
 	return true;
 }
 

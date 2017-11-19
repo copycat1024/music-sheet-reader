@@ -21,8 +21,8 @@ std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
 	return _lines.Lines();
 }
 
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Frames(){
-	return _frames.Frames();
+std::vector<cv::Vec4i> MusicSheetReaderLocator::Staves(){
+	return _staves.Staves();
 }
 
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
@@ -35,14 +35,14 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	// Convert greyscale image to binary image by adaptive threshold
 	_binary_image = polarize(image);
 
-	// Locate frames from binary image
-	if (!_frames.locateFramesFrom(_binary_image)){
-		cout << "Locate frames failed." << endl;
+	// Locate staves from binary image
+	if (!_staves.locateStavesFrom(_binary_image)){
+		cout << "Locate staves failed." << endl;
 		return false;
 	}
 
 	// Locate lines from greyscale image
-	if (!_lines.locateLinesFrom(image, _frames.Frames())){
+	if (!_lines.locateLinesFrom(image, _staves.Staves())){
 		cout << "Locate lines failed." << endl;
 		return false;
 	}
@@ -50,13 +50,13 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	return true;
 }
 
-void MusicSheetReaderLocator::locateSymbols(Vec4i frame){
-	Mat image = _binary_image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
+void MusicSheetReaderLocator::locateSymbols(Vec4i stave){
+	Mat image = _binary_image(Rect(stave[0], stave[1], stave[2] - stave[0], stave[3] - stave[1]));
 	image = applyMorphFilter(image, 3);
-	_locateContours(frame, image);
+	_locateContours(stave, image);
 }
 
-void MusicSheetReaderLocator::_locateContours(Vec4i frame, Mat image){
+void MusicSheetReaderLocator::_locateContours(Vec4i stave, Mat image){
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
 	RNG rng(12345);
@@ -83,7 +83,7 @@ void MusicSheetReaderLocator::_locateContours(Vec4i frame, Mat image){
 		}
 		rectangle(drawing, Point(x1,y1), Point(x2,y2), color);
 		if (x2-x1<10 && x2-x1>7 && y2-y1>4){
-			_symbols.push_back(Vec4i(frame[0]+x1, frame[1]+y1, frame[0]+x2, frame[1]+y2));
+			_symbols.push_back(Vec4i(stave[0]+x1, stave[1]+y1, stave[0]+x2, stave[1]+y2));
 			cout << x2-x1 << 'x' << y2-y1 << endl;
 		}
 	}
