@@ -3,8 +3,8 @@
 
 #include <opencv2/core/core.hpp>
 #include <vector>
-#include "cc_music_frames.hh"
-#include "cc_music_lines.hh"
+#include "locate/cc_music_frames.hh"
+#include "locate/cc_music_lines.hh"
 
 namespace cc {
 

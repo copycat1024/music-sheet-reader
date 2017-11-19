@@ -2,7 +2,7 @@
 #include "cc_music_io.hh"
 #include "cc_music_transform.hh"
 #include "cc_opencv_ultils.hh"
-#include "cc_music_frames.hh"
+#include "locate/cc_music_frames.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
@@ -61,7 +61,7 @@ void MusicSheetReaderLocator::_locateContours(Vec4i frame, Mat image){
 	vector<Vec4i> hierarchy;
 	RNG rng(12345);
 
-	
+
 	findContours(image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	/// Draw contours

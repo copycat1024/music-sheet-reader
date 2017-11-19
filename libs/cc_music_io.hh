@@ -6,13 +6,10 @@
 
 namespace cc {
 
-class MusicSheetReaderIO {
-public:
-  bool fileExist(const char*);
-  bool loadGreyImage(const char*, cv::Mat&);
-  void showImage(std::string, cv::Mat);
-  void showHold();
-};
+bool fileExist(const char*);
+bool loadGreyImage(const char*, cv::Mat&);
+void showImage(std::string, cv::Mat);
+void showHold();
 
 }
 #endif

@@ -4,12 +4,27 @@
 #include <opencv2/core/core.hpp>
 #include <string>
 #include <vector>
+#include "cc_music_locate.hh"
 
 namespace cc{
 
-void drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
-void drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 std::vector<cv::Mat> splitFrames(cv::Mat, std::vector<cv::Vec4i>);
+
+class MusicSheetReaderPresenter{
+public:
+	// present input image
+	void presentInput(cv::Mat);
+
+	// present results
+	void presentResults(MusicSheetReaderLocator);
+
+	// hold the images being shown until a key is pressed
+	void presentHold();
+private:
+	void _drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
+	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
+	cv::Mat _input_image;
+};
 
 }
 

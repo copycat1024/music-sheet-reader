@@ -12,17 +12,17 @@ using namespace cv;
 
 namespace cc{
 
-bool MusicSheetReaderIO::fileExist(const char* file_name){
+bool fileExist(const char* file_name){
 	ifstream f(file_name);
 	return f.good();
 }
 
-bool MusicSheetReaderIO::loadGreyImage(const char* image_name, Mat& image){
+bool loadGreyImage(const char* image_name, Mat& image){
 	image = imread(image_name, CV_LOAD_IMAGE_GRAYSCALE);
 	return image.data;
 }
 
-void MusicSheetReaderIO::showImage(string title, Mat pic){
+void showImage(string title, Mat pic){
 	int dev_null = open("/dev/null", O_RDWR);
 	int err_old = dup(STDERR_FILENO);
 	dup2(dev_null, STDERR_FILENO);
@@ -31,7 +31,7 @@ void MusicSheetReaderIO::showImage(string title, Mat pic){
 	dup2(err_old, STDERR_FILENO);
 }
 
-void MusicSheetReaderIO::showHold(){
+void showHold(){
 	waitKey();
 }
 
