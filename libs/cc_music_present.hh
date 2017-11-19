@@ -21,9 +21,12 @@ public:
 	// hold the images being shown until a key is pressed
 	void presentHold();
 private:
+	cv::Mat _input_image;
+
 	void _drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
-	cv::Mat _input_image;
+
+	void _presentFramesAndLines(MusicSheetReaderLocator);
 };
 
 }

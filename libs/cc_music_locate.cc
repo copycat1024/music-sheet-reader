@@ -2,7 +2,7 @@
 #include "cc_music_io.hh"
 #include "cc_music_transform.hh"
 #include "cc_opencv_ultils.hh"
-#include "locate/cc_music_frames.hh"
+#include "locate/cc_music_staves.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>

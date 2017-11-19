@@ -15,8 +15,8 @@ add_library(CcMusicSheet
 	# Locating functions
 	cc_music_locate.hh
 	cc_music_locate.cc
-	locate/cc_music_frames.hh #locate frames
-	locate/cc_music_frames.cc
+	locate/cc_music_staves.hh #locate staves
+	locate/cc_music_staves.cc
 	locate/cc_music_lines.hh  #locate lines
 	locate/cc_music_lines.cc
 

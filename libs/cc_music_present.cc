@@ -17,23 +17,14 @@ vector<Mat> splitFrames(Mat src, vector<Vec4i> frames){
 	return res;
 }
 
-void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
-	Mat show_image;
-
-	cvtColor(_input_image, show_image, CV_GRAY2BGR);
-	_drawRects(show_image, loc.Frames(), Scalar(0,255,0));
-	_drawLines(show_image, loc.Lines(), Scalar(255,0,255));
-	showImage("Result", show_image);
-
-	auto frames = loc.Frames();
-	cout << "Found " << frames.size() << " frames." << endl;
-	auto lines = loc.Lines();
-	cout << "Found " << lines.size() << " lines." << endl;
-}
-
 void MusicSheetReaderPresenter::presentInput(Mat input_image){
 	_input_image = input_image;
 	showImage("Input", input_image);
+}
+
+void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
+	// present frames and lines
+	_presentFramesAndLines(loc);
 }
 
 void MusicSheetReaderPresenter::presentHold(){
@@ -52,6 +43,20 @@ void MusicSheetReaderPresenter::_drawRects(Mat image, vector<Vec4i> lines, Scala
 		Vec4i l = lines[i];
 		rectangle(image, Point(l[0] - 1, l[1] - 1), Point(l[2] + 1, l[3] + 1), color);
 	}
+}
+
+void MusicSheetReaderPresenter::_presentFramesAndLines(MusicSheetReaderLocator loc){
+	Mat show_image;
+
+	cvtColor(_input_image, show_image, CV_GRAY2BGR);
+	_drawRects(show_image, loc.Frames(), Scalar(0,255,0));
+	_drawLines(show_image, loc.Lines(), Scalar(255,0,255));
+	showImage("Result", show_image);
+
+	auto frames = loc.Frames();
+	cout << "Found " << frames.size() << " frames." << endl;
+	auto lines = loc.Lines();
+	cout << "Found " << lines.size() << " lines." << endl;
 }
 
 }
