@@ -1,3 +1,11 @@
+/* CC Music Reader Transform header
+ *
+ * Contain the functions that transform Mat images.
+ *
+ * Status: Legacy
+ *
+ */
+
 #ifndef CC_MUSIC_TRANSFORM
 #define CC_MUSIC_TRANSFORM
 
@@ -9,8 +17,9 @@ namespace cc{
 
 cv::Mat applyMorphFilter(cv::Mat, int, int);
 cv::Mat applyMorphFilter(cv::Mat, int);
-void removeAllLines(cv::Mat, std::vector<cv::Vec4i>);
 cv::Mat polarize(cv::Mat);
+void removeLine(cv::Mat, cv::Vec4i, int);
+void removeAllLines(cv::Mat, std::vector<cv::Vec4i>);
 void inverse(cv::Mat);
 
 }

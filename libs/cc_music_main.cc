@@ -1,3 +1,11 @@
+/* CC Music Reader main code
+ *
+ * Contain the main functions of the program
+ *
+ * Status: Locked
+ *
+ */
+
 #include <iostream>
 #include "cc_music_main.hh"
 #include "cc_music_io.hh"
@@ -9,12 +17,14 @@ using namespace cv;
 
 namespace cc {
 
+// Status: Locked
 TaskNumber MusicSheetReaderProgram::handleArguments(int argc, char** argv){
 	if (argc < 2) return NO_ARGUMENT;
 	if (!fileExist(argv[1])) return INPUT_FILE_ERROR;
 	return PROCESS_INPUT_FILE;
 }
 
+// Status: Locked
 void MusicSheetReaderProgram::processImage(char* image_name){
 
 	MusicSheetReaderLocator loc;   // locate and store elements of the sheet music

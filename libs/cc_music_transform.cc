@@ -1,3 +1,13 @@
+/* CC Music Reader Transform code
+ *
+ * Contain the functions that transform Mat images.
+ *
+ * Status:
+ *  Locked: 3
+ *  Legacy: 3
+ *
+ */
+
 #include "cc_music_transform.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -7,14 +17,7 @@ using namespace std;
 
 namespace cc {
 
-void removeLine(Mat, Vec4i, int);
-
-Mat polarize(Mat image){
-	Mat res;
-	adaptiveThreshold(~image, res, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, -2);
-	return res;
-}
-
+// Status: Locked
 Mat applyMorphFilter(Mat binary_image, int x, int y){
 	Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
 	Mat a, r;
@@ -23,10 +26,19 @@ Mat applyMorphFilter(Mat binary_image, int x, int y){
 	return r;
 }
 
+// Status: Locked
 Mat applyMorphFilter(Mat binary_image, int x){
 	return applyMorphFilter(binary_image, x, x);
 }
 
+// Status: Locked
+Mat polarize(Mat image){
+	Mat res;
+	adaptiveThreshold(~image, res, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, -2);
+	return res;
+}
+
+// Status: Legacy
 void inverse(Mat image){
 	Mat table(1, 256, CV_8U);
 	uchar* p = table.data;
@@ -35,6 +47,7 @@ void inverse(Mat image){
 	LUT(image, table, image);
 }
 
+// Status: Legacy
 void removeLine(Mat image, Vec4i line, int notice){
 	int x1 = line[0];
 	int y = line[1];
@@ -54,6 +67,7 @@ void removeLine(Mat image, Vec4i line, int notice){
 	}
 }
 
+// Status: Legacy
 void removeAllLines(Mat image, vector<Vec4i> lines){
 	int i,n;
 	for (i=0; i<lines.size(); i++){

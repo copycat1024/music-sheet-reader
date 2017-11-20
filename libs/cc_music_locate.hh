@@ -1,3 +1,11 @@
+/* CC Music Reader Locator header
+ *
+ * Contain the object used to locate the elements of the music sheet.
+ *
+ * Status: Legacy
+ *
+ */
+
 #ifndef CC_MUSIC_LOCATE
 #define CC_MUSIC_LOCATE
 

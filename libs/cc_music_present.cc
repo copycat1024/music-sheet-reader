@@ -1,3 +1,14 @@
+/* CC Music Reader Presenter code
+ *
+ * Contain the object used to present the result.
+ *
+ * Status:
+ *  Open: 0
+ *  Legacy: 1
+ *  Locked: 6
+ *
+ */
+
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "cc_music_present.hh"
@@ -8,6 +19,7 @@ using namespace std;
 
 namespace cc {
 
+// Status: Legacy
 vector<Mat> splitStaves(Mat src, vector<Vec4i> staves){
 	vector<Mat> res;
 	for (auto v: staves){
@@ -17,20 +29,24 @@ vector<Mat> splitStaves(Mat src, vector<Vec4i> staves){
 	return res;
 }
 
+// Status: Locked
 void MusicSheetReaderPresenter::presentInput(Mat input_image){
 	_input_image = input_image;
 	showImage("Input", input_image);
 }
 
+// Status: Locked
 void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
 	// present staves and lines
 	_presentStavesAndLines(loc);
 }
 
+// Status: Locked
 void MusicSheetReaderPresenter::presentHold(){
 	showHold();
 }
 
+// Status: Locked
 void MusicSheetReaderPresenter::_drawLines(Mat image, vector<Vec4i> lines, Scalar color){
 	for( std::size_t i = 0; i < lines.size(); i++ ){
 		Vec4i l = lines[i];
@@ -38,6 +54,7 @@ void MusicSheetReaderPresenter::_drawLines(Mat image, vector<Vec4i> lines, Scala
 	}
 }
 
+// Status: Locked
 void MusicSheetReaderPresenter::_drawRects(Mat image, vector<Vec4i> lines, Scalar color){
 	for( std::size_t i = 0; i < lines.size(); i++ ){
 		Vec4i l = lines[i];
@@ -45,6 +62,7 @@ void MusicSheetReaderPresenter::_drawRects(Mat image, vector<Vec4i> lines, Scala
 	}
 }
 
+// Status: Locked
 void MusicSheetReaderPresenter::_presentStavesAndLines(MusicSheetReaderLocator loc){
 	Mat show_image;
 

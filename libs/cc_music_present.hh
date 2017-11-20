@@ -1,3 +1,11 @@
+/* CC Music Reader Presenter header
+ *
+ * Contain the object used to present the result.
+ *
+ * Status: Locked
+ *
+ */
+
 #ifndef CC_MUSIC_PRESENT
 #define CC_MUSIC_PRESENT
 

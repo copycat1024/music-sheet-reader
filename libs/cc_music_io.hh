@@ -1,3 +1,11 @@
+/* CC Music Reader I/O header
+ *
+ * Contain the functions that handle I/O tasks.
+ *
+ * Status: Locked
+ *
+ */
+
 #ifndef CC_MUSIC_IO
 #define CC_MUSIC_IO
 

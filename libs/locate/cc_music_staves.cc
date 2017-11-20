@@ -1,3 +1,12 @@
+/* CC Music Reader Stave Locator code
+ *
+ * Contain the object used to locate music staves from images.
+ *
+ * Status:
+ *  Locked: 4
+ *
+ */
+
 #include "cc_music_staves.hh"
 #include "cc_music_transform.hh"
 #include "cc_opencv_ultils.hh"
@@ -10,14 +19,12 @@ using namespace cv;
 
 namespace cc {
 
+// Status: Locked
 std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Lines() const{
 	return _lines;
 }
 
-std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Staves() const{
-	return _staves;
-}
-
+// Status: Locked
 bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 
 	// use Hough transform to find the sheet lines
@@ -32,6 +39,7 @@ bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 	return true;
 }
 
+// Status: Locked
 vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 	vector<Vec4i> lines; // direct result from HoughLinesP
 	vector<Vec4i> res;   // sanitized result
@@ -66,6 +74,7 @@ vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 	return res;
 }
 
+// Status: Locked
 bool MusicSheetReaderStavesLocator::_locateStaves(vector<Vec4i> lines){
 	vector<Vec4i> res; // list of staves
 	int i;

@@ -1,3 +1,14 @@
+/* CC Music Reader Locator code
+ *
+ * Contain the object used to locate the elements of the music sheet.
+ *
+ * Status:
+ *  Open:   0
+ *  Legacy:
+ *  Locked: 
+ *
+ */
+
 #include "cc_music_locate.hh"
 #include "cc_music_io.hh"
 #include "cc_music_transform.hh"
@@ -13,23 +24,30 @@ using namespace cv;
 namespace cc {
 
 // Interfaces
+
+// Status: Locked
 cv::Mat MusicSheetReaderLocator::imageBinary(){
 	return _binary_image;
 }
 
+// Status: Locked
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
 	return _lines.Lines();
 }
 
+// Status: Locked
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Staves(){
 	return _staves.Staves();
 }
 
+// Status: Legacy
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
 	return _symbols;
 }
 
 // Heavy-lifting code
+
+// Status: Locked
 bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 
 	// Convert greyscale image to binary image by adaptive threshold
@@ -50,12 +68,14 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	return true;
 }
 
+// Status: Legacy
 void MusicSheetReaderLocator::locateSymbols(Vec4i stave){
 	Mat image = _binary_image(Rect(stave[0], stave[1], stave[2] - stave[0], stave[3] - stave[1]));
 	image = applyMorphFilter(image, 3);
 	_locateContours(stave, image);
 }
 
+// Status: Legacy
 void MusicSheetReaderLocator::_locateContours(Vec4i stave, Mat image){
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
@@ -99,6 +119,7 @@ void MusicSheetReaderLocator::_locateContours(Vec4i stave, Mat image){
 
 }
 
+// Status: Legacy
 void MusicSheetReaderLocator::locateSymbols2(Mat image){
 	cout << "Lots" << endl;
 	Mat pattern, result, result_f;

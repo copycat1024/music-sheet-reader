@@ -1,3 +1,13 @@
+/* CC Music Reader I/O code
+ *
+ * Contain the functions that handle I/O tasks.
+ *
+ * Status:
+ *  Locked: 1
+ *  Final:  3
+ *
+ */
+
 #include "cc_music_io.hh"
 #include <fstream>
 #include <unistd.h>
@@ -12,16 +22,19 @@ using namespace cv;
 
 namespace cc{
 
+// Status: Final
 bool fileExist(const char* file_name){
 	ifstream f(file_name);
 	return f.good();
 }
 
+// Status: Final
 bool loadGreyImage(const char* image_name, Mat& image){
 	image = imread(image_name, CV_LOAD_IMAGE_GRAYSCALE);
 	return image.data;
 }
 
+// Status: Final
 void showImage(string title, Mat pic){
 	int dev_null = open("/dev/null", O_RDWR);
 	int err_old = dup(STDERR_FILENO);
@@ -31,6 +44,7 @@ void showImage(string title, Mat pic){
 	dup2(err_old, STDERR_FILENO);
 }
 
+// Status: Locked
 void showHold(){
 	waitKey();
 }

@@ -1,3 +1,12 @@
+/* CC Music Reader Lines Locator code
+ *
+ * Contain the object used to precisely locate stave lines from images.
+ *
+ * Status:
+ *  Locked: 4
+ *
+ */
+
 #include "cc_music_lines.hh"
 #include "cc_music_transform.hh"
 #include "cc_opencv_ultils.hh"
@@ -10,6 +19,7 @@ using namespace cv;
 
 namespace cc {
 
+// Status: Locked
 vector<Vec4i> MusicSheetReaderLinesLocator::Lines() const{
 	vector<Vec4i> res;
 	for (auto c: _lines){
@@ -18,6 +28,7 @@ vector<Vec4i> MusicSheetReaderLinesLocator::Lines() const{
 	return res;
 }
 
+// Status: Locked
 bool MusicSheetReaderLinesLocator::locateLinesFrom(Mat image, vector<Vec4i> frames){
 	//
 	_left_x  = frames[0][0];
@@ -29,6 +40,7 @@ bool MusicSheetReaderLinesLocator::locateLinesFrom(Mat image, vector<Vec4i> fram
 	return _lines.size() == frames.size()*5;
 }
 
+// Status: Locked
 void MusicSheetReaderLinesLocator::_locateLinesFromFrame(Mat image, Vec4i frame){
 	// set up area of interest and add padding
 	int x1 = frame[0];

@@ -1,3 +1,11 @@
+/* CC Music Reader Stave Locator header
+ *
+ * Contain the object used to locate music staves from images.
+ *
+ * Status: Legacy
+ *
+ */
+
 #ifndef CC_MUSIC_FRAMES
 #define CC_MUSIC_FRAMES
 
@@ -8,9 +16,6 @@ namespace cc {
 
 class MusicSheetReaderStavesLocator {
 public:
-	// get list of sheet lines
-	std::vector<cv::Vec4i> Lines() const;
-
 	// get list of located staves
 	std::vector<cv::Vec4i> Staves() const;
 
