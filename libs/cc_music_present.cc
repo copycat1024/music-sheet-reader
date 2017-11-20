@@ -3,9 +3,9 @@
  * Contain the object used to present the result.
  *
  * Status:
- *  Open: 0
+ *  Open:   1
  *  Legacy: 1
- *  Locked: 6
+ *  Locked: 5
  *
  */
 
@@ -37,8 +37,14 @@ void MusicSheetReaderPresenter::presentInput(Mat input_image){
 
 // Status: Locked
 void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
-	// present staves and lines
-	_presentStavesAndLines(loc);
+	if (loc.Error() == ERROR::NORMAL){
+		// present staves and lines
+		_presentStavesAndLines(loc);
+	} else if (loc.Error() == ERROR::STAVES_LOCATE_FAIL){
+		cout << "staves" << endl;
+	} else if (loc.Error() == ERROR::LINES_LOCATE_FAIL){
+		cout << "lines" << endl;
+	}
 }
 
 // Status: Locked
@@ -62,19 +68,24 @@ void MusicSheetReaderPresenter::_drawRects(Mat image, vector<Vec4i> lines, Scala
 	}
 }
 
-// Status: Locked
+// Status: Open
 void MusicSheetReaderPresenter::_presentStavesAndLines(MusicSheetReaderLocator loc){
 	Mat show_image;
 
 	cvtColor(_input_image, show_image, CV_GRAY2BGR);
 	_drawRects(show_image, loc.Staves(), Scalar(0,255,0));
 	_drawLines(show_image, loc.Lines(), Scalar(255,0,255));
+	_drawRects(show_image, loc.Symbols(), Scalar(255,0,0));
 	showImage("Result", show_image);
 
 	auto staves = loc.Staves();
 	cout << "Found " << staves.size() << " staves." << endl;
 	auto lines = loc.Lines();
 	cout << "Found " << lines.size() << " lines." << endl;
+}
+
+void MusicSheetReaderPresenter::_debug(MusicSheetReaderLocator loc){
+	
 }
 
 }

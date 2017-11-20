@@ -43,10 +43,7 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 	pre.presentInput(image); // present input
 
 	// Locate sheet music from image
-	if (!loc.locateMusicSheetFrom(image)){
-		showHold();
-		return;
-	}
+	loc.locateMusicSheetFrom(image);
 	pre.presentResults(loc); // present results
 
 	// Clock ends

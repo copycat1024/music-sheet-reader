@@ -1,8 +1,8 @@
-/* CC Music Reader Lines Symbol code
+/* CC Music Reader Symbol header
  *
  * Contain the base object for symbols locating.
  *
- * Status: Open
+ * Status: Locked
  *
  */
 
@@ -18,8 +18,11 @@ class MusicSheetReaderSymbolsLocator {
 public:
 	void Test(cv::Mat);
 protected:
-	cv::Mat _matchPattern(cv::Mat, cv::Mat, int);
 	std::vector<cv::Vec4i> _locateContours(cv::Mat);
+	std::vector<cv::Vec4i> _locatePatterns(cv::Mat, cv::Mat, int);
+private:
+	cv::Mat _matchPattern(cv::Mat, cv::Mat);
+	cv::Point _locateMax(cv::Mat, cv::Vec4i);
 };
 
 }

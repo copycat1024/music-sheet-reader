@@ -42,7 +42,11 @@ std::vector<cv::Vec4i> MusicSheetReaderLocator::Staves(){
 
 // Status: Legacy
 std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
-	return _symbols;
+	return _clefs.GClefs;
+}
+
+ERROR MusicSheetReaderLocator::Error(){
+	return _error;
 }
 
 // Heavy-lifting code
@@ -56,18 +60,21 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	// Locate staves from binary image
 	if (!_staves.locateStavesFrom(_binary_image)){
 		cout << "Locate staves failed." << endl;
+		_error = ERROR::STAVES_LOCATE_FAIL;
 		return false;
 	}
 
 	// Locate lines from greyscale image
 	if (!_lines.locateLinesFrom(image, _staves.Staves())){
 		cout << "Locate lines failed." << endl;
+		_error = ERROR::LINES_LOCATE_FAIL;
 		return false;
 	}
 
 	// Open ---------------------------------------------------
-	MusicSheetReaderSymbolsLocator s;
-	s.Test(image);
+//	MusicSheetReaderSymbolsLocator s;
+//	s.Test(image);
+	_clefs.locateClefsFrom(image);
 	// --------------------------------------------------------
 	return true;
 }

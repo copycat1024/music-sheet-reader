@@ -13,8 +13,16 @@
 #include <vector>
 #include "locate/cc_music_staves.hh"
 #include "locate/cc_music_lines.hh"
+#include "locate/cc_music_clefs.hh"
 
 namespace cc {
+
+// error codes
+enum class ERROR{
+	NORMAL,
+	STAVES_LOCATE_FAIL,
+	LINES_LOCATE_FAIL
+};
 
 class MusicSheetReaderLocator {
 public:
@@ -33,6 +41,9 @@ public:
 	// get list of located symbols
 	std::vector<cv::Vec4i> Symbols();
 
+	// get status
+	ERROR Error();
+
 	// use to locate symbols
 	void locateSymbols(cv::Vec4i);
 
@@ -40,9 +51,11 @@ public:
 	void locateSymbols2(cv::Mat);
 private:
 	MusicSheetReaderStavesLocator _staves;
-	MusicSheetReaderLinesLocator _lines;
+	MusicSheetReaderLinesLocator  _lines;
+	MusicSheetReaderClefsLocator  _clefs;
 
-	std::vector<cv::Vec4i> _symbols;
+	ERROR _error;
+
 	cv::Mat _binary_image;
 	bool _success;
 };
