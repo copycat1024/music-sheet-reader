@@ -14,6 +14,8 @@
 
 namespace cc {
 
+class MusicSheetReaderPresenter;
+
 class MusicSheetReaderStavesLocator {
 public:
 	// get list of located staves
@@ -27,6 +29,8 @@ private:
 	float _gap_size;
 	std::vector<cv::Vec4i> _locateSheetLines(cv::Mat);
 	bool _locateStaves(std::vector<cv::Vec4i>);
+
+	friend MusicSheetReaderPresenter;
 };
 
 }

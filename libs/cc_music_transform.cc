@@ -9,6 +9,7 @@
  */
 
 #include "cc_music_transform.hh"
+#include "cc_opencv_ultils.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -20,9 +21,9 @@ namespace cc {
 // Status: Locked
 Mat applyMorphFilter(Mat binary_image, int x, int y){
 	Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
-	Mat a, r;
-	dilate(binary_image, a, morphStructure, Point(-1, -1));
-	erode(a, r, morphStructure, Point(-1, -1));
+	Mat r = binary_image.clone();
+	erode(r, r, morphStructure, Point(-1, -1));
+	dilate(r, r, morphStructure, Point(-1, -1));
 	return r;
 }
 

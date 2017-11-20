@@ -45,7 +45,7 @@ std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
 	return _clefs.GClefs;
 }
 
-ERROR MusicSheetReaderLocator::Error(){
+Error MusicSheetReaderLocator::Status(){
 	return _error;
 }
 
@@ -54,20 +54,21 @@ ERROR MusicSheetReaderLocator::Error(){
 // Status: Open
 bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 
+	// Initialize _error
+	_error = Error::Normal;
+
 	// Convert greyscale image to binary image by adaptive threshold
 	_binary_image = polarize(image);
 
 	// Locate staves from binary image
 	if (!_staves.locateStavesFrom(_binary_image)){
-		cout << "Locate staves failed." << endl;
-		_error = ERROR::STAVES_LOCATE_FAIL;
+		_error = Error::StavesFail;
 		return false;
 	}
 
 	// Locate lines from greyscale image
 	if (!_lines.locateLinesFrom(image, _staves.Staves())){
-		cout << "Locate lines failed." << endl;
-		_error = ERROR::LINES_LOCATE_FAIL;
+		_error = Error::LinesFail;
 		return false;
 	}
 

@@ -17,11 +17,14 @@
 
 namespace cc {
 
+class MusicSheetReaderPresenter;
+class MusicSheetReaderLocator;
+
 // error codes
-enum class ERROR{
-	NORMAL,
-	STAVES_LOCATE_FAIL,
-	LINES_LOCATE_FAIL
+enum class Error{
+	Normal,
+	StavesFail,
+	LinesFail
 };
 
 class MusicSheetReaderLocator {
@@ -42,7 +45,7 @@ public:
 	std::vector<cv::Vec4i> Symbols();
 
 	// get status
-	ERROR Error();
+	Error Status();
 
 	// use to locate symbols
 	void locateSymbols(cv::Vec4i);
@@ -54,10 +57,12 @@ private:
 	MusicSheetReaderLinesLocator  _lines;
 	MusicSheetReaderClefsLocator  _clefs;
 
-	ERROR _error;
+	Error _error;
 
 	cv::Mat _binary_image;
 	bool _success;
+
+	friend MusicSheetReaderPresenter;
 };
 
 }

@@ -37,13 +37,13 @@ void MusicSheetReaderPresenter::presentInput(Mat input_image){
 
 // Status: Locked
 void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
-	if (loc.Error() == ERROR::NORMAL){
+//	if (loc.Status() == Error::Normal){
+	if (false){
 		// present staves and lines
 		_presentStavesAndLines(loc);
-	} else if (loc.Error() == ERROR::STAVES_LOCATE_FAIL){
-		cout << "staves" << endl;
-	} else if (loc.Error() == ERROR::LINES_LOCATE_FAIL){
-		cout << "lines" << endl;
+	} else {
+		// debug
+		_debug(loc, loc.Status());
 	}
 }
 
@@ -84,8 +84,18 @@ void MusicSheetReaderPresenter::_presentStavesAndLines(MusicSheetReaderLocator l
 	cout << "Found " << lines.size() << " lines." << endl;
 }
 
-void MusicSheetReaderPresenter::_debug(MusicSheetReaderLocator loc){
-	
+void MusicSheetReaderPresenter::_debug(MusicSheetReaderLocator loc, Error err){
+	if (err == Error::StavesFail){
+		cout << "Staves locator fail" << endl;
+	} else if (err == Error::LinesFail){
+		cout << "Lines locator fail" << endl;
+		cout << loc._lines.Lines().size() << endl;
+		Mat show_image = loc._binary_image.clone();
+		cvtColor(show_image, show_image, CV_GRAY2BGR);
+		_drawLines(show_image, loc._staves._lines, Scalar(0,255,0));
+		showImage("lines", show_image);
+		showImage("bin", loc._staves._sheet_lines_image);
+	}
 }
 
 }

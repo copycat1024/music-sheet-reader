@@ -37,9 +37,6 @@ bool MusicSheetReaderLinesLocator::locateLinesFrom(Mat image, vector<Vec4i> fram
 	for (auto f: frames)
 		_locateLinesFromFrame(image, f);
 
-	cout << _lines.size();
-	imshow("lines", image);
-
 	return _lines.size() == frames.size()*5;
 }
 

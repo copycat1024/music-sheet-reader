@@ -27,8 +27,10 @@ std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Staves() const{
 // Status: Locked
 bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 
+	// Apply Morph transform to eliminate noise
+	_sheet_lines_image = applyMorphFilter(binary_image,9,1);
+
 	// use Hough transform to find the sheet lines
-	_sheet_lines_image = binary_image.clone();
 	auto hough_line = _locateSheetLines(_sheet_lines_image);
 
 	// locate staves from list of sheet lines
@@ -59,6 +61,7 @@ vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 
 	// pick the fist line in a block of adjacent lines
 	int i,c=0,s=0;
+	if (lines.size()==0) return res;
 	res.push_back(lines[0]);
 	for(i = 1; i<lines.size(); i++){
 		if (lines[i][1]!=lines[i-1][1]+1){
