@@ -28,6 +28,7 @@ private:
 	cv::Mat _sheet_lines_image;
 	float _gap_size;
 	std::vector<cv::Vec4i> _locateSheetLines(cv::Mat);
+	std::vector<cv::Vec4i> _sanitizeSheetLines(std::vector<cv::Vec4i>);
 	bool _locateStaves(std::vector<cv::Vec4i>);
 
 	friend MusicSheetReaderPresenter;

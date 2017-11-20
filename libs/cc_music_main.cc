@@ -44,7 +44,9 @@ void MusicSheetReaderProgram::processImage(char* image_name){
 
 	// Locate sheet music from image
 	loc.locateMusicSheetFrom(image);
+	cout << "Loc done" << endl;
 	pre.presentResults(loc); // present results
+	cout << "Pre done" << endl;
 
 	// Clock ends
 	t = ((double)getTickCount() - t)/getTickFrequency();

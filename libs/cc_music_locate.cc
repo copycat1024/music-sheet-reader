@@ -61,16 +61,20 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	_binary_image = polarize(image);
 
 	// Locate staves from binary image
+	cout << "Locating staves ... " << endl;
 	if (!_staves.locateStavesFrom(_binary_image)){
 		_error = Error::StavesFail;
 		return false;
 	}
-
+	cout << " Done." << endl;
+	
 	// Locate lines from greyscale image
+	cout << "Locating lines ..." << endl;
 	if (!_lines.locateLinesFrom(image, _staves.Staves())){
 		_error = Error::LinesFail;
 		return false;
 	}
+	cout << " Done." << endl;
 
 	// Open ---------------------------------------------------
 //	MusicSheetReaderSymbolsLocator s;

@@ -3,7 +3,8 @@
  * Contain the object used to locate music staves from images.
  *
  * Status:
- *  Locked: 4
+ * 	Open:   2
+ *  Locked: 3
  *
  */
 
@@ -28,10 +29,15 @@ std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Staves() const{
 bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise
+	
 	_sheet_lines_image = applyMorphFilter(binary_image,9,1);
 
 	// use Hough transform to find the sheet lines
 	auto hough_line = _locateSheetLines(_sheet_lines_image);
+	cout << "    Locating done." << endl;
+	hough_line = _sanitizeSheetLines(hough_line);
+	cout << "    Sanitizing done." << endl;
+	cout << "  Hough transform done." << endl;
 
 	// locate staves from list of sheet lines
 	if (!_locateStaves(hough_line)) return false;
@@ -44,7 +50,6 @@ bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 // Status: Locked
 vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 	vector<Vec4i> lines; // direct result from HoughLinesP
-	vector<Vec4i> res;   // sanitized result
 
 	// set up HoughLinesP
 	int line_min_size = 10;
@@ -53,11 +58,20 @@ vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 	int maxGap = 10;
 	HoughLinesP(image, lines, 1, CV_PI/2, threshold, minLen, maxGap);
 
+	// results
+	return lines;
+}
+
+// Status: Open
+vector<Vec4i> MusicSheetReaderStavesLocator::_sanitizeSheetLines(vector<Vec4i> lines){
+	vector<Vec4i> res;
+
 	// sort the result base on y1
 	auto cmp = [](const Vec4i& l, const Vec4i& r){
 		return l[1]<r[1];
 	};
 	sort(lines.begin(), lines.end(), cmp);
+	cout << "     Sorting done" << endl;
 
 	// pick the fist line in a block of adjacent lines
 	int i,c=0,s=0;
@@ -72,12 +86,12 @@ vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 			res.push_back(lines[i]);
 		}
 	}
+	cout << "      Picking done" << endl;
 
-	// results
 	return res;
 }
 
-// Status: Locked
+// Status: Open
 bool MusicSheetReaderStavesLocator::_locateStaves(vector<Vec4i> lines){
 	vector<Vec4i> res; // list of staves
 	int i;

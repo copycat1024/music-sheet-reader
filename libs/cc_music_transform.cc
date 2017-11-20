@@ -22,9 +22,10 @@ namespace cc {
 Mat applyMorphFilter(Mat binary_image, int x, int y){
 	Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
 	Mat r = binary_image.clone();
+	Mat a,b;
 	erode(r, r, morphStructure, Point(-1, -1));
 	dilate(r, r, morphStructure, Point(-1, -1));
-	return r;
+	return b;
 }
 
 // Status: Locked
