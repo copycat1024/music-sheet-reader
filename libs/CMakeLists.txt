@@ -19,6 +19,8 @@ add_library(CcMusicSheet
 	locate/cc_music_staves.cc
 	locate/cc_music_lines.hh  #locate lines
 	locate/cc_music_lines.cc
+	locate/cc_music_symbols.hh  #locate symbols (base)
+	locate/cc_music_symbols.cc
 
 	# Editting functions
 	cc_music_transform.hh

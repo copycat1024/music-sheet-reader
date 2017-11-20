@@ -45,7 +45,6 @@ private:
 	std::vector<cv::Vec4i> _symbols;
 	cv::Mat _binary_image;
 	bool _success;
-	void _locateContours(cv::Vec4i, cv::Mat);
 };
 
 }

@@ -20,8 +20,8 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Lines() const{
-	return _lines;
+std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Staves() const{
+	return _staves;
 }
 
 // Status: Locked
