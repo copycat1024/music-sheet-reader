@@ -5,7 +5,7 @@ using namespace std;
 using namespace cc;
 
 int main(int argc, char** argv){
-	MusicSheetReaderProgram program;
+	Program program;
 	switch (program.handleArguments(argc, argv)){
 		case NO_ARGUMENT:
 			cerr << "The program " << argv[0] << " require argument." << endl;

@@ -14,9 +14,9 @@
 
 namespace cc {
 
-class MusicSheetReaderPresenter;
+class Presenter;
 
-class MusicSheetReaderStavesLocator {
+class StavesLocator {
 public:
 	// get list of located staves
 	std::vector<cv::Vec4i> Staves() const;
@@ -31,7 +31,7 @@ private:
 	std::vector<cv::Vec4i> _sanitizeSheetLines(std::vector<cv::Vec4i>);
 	bool _locateStaves(std::vector<cv::Vec4i>);
 
-	friend MusicSheetReaderPresenter;
+	friend Presenter;
 };
 
 }

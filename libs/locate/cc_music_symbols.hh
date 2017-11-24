@@ -14,7 +14,7 @@
 
 namespace cc {
 
-class MusicSheetReaderSymbolsLocator {
+class SymbolsLocator {
 public:
 	void Test(cv::Mat);
 protected:

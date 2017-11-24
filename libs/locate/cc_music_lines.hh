@@ -14,7 +14,7 @@
 
 namespace cc {
 
-class MusicSheetReaderLinesLocator {
+class LinesLocator {
 public:
 	bool locateLinesFrom(cv::Mat, std::vector<cv::Vec4i>);
 	std::vector<cv::Vec4i> Lines() const;

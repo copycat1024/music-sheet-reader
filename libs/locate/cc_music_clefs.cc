@@ -17,7 +17,7 @@ using namespace cv;
 namespace cc{
 
 //Status: Open
-void MusicSheetReaderClefsLocator::locateClefsFrom(Mat image){
+void ClefsLocator::locateClefsFrom(Mat image){
 	int percentage = 75;
 
 	Mat pattern = imread("N4.jpg", CV_LOAD_IMAGE_GRAYSCALE);

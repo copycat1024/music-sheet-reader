@@ -20,7 +20,7 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-vector<Vec4i> MusicSheetReaderLinesLocator::Lines() const{
+vector<Vec4i> LinesLocator::Lines() const{
 	vector<Vec4i> res;
 	for (auto c: _lines){
 		res.push_back(Vec4i(_left_x, c, _right_x, c));
@@ -29,7 +29,7 @@ vector<Vec4i> MusicSheetReaderLinesLocator::Lines() const{
 }
 
 // Status: Locked
-bool MusicSheetReaderLinesLocator::locateLinesFrom(Mat image, vector<Vec4i> frames){
+bool LinesLocator::locateLinesFrom(Mat image, vector<Vec4i> frames){
 	//
 	_left_x  = frames[0][0];
 	_right_x = frames[0][2];
@@ -41,7 +41,7 @@ bool MusicSheetReaderLinesLocator::locateLinesFrom(Mat image, vector<Vec4i> fram
 }
 
 // Status: Locked
-void MusicSheetReaderLinesLocator::_locateLinesFromFrame(Mat image, Vec4i frame){
+void LinesLocator::_locateLinesFromFrame(Mat image, Vec4i frame){
 	// set up area of interest and add padding
 	int x1 = frame[0];
 	int x2 = frame[2];

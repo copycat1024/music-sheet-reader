@@ -21,12 +21,12 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-std::vector<cv::Vec4i> MusicSheetReaderStavesLocator::Staves() const{
+std::vector<cv::Vec4i> StavesLocator::Staves() const{
 	return _staves;
 }
 
 // Status: Locked
-bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
+bool StavesLocator::locateStavesFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise
 	
@@ -48,7 +48,7 @@ bool MusicSheetReaderStavesLocator::locateStavesFrom(Mat binary_image){
 }
 
 // Status: Locked
-vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
+vector<Vec4i> StavesLocator::_locateSheetLines(Mat image){
 	vector<Vec4i> lines; // direct result from HoughLinesP
 
 	// set up HoughLinesP
@@ -63,7 +63,7 @@ vector<Vec4i> MusicSheetReaderStavesLocator::_locateSheetLines(Mat image){
 }
 
 // Status: Open
-vector<Vec4i> MusicSheetReaderStavesLocator::_sanitizeSheetLines(vector<Vec4i> lines){
+vector<Vec4i> StavesLocator::_sanitizeSheetLines(vector<Vec4i> lines){
 	vector<Vec4i> res;
 
 	// sort the result base on y1
@@ -92,7 +92,7 @@ vector<Vec4i> MusicSheetReaderStavesLocator::_sanitizeSheetLines(vector<Vec4i> l
 }
 
 // Status: Open
-bool MusicSheetReaderStavesLocator::_locateStaves(vector<Vec4i> lines){
+bool StavesLocator::_locateStaves(vector<Vec4i> lines){
 	vector<Vec4i> res; // list of staves
 	int i;
 	int left_x, right_x, top_y, bottom_y;

@@ -19,7 +19,7 @@ enum TaskNumber {
 };
 
 // program object
-class MusicSheetReaderProgram {
+class Program {
 public:
 	// handle the arguments
 	TaskNumber handleArguments(int, char**);

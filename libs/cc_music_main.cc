@@ -18,17 +18,17 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-TaskNumber MusicSheetReaderProgram::handleArguments(int argc, char** argv){
+TaskNumber Program::handleArguments(int argc, char** argv){
 	if (argc < 2) return NO_ARGUMENT;
 	if (!fileExist(argv[1])) return INPUT_FILE_ERROR;
 	return PROCESS_INPUT_FILE;
 }
 
 // Status: Locked
-void MusicSheetReaderProgram::processImage(char* image_name){
+void Program::processImage(char* image_name){
 
-	MusicSheetReaderLocator loc;   // locate and store elements of the sheet music
-	MusicSheetReaderPresenter pre; // present the results
+	Locator loc;   // locate and store elements of the sheet music
+	Presenter pre; // present the results
 
 	Mat image; // input image
 

@@ -30,13 +30,13 @@ vector<Mat> splitStaves(Mat src, vector<Vec4i> staves){
 }
 
 // Status: Locked
-void MusicSheetReaderPresenter::presentInput(Mat input_image){
+void Presenter::presentInput(Mat input_image){
 	_input_image = input_image;
 	showImage("Input", input_image);
 }
 
 // Status: Locked
-void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
+void Presenter::presentResults(Locator loc){
 //	if (loc.Status() == Error::Normal){
 	if (false){
 		// present staves and lines
@@ -48,12 +48,12 @@ void MusicSheetReaderPresenter::presentResults(MusicSheetReaderLocator loc){
 }
 
 // Status: Locked
-void MusicSheetReaderPresenter::presentHold(){
+void Presenter::presentHold(){
 	showHold();
 }
 
 // Status: Locked
-void MusicSheetReaderPresenter::_drawLines(Mat image, vector<Vec4i> lines, Scalar color){
+void Presenter::_drawLines(Mat image, vector<Vec4i> lines, Scalar color){
 	for( std::size_t i = 0; i < lines.size(); i++ ){
 		Vec4i l = lines[i];
 		line(image, Point(l[0], l[1]), Point(l[2], l[3]), color);
@@ -61,7 +61,7 @@ void MusicSheetReaderPresenter::_drawLines(Mat image, vector<Vec4i> lines, Scala
 }
 
 // Status: Locked
-void MusicSheetReaderPresenter::_drawRects(Mat image, vector<Vec4i> lines, Scalar color){
+void Presenter::_drawRects(Mat image, vector<Vec4i> lines, Scalar color){
 	for( std::size_t i = 0; i < lines.size(); i++ ){
 		Vec4i l = lines[i];
 		rectangle(image, Point(l[0] - 1, l[1] - 1), Point(l[2] + 1, l[3] + 1), color);
@@ -69,7 +69,7 @@ void MusicSheetReaderPresenter::_drawRects(Mat image, vector<Vec4i> lines, Scala
 }
 
 // Status: Open
-void MusicSheetReaderPresenter::_presentStavesAndLines(MusicSheetReaderLocator loc){
+void Presenter::_presentStavesAndLines(Locator loc){
 	Mat show_image;
 
 	cvtColor(_input_image, show_image, CV_GRAY2BGR);
@@ -84,7 +84,7 @@ void MusicSheetReaderPresenter::_presentStavesAndLines(MusicSheetReaderLocator l
 	cout << "Found " << lines.size() << " lines." << endl;
 }
 
-void MusicSheetReaderPresenter::_debug(MusicSheetReaderLocator loc, Error err){
+void Presenter::_debug(Locator loc, Error err){
 	if (err == Error::StavesFail){
 		cout << "Staves locator fail" << endl;
 	} else if (err == Error::LinesFail){

@@ -15,7 +15,7 @@
 
 namespace cc {
 
-class MusicSheetReaderClefsLocator : MusicSheetReaderSymbolsLocator {
+class ClefsLocator : SymbolsLocator {
 public:
 	void locateClefsFrom(cv::Mat);
 	std::vector<cv::Vec4i> GClefs;

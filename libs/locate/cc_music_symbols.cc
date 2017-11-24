@@ -18,7 +18,7 @@ using namespace cv;
 namespace cc{
 
 // Status: Open
-void MusicSheetReaderSymbolsLocator::Test(Mat image){
+void SymbolsLocator::Test(Mat image){
 	int percentage = 75;
 
 	Mat pattern = imread("N4.jpg", CV_LOAD_IMAGE_GRAYSCALE);
@@ -32,7 +32,7 @@ void MusicSheetReaderSymbolsLocator::Test(Mat image){
 }
 
 // Status: Final
-Mat MusicSheetReaderSymbolsLocator::_matchPattern(Mat pattern, Mat image){
+Mat SymbolsLocator::_matchPattern(Mat pattern, Mat image){
 	Mat result_f, result;
 	matchTemplate(image, pattern, result_f, CV_TM_CCOEFF);
 	normalize(result_f, result_f, 0, 255, NORM_MINMAX, -1, Mat() );
@@ -41,7 +41,7 @@ Mat MusicSheetReaderSymbolsLocator::_matchPattern(Mat pattern, Mat image){
 }
 
 // Status: Locked
-vector<Vec4i> MusicSheetReaderSymbolsLocator::_locateContours(Mat image){
+vector<Vec4i> SymbolsLocator::_locateContours(Mat image){
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy, res;
 
@@ -65,7 +65,7 @@ vector<Vec4i> MusicSheetReaderSymbolsLocator::_locateContours(Mat image){
 }
 
 // Status: Final
-Point MusicSheetReaderSymbolsLocator::_locateMax(Mat image, Vec4i frame){
+Point SymbolsLocator::_locateMax(Mat image, Vec4i frame){
 	Mat src = image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
 	double minVal, maxVal;
 	Point minLoc, maxLoc;
@@ -73,7 +73,7 @@ Point MusicSheetReaderSymbolsLocator::_locateMax(Mat image, Vec4i frame){
 	return Point(maxLoc.x + frame[0], maxLoc.y + frame[1]);
 }
 
-vector<Vec4i> MusicSheetReaderSymbolsLocator::_locatePatterns(Mat image, Mat pattern, int percentage){
+vector<Vec4i> SymbolsLocator::_locatePatterns(Mat image, Mat pattern, int percentage){
 	vector<Vec4i> res;
 	Mat result = _matchPattern(pattern, image);
 	Mat bin;

@@ -17,8 +17,8 @@
 
 namespace cc {
 
-class MusicSheetReaderPresenter;
-class MusicSheetReaderLocator;
+class Presenter;
+class Locator;
 
 // error codes
 enum class Error{
@@ -27,7 +27,7 @@ enum class Error{
 	LinesFail
 };
 
-class MusicSheetReaderLocator {
+class Locator {
 public:
 	// take greyscale image of music sheet
 	bool locateMusicSheetFrom(cv::Mat);
@@ -53,16 +53,16 @@ public:
 	// developing function
 	void locateSymbols2(cv::Mat);
 private:
-	MusicSheetReaderStavesLocator _staves;
-	MusicSheetReaderLinesLocator  _lines;
-	MusicSheetReaderClefsLocator  _clefs;
+	StavesLocator _staves;
+	LinesLocator  _lines;
+	ClefsLocator  _clefs;
 
 	Error _error;
 
 	cv::Mat _binary_image;
 	bool _success;
 
-	friend MusicSheetReaderPresenter;
+	friend Presenter;
 };
 
 }

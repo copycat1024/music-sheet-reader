@@ -26,33 +26,33 @@ namespace cc {
 // Interfaces
 
 // Status: Locked
-cv::Mat MusicSheetReaderLocator::imageBinary(){
+cv::Mat Locator::imageBinary(){
 	return _binary_image;
 }
 
 // Status: Locked
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Lines(){
+std::vector<cv::Vec4i> Locator::Lines(){
 	return _lines.Lines();
 }
 
 // Status: Locked
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Staves(){
+std::vector<cv::Vec4i> Locator::Staves(){
 	return _staves.Staves();
 }
 
 // Status: Legacy
-std::vector<cv::Vec4i> MusicSheetReaderLocator::Symbols(){
+std::vector<cv::Vec4i> Locator::Symbols(){
 	return _clefs.GClefs;
 }
 
-Error MusicSheetReaderLocator::Status(){
+Error Locator::Status(){
 	return _error;
 }
 
 // Heavy-lifting code
 
 // Status: Open
-bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
+bool Locator::locateMusicSheetFrom(Mat image){
 
 	// Initialize _error
 	_error = Error::Normal;
@@ -77,7 +77,7 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 	cout << " Done." << endl;
 
 	// Open ---------------------------------------------------
-//	MusicSheetReaderSymbolsLocator s;
+//	SymbolsLocator s;
 //	s.Test(image);
 	_clefs.locateClefsFrom(image);
 	// --------------------------------------------------------
@@ -85,7 +85,7 @@ bool MusicSheetReaderLocator::locateMusicSheetFrom(Mat image){
 }
 
 // Status: Legacy
-void MusicSheetReaderLocator::locateSymbols(Vec4i stave){
+void Locator::locateSymbols(Vec4i stave){
 	Mat image = _binary_image(Rect(stave[0], stave[1], stave[2] - stave[0], stave[3] - stave[1]));
 	image = applyMorphFilter(image, 3);
 //	_locateContours(stave, image);

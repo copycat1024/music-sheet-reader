@@ -18,13 +18,13 @@ namespace cc{
 
 std::vector<cv::Mat> splitStaves(cv::Mat, std::vector<cv::Vec4i>);
 
-class MusicSheetReaderPresenter{
+class Presenter{
 public:
 	// present input image
 	void presentInput(cv::Mat);
 
 	// present results
-	void presentResults(MusicSheetReaderLocator);
+	void presentResults(Locator);
 
 	// hold the images being shown until a key is pressed
 	void presentHold();
@@ -34,8 +34,8 @@ private:
 	void _drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 
-	void _presentStavesAndLines(MusicSheetReaderLocator);
-	void _debug(MusicSheetReaderLocator, Error);
+	void _presentStavesAndLines(Locator);
+	void _debug(Locator, Error);
 };
 
 }
