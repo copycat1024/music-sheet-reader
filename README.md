@@ -12,6 +12,6 @@
  - CMake 3.1
 
 ### Installation guide:
-####*Step 1:* Make sure all dependencies are installed.
-####*Step 1:* Run this command in your build folder (the folder where you want to place your program)
+ - *Step 1:* Make sure all dependencies are installed.
+ - *Step 1:* Run this command in your build folder (the folder where you want to place your program)
 > cmake {path to the source directory}
