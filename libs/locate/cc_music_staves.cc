@@ -83,8 +83,7 @@ bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	}
 	staves.push_back(Vec4i(x1, y1, x2, y2));
 
-	cout << "Staff " << a << endl;
-	return true;
+	return a == 0;
 }
 
 }
