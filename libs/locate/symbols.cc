@@ -10,7 +10,7 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
-#include "cc_music_symbols.hh"
+#include "symbols.hh"
 
 using namespace std;
 using namespace cv;

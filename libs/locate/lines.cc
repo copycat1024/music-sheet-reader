@@ -8,9 +8,9 @@
  *
  */
 
-#include "cc_music_lines.hh"
-#include "cc_music_transform.hh"
-#include "cc_opencv_ultils.hh"
+#include "lines.hh"
+#include "music_transform.hh"
+#include "opencv_utils.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>

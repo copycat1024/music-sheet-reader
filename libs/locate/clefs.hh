@@ -11,7 +11,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <vector>
-#include "cc_music_symbols.hh"
+#include "symbols.hh"
 
 namespace cc {
 

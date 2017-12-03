@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include "cc_music_clefs.hh"
+#include "clefs.hh"
 
 using namespace std;
 using namespace cv;
