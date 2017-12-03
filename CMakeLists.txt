@@ -16,3 +16,8 @@ target_link_libraries( MusicSheet
 
 include_directories( "${PROJECT_SOURCE_DIR}/libs" )
 add_subdirectory( libs )
+
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/pattern/g-clef.jpg"
+	"${CMAKE_CURRENT_BINARY_DIR}/pattern/g-clef.jpg"
+COPYONLY)
