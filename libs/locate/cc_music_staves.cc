@@ -3,7 +3,6 @@
  * Contain the object used to locate music staves from images.
  *
  * Status:
- * 	Open:   2
  *  Locked: 3
  *
  */
@@ -21,112 +20,76 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-std::vector<cv::Vec4i> StavesLocator::Staves() const{
-	return _staves;
-}
-
-// Status: Locked
 bool StavesLocator::locateStavesFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise
-	
 	_sheet_lines_image = applyMorphFilter(binary_image,9,1);
 
+
 	// use Hough transform to find the sheet lines
-	auto hough_line = _locateSheetLines(_sheet_lines_image);
-	cout << "    Locating done." << endl;
-	hough_line = _sanitizeSheetLines(hough_line);
-	cout << "    Sanitizing done." << endl;
-	cout << "  Hough transform done." << endl;
+	_hough_line = _useHough(_sheet_lines_image);
 
 	// locate staves from list of sheet lines
-	if (!_locateStaves(hough_line)) return false;
+	if (!_locateStaves(_hough_line, _sheet_lines_image.cols))
+		return false;
 
 	// if locateStaves succeeded
-	_lines = hough_line;
 	return true;
 }
 
 // Status: Locked
-vector<Vec4i> StavesLocator::_locateSheetLines(Mat image){
-	vector<Vec4i> lines; // direct result from HoughLinesP
+vector<Vec4i> StavesLocator::_useHough(Mat image){
+	vector<Vec4i> res;
 
 	// set up HoughLinesP
 	int line_min_size = 10;
 	int threshold = image.cols / 10;
 	int minLen = image.cols / 2;
 	int maxGap = 10;
-	HoughLinesP(image, lines, 1, CV_PI/2, threshold, minLen, maxGap);
+	HoughLinesP(image, res, 1, CV_PI/2, threshold, minLen, maxGap);
 
 	// results
-	return lines;
+	return res;
 }
 
-// Status: Open
-vector<Vec4i> StavesLocator::_sanitizeSheetLines(vector<Vec4i> lines){
-	vector<Vec4i> res;
-
+// Status: Locked
+bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	// sort the result base on y1
 	auto cmp = [](const Vec4i& l, const Vec4i& r){
 		return l[1]<r[1];
 	};
 	sort(lines.begin(), lines.end(), cmp);
-	cout << "     Sorting done" << endl;
 
-	// pick the fist line in a block of adjacent lines
-	int i,c=0,s=0;
-	if (lines.size()==0) return res;
-	res.push_back(lines[0]);
-	for(i = 1; i<lines.size(); i++){
-		if (lines[i][1]!=lines[i-1][1]+1){
-			c++;
-			if (c%5 != 0){
-				s+=lines[i][1]-lines[i-1][1];
+	bool fl = false;
+	int a = 0;
+	int x1 = width;
+	int x2 = 0;
+	int y1;
+	int y2 = -2;
+
+	// group lines into staves
+	for (auto l : lines){
+
+		if (x1 > l[0]) x1 = l[0];
+		if (x2 < l[2]) x2 = l[2];
+
+		if (l[1] != y2+1){
+			if (a == 0){
+				if (fl) staves.push_back(Vec4i(x1, y1, x2, y2));
+				fl = true;
+				y1 = l[1];
+				x1 = width;
+				x2 = 0;
 			}
-			res.push_back(lines[i]);
+			if (a == 4){
+				a = 0;
+			} else
+				a++;
 		}
+		y2 = l[1];
 	}
-	cout << "      Picking done" << endl;
+	staves.push_back(Vec4i(x1, y1, x2, y2));
 
-	return res;
-}
-
-// Status: Open
-bool StavesLocator::_locateStaves(vector<Vec4i> lines){
-	vector<Vec4i> res; // list of staves
-	int i;
-	int left_x, right_x, top_y, bottom_y;
-
-	// check if the number of lines devides to 5 (since there are 5 lines in a stave)
-	if (lines.size()%5!=0){
-		cout << "Number does not match." << endl;
-		cout << "Found: " << lines.size() << endl;
-		return false;
-	}
-
-	// get the left-est x1 and x2, these will be the coordinates for all staves
-	// also check if any line is sloped
-	left_x = lines[i][0];
-	right_x = lines[i][2];
-	for (i=0; i<lines.size(); i++){
-		if (left_x < lines[i][0]) left_x = lines[i][0];
-		if (right_x < lines[i][2]) right_x = lines[i][2];
-		if (lines[i][1] != lines[i][3]) {
-			cout << "Line " << i << " is sloped." << endl;
-			cout << lines[i][1] << ' ' << lines[i][3] << endl;
-			return false;
-		}
-	}
-
-	// get the y1 of the 1st and 5th line as the coordinates of each stave
-	for (i=0; i<lines.size()/5; i++){
-		top_y = lines[i*5][1];
-		bottom_y = lines[i*5 + 4][1];
-		res.push_back(Vec4i(left_x, top_y, right_x, bottom_y));
-	}
-
-	// Results
-	_staves = res;
 	return true;
 }
 

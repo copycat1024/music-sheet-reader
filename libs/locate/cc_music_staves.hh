@@ -19,17 +19,16 @@ class Presenter;
 class StavesLocator {
 public:
 	// get list of located staves
-	std::vector<cv::Vec4i> Staves() const;
+	std::vector<cv::Vec4i> staves;
 
 	// take binary image of music sheet
 	bool locateStavesFrom(cv::Mat);
 private:
-	std::vector<cv::Vec4i> _lines, _staves;
+	std::vector<cv::Vec4i> _hough_line;
 	cv::Mat _sheet_lines_image;
-	float _gap_size;
-	std::vector<cv::Vec4i> _locateSheetLines(cv::Mat);
-	std::vector<cv::Vec4i> _sanitizeSheetLines(std::vector<cv::Vec4i>);
-	bool _locateStaves(std::vector<cv::Vec4i>);
+
+	std::vector<cv::Vec4i> _useHough(cv::Mat);
+	bool _locateStaves(std::vector<cv::Vec4i>&, int);
 
 	friend Presenter;
 };

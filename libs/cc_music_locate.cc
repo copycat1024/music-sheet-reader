@@ -37,7 +37,7 @@ std::vector<cv::Vec4i> Locator::Lines(){
 
 // Status: Locked
 std::vector<cv::Vec4i> Locator::Staves(){
-	return _staves.Staves();
+	return _staves.staves;
 }
 
 // Status: Legacy
@@ -67,10 +67,10 @@ bool Locator::locateMusicSheetFrom(Mat image){
 		return false;
 	}
 	cout << " Done." << endl;
-	
+
 	// Locate lines from greyscale image
 	cout << "Locating lines ..." << endl;
-	if (!_lines.locateLinesFrom(image, _staves.Staves())){
+	if (!_lines.locateLinesFrom(image, _staves.staves)){
 		_error = Error::LinesFail;
 		return false;
 	}

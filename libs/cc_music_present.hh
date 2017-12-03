@@ -35,7 +35,6 @@ private:
 	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 
 	void _presentStavesAndLines(Locator);
-	void _debug(Locator, Error);
 };
 
 }

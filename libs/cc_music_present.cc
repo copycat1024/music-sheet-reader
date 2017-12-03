@@ -37,14 +37,7 @@ void Presenter::presentInput(Mat input_image){
 
 // Status: Locked
 void Presenter::presentResults(Locator loc){
-//	if (loc.Status() == Error::Normal){
-	if (false){
-		// present staves and lines
-		_presentStavesAndLines(loc);
-	} else {
-		// debug
-		_debug(loc, loc.Status());
-	}
+	_presentStavesAndLines(loc);
 }
 
 // Status: Locked
@@ -82,20 +75,6 @@ void Presenter::_presentStavesAndLines(Locator loc){
 	cout << "Found " << staves.size() << " staves." << endl;
 	auto lines = loc.Lines();
 	cout << "Found " << lines.size() << " lines." << endl;
-}
-
-void Presenter::_debug(Locator loc, Error err){
-	if (err == Error::StavesFail){
-		cout << "Staves locator fail" << endl;
-	} else if (err == Error::LinesFail){
-		cout << "Lines locator fail" << endl;
-		cout << loc._lines.Lines().size() << endl;
-		Mat show_image = loc._binary_image.clone();
-		cvtColor(show_image, show_image, CV_GRAY2BGR);
-		_drawLines(show_image, loc._staves._lines, Scalar(0,255,0));
-		showImage("lines", show_image);
-		showImage("bin", loc._staves._sheet_lines_image);
-	}
 }
 
 }
