@@ -10,7 +10,11 @@
  */
 
 #include <iostream>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+
+#include "cc_opencv_ultils.hh"
 #include "cc_music_present.hh"
 #include "cc_music_io.hh"
 
@@ -37,44 +41,48 @@ void Presenter::presentInput(Mat input_image){
 
 // Status: Locked
 void Presenter::presentResults(Locator loc){
-	_presentStavesAndLines(loc);
-}
+	_loc = loc;
 
-// Status: Locked
-void Presenter::presentHold(){
+	// make show image
+	_makeROI();
+
+	// staves and lines
+	_presentStavesAndLines();
+
+	// hold
 	showHold();
 }
 
-// Status: Locked
-void Presenter::_drawLines(Mat image, vector<Vec4i> lines, Scalar color){
-	for( std::size_t i = 0; i < lines.size(); i++ ){
-		Vec4i l = lines[i];
-		line(image, Point(l[0], l[1]), Point(l[2], l[3]), color);
-	}
-}
-
-// Status: Locked
-void Presenter::_drawRects(Mat image, vector<Vec4i> lines, Scalar color){
-	for( std::size_t i = 0; i < lines.size(); i++ ){
-		Vec4i l = lines[i];
-		rectangle(image, Point(l[0] - 1, l[1] - 1), Point(l[2] + 1, l[3] + 1), color);
-	}
-}
-
 // Status: Open
-void Presenter::_presentStavesAndLines(Locator loc){
+void Presenter::_presentStavesAndLines(){
 	Mat show_image;
 
 	cvtColor(_input_image, show_image, CV_GRAY2BGR);
-	_drawRects(show_image, loc.Staves(), Scalar(0,255,0));
-	_drawLines(show_image, loc.Lines(), Scalar(255,0,255));
-	_drawRects(show_image, loc.Symbols(), Scalar(255,0,0));
-	showImage("Result", show_image);
+	drawRects(show_image, _loc.Staves(), Scalar(0,255,0));
+	drawLines(show_image, _loc.Lines(), Scalar(255,0,255));
+	drawRects(show_image, _loc.Symbols(), Scalar(255,0,0));
 
-	auto staves = loc.Staves();
+	imwrite("show.jpg", show_image);
+
+	show_image = show_image(_ROI);
+	showImage("Staves and lines", show_image);
+
+	auto staves = _loc.Staves();
 	cout << "Found " << staves.size() << " staves." << endl;
-	auto lines = loc.Lines();
+	auto lines = _loc.Lines();
 	cout << "Found " << lines.size() << " lines." << endl;
+}
+
+
+void Presenter::_makeROI(){
+	auto& s = _loc.Staves();
+
+	int x1 = 0;
+	int y1 = 0;
+	int x2 = _input_image.cols;
+	int y2 = _input_image.rows;
+
+	_ROI = Rect(x1, y1, x2 - x1, y2 - y1);
 }
 
 }

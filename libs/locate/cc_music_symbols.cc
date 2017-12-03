@@ -82,7 +82,6 @@ vector<Vec4i> SymbolsLocator::_locatePatterns(Mat image, Mat pattern, int percen
 	auto blocks = _locateContours(bin);
 	for (auto b : blocks){
 		Point p = _locateMax(result, b);
-		cout << p.x << ' ' << p.y << endl;
 		res.push_back(Vec4i(p.x, p.y, p.x + pattern.cols, p.y + pattern.rows));
 	}
 	return res;

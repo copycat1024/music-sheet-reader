@@ -8,13 +8,7 @@
 std::string typeToStr(const cv::Mat&);
 std::string depthToStr(const cv::Mat&);
 
-class IntSegment {
-public:
-	int x1,x2,y1,y2;
-	IntSegment(cv::Vec4i);
-	IntSegment operator=(cv::Vec4i);
-};
-
-typedef std::vector<IntSegment> IntSegmentArray;
+void drawLines(cv::Mat image, std::vector<cv::Vec4i> vec, cv::Scalar color);
+void drawRects(cv::Mat image, std::vector<cv::Vec4i> vec, cv::Scalar color);
 
 #endif

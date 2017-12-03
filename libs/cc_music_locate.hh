@@ -17,8 +17,7 @@
 
 namespace cc {
 
-class Presenter;
-class Locator;
+class Debugger;
 
 // error codes
 enum class Error{
@@ -39,7 +38,7 @@ public:
 	std::vector<cv::Vec4i> Lines();
 
 	// get list of located staves
-	std::vector<cv::Vec4i> Staves();
+	std::vector<cv::Vec4i>& Staves();
 
 	// get list of located symbols
 	std::vector<cv::Vec4i> Symbols();
@@ -62,7 +61,7 @@ private:
 	cv::Mat _binary_image;
 	bool _success;
 
-	friend Presenter;
+	friend Debugger;
 };
 
 }

@@ -36,7 +36,7 @@ std::vector<cv::Vec4i> Locator::Lines(){
 }
 
 // Status: Locked
-std::vector<cv::Vec4i> Locator::Staves(){
+std::vector<cv::Vec4i>& Locator::Staves(){
 	return _staves.staves;
 }
 

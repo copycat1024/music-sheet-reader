@@ -23,14 +23,13 @@ namespace cc {
 bool StavesLocator::locateStavesFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise
-	_sheet_lines_image = applyMorphFilter(binary_image,9,1);
-
+	lines_image = applyMorphFilter(binary_image,9,1);
 
 	// use Hough transform to find the sheet lines
-	_hough_line = _useHough(_sheet_lines_image);
+	_useHough(lines_image, hough_lines);
 
 	// locate staves from list of sheet lines
-	if (!_locateStaves(_hough_line, _sheet_lines_image.cols))
+	if (!_locateStaves(hough_lines, lines_image.cols))
 		return false;
 
 	// if locateStaves succeeded
@@ -38,18 +37,12 @@ bool StavesLocator::locateStavesFrom(Mat binary_image){
 }
 
 // Status: Locked
-vector<Vec4i> StavesLocator::_useHough(Mat image){
-	vector<Vec4i> res;
-
+void StavesLocator::_useHough(Mat& image, vector<Vec4i>& res){
 	// set up HoughLinesP
-	int line_min_size = 10;
-	int threshold = image.cols / 10;
+	int threshold = image.cols / 4;
 	int minLen = image.cols / 2;
 	int maxGap = 10;
 	HoughLinesP(image, res, 1, CV_PI/2, threshold, minLen, maxGap);
-
-	// results
-	return res;
 }
 
 // Status: Locked
@@ -90,6 +83,7 @@ bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	}
 	staves.push_back(Vec4i(x1, y1, x2, y2));
 
+	cout << "Staff " << a << endl;
 	return true;
 }
 

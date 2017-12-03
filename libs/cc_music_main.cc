@@ -11,6 +11,7 @@
 #include "cc_music_io.hh"
 #include "cc_music_locate.hh"
 #include "cc_music_present.hh"
+#include "cc_music_debug.hh"
 
 using namespace std;
 using namespace cv;
@@ -27,13 +28,11 @@ TaskNumber Program::handleArguments(int argc, char** argv){
 // Status: Locked
 void Program::processImage(char* image_name){
 
-	Locator loc;   // locate and store elements of the sheet music
+	Locator   loc; // locate and store elements of the sheet music
 	Presenter pre; // present the results
+	Debugger  dbg; // debug the results
 
 	Mat image; // input image
-
-	// Clock start
-	double t = (double)getTickCount();
 
 	// Load image
 	if(!loadGreyImage(image_name, image)){
@@ -42,17 +41,20 @@ void Program::processImage(char* image_name){
 	}
 	pre.presentInput(image); // present input
 
+	// Clock start
+	double t = (double) getTickCount();
+
 	// Locate sheet music from image
-	loc.locateMusicSheetFrom(image);
-	cout << "Loc done" << endl;
-	pre.presentResults(loc); // present results
-	cout << "Pre done" << endl;
+	bool suc = loc.locateMusicSheetFrom(image);
 
 	// Clock ends
-	t = ((double)getTickCount() - t)/getTickFrequency();
+	t = ((double) getTickCount() - t)/getTickFrequency();
 
-	// Show the image until a key is pressed
-	pre.presentHold(); // present hold
+	// Present results
+	if (suc)
+		pre.presentResults(loc);
+	else
+		dbg.debug();
 
 	cout << "Times passed in seconds: " << t << endl;
 

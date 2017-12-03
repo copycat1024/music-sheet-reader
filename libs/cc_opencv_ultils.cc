@@ -1,3 +1,4 @@
+#include <opencv2/imgproc/imgproc.hpp>
 #include "cc_opencv_ultils.hh"
 
 using namespace std;
@@ -62,14 +63,14 @@ string typeToStr(const Mat& mat){
 	}
 }
 
-IntSegment::IntSegment(Vec4i v){
-	x1 = v[0];
-	y1 = v[1];
-	x2 = v[2];
-	y2 = v[3];
+void drawLines(Mat image, vector<Vec4i> vec, Scalar color){
+	for(auto v : vec){
+		line(image, Point(v[0], v[1]), Point(v[2], v[3]), color);
+	}
 }
 
-IntSegment IntSegment::operator=(Vec4i v){
-	IntSegment res(v);
-	return res;
+void drawRects(Mat image, vector<Vec4i> vec, Scalar color){
+	for(auto v : vec){
+		rectangle(image, Point(v[0] - 1, v[1] - 1), Point(v[2] + 1, v[3] + 1), color);
+	}
 }

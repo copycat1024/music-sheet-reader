@@ -27,7 +27,11 @@ add_library(CcMusicSheet
 	# Editting functions
 	cc_music_transform.hh
 	cc_music_transform.cc
+
+	# Present and debug
 	cc_music_present.hh
 	cc_music_present.cc
+	cc_music_debug.hh
+	cc_music_debug.cc
 
 )

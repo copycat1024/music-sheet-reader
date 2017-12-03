@@ -14,23 +14,22 @@
 
 namespace cc {
 
-class Presenter;
-
 class StavesLocator {
 public:
-	// get list of located staves
+	// list of located staves
 	std::vector<cv::Vec4i> staves;
 
 	// take binary image of music sheet
 	bool locateStavesFrom(cv::Mat);
+
+	// image used by HoughLinesP
+	cv::Mat lines_image;
+
+	// direct result from HoughLinesP
+	std::vector<cv::Vec4i> hough_lines;
 private:
-	std::vector<cv::Vec4i> _hough_line;
-	cv::Mat _sheet_lines_image;
-
-	std::vector<cv::Vec4i> _useHough(cv::Mat);
+	void _useHough(cv::Mat&, std::vector<cv::Vec4i>&);
 	bool _locateStaves(std::vector<cv::Vec4i>&, int);
-
-	friend Presenter;
 };
 
 }

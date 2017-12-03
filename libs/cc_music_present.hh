@@ -30,11 +30,16 @@ public:
 	void presentHold();
 private:
 	cv::Mat _input_image;
+	cv::Rect _ROI;
+
+	Locator _loc;
 
 	void _drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
 
-	void _presentStavesAndLines(Locator);
+	void _makeROI();
+	void _presentStavesAndLines();
+
 };
 
 }
