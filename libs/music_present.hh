@@ -12,7 +12,7 @@
 #include <opencv2/core/core.hpp>
 #include <string>
 #include <vector>
-#include "cc_music_locate.hh"
+#include "music_locate.hh"
 
 namespace cc{
 

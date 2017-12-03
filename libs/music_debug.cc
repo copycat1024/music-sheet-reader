@@ -1,9 +1,9 @@
 #include <iostream>
 #include <iomanip>
 #include <opencv/cv.hpp>
-#include "cc_music_debug.hh"
-#include "cc_music_locate.hh"
-#include "cc_opencv_ultils.hh"
+#include "music_debug.hh"
+#include "music_locate.hh"
+#include "opencv_ultis.hh"
 
 using namespace std;
 using namespace cv;

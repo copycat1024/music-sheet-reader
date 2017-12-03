@@ -9,11 +9,11 @@
  *
  */
 
-#include "cc_music_locate.hh"
-#include "cc_music_io.hh"
-#include "cc_music_transform.hh"
-#include "cc_opencv_ultils.hh"
-#include "locate/cc_music_symbols.hh"
+#include "music_locate.hh"
+#include "music_io.hh"
+#include "music_transform.hh"
+#include "opencv_utils.hh"
+#include "locate/symbols.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>

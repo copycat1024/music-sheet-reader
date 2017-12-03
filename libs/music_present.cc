@@ -14,9 +14,9 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-#include "cc_opencv_ultils.hh"
-#include "cc_music_present.hh"
-#include "cc_music_io.hh"
+#include "opencv_utils.hh"
+#include "music_present.hh"
+#include "music_io.hh"
 
 using namespace cv;
 using namespace std;

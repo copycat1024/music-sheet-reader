@@ -1,5 +1,5 @@
 #include <opencv2/imgproc/imgproc.hpp>
-#include "cc_opencv_ultils.hh"
+#include "opencv_utils.hh"
 
 using namespace std;
 using namespace cv;

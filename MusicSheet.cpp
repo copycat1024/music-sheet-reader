@@ -1,5 +1,5 @@
 #include <iostream>
-#include "cc_music_main.hh"
+#include "music_main.hh"
 
 using namespace std;
 using namespace cc;

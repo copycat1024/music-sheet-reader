@@ -11,9 +11,9 @@
 
 #include <opencv2/core/core.hpp>
 #include <vector>
-#include "locate/cc_music_staves.hh"
-#include "locate/cc_music_lines.hh"
-#include "locate/cc_music_clefs.hh"
+#include "locate/staves.hh"
+#include "locate/lines.hh"
+#include "locate/clefs.hh"
 
 namespace cc {
 

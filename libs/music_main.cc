@@ -7,11 +7,11 @@
  */
 
 #include <iostream>
-#include "cc_music_main.hh"
-#include "cc_music_io.hh"
-#include "cc_music_locate.hh"
-#include "cc_music_present.hh"
-#include "cc_music_debug.hh"
+#include "music_main.hh"
+#include "music_io.hh"
+#include "music_locate.hh"
+#include "music_present.hh"
+#include "music_debug.hh"
 
 using namespace std;
 using namespace cv;

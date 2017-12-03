@@ -8,7 +8,7 @@
  *
  */
 
-#include "cc_music_io.hh"
+#include "music_io.hh"
 #include <fstream>
 #include <unistd.h>
 #include <fcntl.h>

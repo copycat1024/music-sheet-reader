@@ -1,37 +1,37 @@
 add_library(CcOpencvUltils
-	cc_opencv_ultils.hh
-	cc_opencv_ultils.cc
+	opencv_utils.hh
+	opencv_utils.cc
 )
 
 add_library(CcMusicSheet
 	# Main functions
-	cc_music_main.hh
-	cc_music_main.cc
+	music_main.hh
+	music_main.cc
 
 	# I/O functions
-	cc_music_io.hh
-	cc_music_io.cc
+	music_io.hh
+	music_io.cc
 
 	# Locating functions
-	cc_music_locate.hh
-	cc_music_locate.cc
-	locate/cc_music_staves.hh   #locate staves
-	locate/cc_music_staves.cc
-	locate/cc_music_lines.hh    #locate lines
-	locate/cc_music_lines.cc
-	locate/cc_music_symbols.hh  #locate symbols (base)
-	locate/cc_music_symbols.cc
-	locate/cc_music_clefs.hh    #locate clefs
-	locate/cc_music_clefs.cc
+	music_locate.hh
+	music_locate.cc
+	locate/staves.hh   #locate staves
+	locate/staves.cc
+	locate/lines.hh    #locate lines
+	locate/lines.cc
+	locate/symbols.hh  #locate symbols (base)
+	locate/symbols.cc
+	locate/clefs.hh    #locate clefs
+	locate/clefs.cc
 
 	# Editting functions
-	cc_music_transform.hh
-	cc_music_transform.cc
+	music_transform.hh
+	music_transform.cc
 
 	# Present and debug
-	cc_music_present.hh
-	cc_music_present.cc
-	cc_music_debug.hh
-	cc_music_debug.cc
+	music_present.hh
+	music_present.cc
+	music_debug.hh
+	music_debug.cc
 
 )
