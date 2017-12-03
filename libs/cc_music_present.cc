@@ -43,9 +43,6 @@ void Presenter::presentInput(Mat input_image){
 void Presenter::presentResults(Locator loc){
 	_loc = loc;
 
-	// make show image
-	_makeROI();
-
 	// staves and lines
 	_presentStavesAndLines();
 
@@ -62,27 +59,12 @@ void Presenter::_presentStavesAndLines(){
 	drawLines(show_image, _loc.Lines(), Scalar(255,0,255));
 	drawRects(show_image, _loc.Symbols(), Scalar(255,0,0));
 
-	imwrite("show.jpg", show_image);
-
-	show_image = show_image(_ROI);
-	showImage("Staves and lines", show_image);
+	imwrite("present/staves+lines.jpg", show_image);
 
 	auto staves = _loc.Staves();
 	cout << "Found " << staves.size() << " staves." << endl;
 	auto lines = _loc.Lines();
 	cout << "Found " << lines.size() << " lines." << endl;
-}
-
-
-void Presenter::_makeROI(){
-	auto& s = _loc.Staves();
-
-	int x1 = 0;
-	int y1 = 0;
-	int x2 = _input_image.cols;
-	int y2 = _input_image.rows;
-
-	_ROI = Rect(x1, y1, x2 - x1, y2 - y1);
 }
 
 }

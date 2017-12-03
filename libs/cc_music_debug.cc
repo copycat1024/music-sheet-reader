@@ -11,8 +11,7 @@ using namespace cv;
 namespace cc{
 
 void Debugger::debug(Locator& loc, Error e){
-	cout << "Locator loc failed. "
-	cout << "Debug started." << endl;
+	cout << "Locator loc failed. Debug started." << endl;
 	if (e == Error::StavesFail){
 		cout << "Failure: Staves locator" << endl;
 		auto stv = loc._staves;

@@ -3,7 +3,8 @@
  * Contain the object used to precisely locate stave lines from images.
  *
  * Status:
- *  Locked: 2
+ *  Locked: 1
+ *  Open:   1
  *
  */
 
@@ -19,23 +20,23 @@ using namespace cv;
 
 namespace cc {
 
-// Status: Locked
-bool LinesLocator::locateLinesFrom(Mat image, vector<Vec4i> frames){
+// Status: Open
+bool LinesLocator::locateFrom(Mat image, vector<Vec4i> frames){
 	for (auto f: frames)
-		_locateLinesFromFrame(image, f);
+		_locateFromFrame(image, f);
 
 	return lines.size() == frames.size()*5;
 }
 
 // Status: Locked
-void LinesLocator::_locateLinesFromFrame(Mat image, Vec4i frame){
+void LinesLocator::_locateFromFrame(Mat image, Vec4i frame){
 	// set up area of interest and add padding
 	int x1 = frame[0];
 	int x2 = frame[2];
 	int y1 = frame[1] - 2;
 	int y2 = frame[3] + 2;
 
-	// list
+	// calculate the squared sum of all point in each line into v
 	vector<int> v;
 	int i,j;
 	unsigned char* p;
@@ -48,6 +49,7 @@ void LinesLocator::_locateLinesFromFrame(Mat image, Vec4i frame){
 		}
 	}
 
+	// find local peaks that has the average value per point lower than 64
 	for (i=1; i<v.size()-1; ++i)
 		if (v[i] < v[i-1] && v[i] < v[i+1] && v[i] / (x2 - x1) < 64)
 			lines.push_back(Vec4i(x1, i+y1, x2, i+y1));

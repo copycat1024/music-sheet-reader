@@ -30,14 +30,11 @@ public:
 	// take greyscale image of music sheet
 	void locateFrom(cv::Mat);
 
-	// get binary image
-	cv::Mat& imageBinary();
-
 	// get list of sheet lines in Vec4i
-	std::vector<cv::Vec4i> Lines();
+	const std::vector<cv::Vec4i>& Lines() const;
 
 	// get list of located staves
-	std::vector<cv::Vec4i>& Staves();
+	const std::vector<cv::Vec4i>& Staves() const;
 
 	// get list of located symbols
 	std::vector<cv::Vec4i> Symbols();

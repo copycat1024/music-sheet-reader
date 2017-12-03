@@ -26,17 +26,12 @@ namespace cc {
 // Interfaces
 
 // Status: Locked
-cv::Mat& Locator::imageBinary(){
-	return _binary_image;
-}
-
-// Status: Locked
-std::vector<cv::Vec4i> Locator::Lines(){
+const std::vector<cv::Vec4i>& Locator::Lines() const{
 	return _lines.lines;
 }
 
 // Status: Locked
-std::vector<cv::Vec4i>& Locator::Staves(){
+const std::vector<cv::Vec4i>& Locator::Staves() const{
 	return _staves.staves;
 }
 
@@ -60,7 +55,7 @@ void Locator::locateFrom(Mat image){
 
 	// Locate lines from greyscale image
 	cout << "Locating lines ..." << endl;
-	if (!_lines.locateLinesFrom(image, _staves.staves)){
+	if (!_lines.locateFrom(image, _staves.staves)){
 		throw Error::LinesFail;
 	}
 	cout << " Done." << endl;

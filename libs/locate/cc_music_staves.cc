@@ -33,7 +33,7 @@ bool StavesLocator::locateFrom(Mat binary_image){
 		return false;
 
 	// if locateStaves succeeded
-	return false;
+	return true;
 }
 
 // Status: Locked
