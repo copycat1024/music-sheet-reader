@@ -33,7 +33,7 @@ bool StavesLocator::locateFrom(Mat binary_image){
 		return false;
 
 	// if locateStaves succeeded
-	return true;
+	return false;
 }
 
 // Status: Locked
@@ -63,9 +63,6 @@ bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	// group lines into staves
 	for (auto l : lines){
 
-		if (x1 > l[0]) x1 = l[0];
-		if (x2 < l[2]) x2 = l[2];
-
 		if (l[1] != y2+1){
 			if (a == 0){
 				if (fl) staves.push_back(Vec4i(x1, y1, x2, y2));
@@ -79,6 +76,9 @@ bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 			} else
 				a++;
 		}
+
+		if (x1 > l[0]) x1 = l[0];
+		if (x2 < l[2]) x2 = l[2];
 		y2 = l[1];
 	}
 	staves.push_back(Vec4i(x1, y1, x2, y2));

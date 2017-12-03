@@ -32,7 +32,7 @@ cv::Mat& Locator::imageBinary(){
 
 // Status: Locked
 std::vector<cv::Vec4i> Locator::Lines(){
-	return _lines.Lines();
+	return _lines.lines;
 }
 
 // Status: Locked

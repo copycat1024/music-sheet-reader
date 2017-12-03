@@ -35,7 +35,7 @@ Mat applyMorphFilter(Mat binary_image, int x){
 // Status: Locked
 Mat polarize(Mat image){
 	Mat res;
-	int mask_size = image.cols/50;
+	int mask_size = (image.cols/100)*2 + 1;
 	adaptiveThreshold(~image, res, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, mask_size, -2);
 	return res;
 }

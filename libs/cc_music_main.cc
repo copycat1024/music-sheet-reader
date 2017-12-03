@@ -42,6 +42,7 @@ void Program::processImage(char* image_name){
 	cout << "Image successfully loaded." << endl;
 	cout << "Name: " << image_name << endl;
 	cout << "Size: " << image.cols << "x" << image.rows << endl;
+	cout << endl;
 	pre.presentInput(image); // present input
 
 	// Clock start

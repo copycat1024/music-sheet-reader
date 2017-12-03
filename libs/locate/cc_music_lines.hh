@@ -17,10 +17,8 @@ namespace cc {
 class LinesLocator {
 public:
 	bool locateLinesFrom(cv::Mat, std::vector<cv::Vec4i>);
-	std::vector<cv::Vec4i> Lines() const;
+	std::vector<cv::Vec4i> lines;
 private:
-	int _left_x, _right_x;
-	std::vector<int> _lines;
 	void _locateLinesFromFrame(cv::Mat, cv::Vec4i);
 };
 
