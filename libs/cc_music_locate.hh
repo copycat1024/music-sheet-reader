@@ -21,7 +21,6 @@ class Debugger;
 
 // error codes
 enum class Error{
-	Normal,
 	StavesFail,
 	LinesFail
 };
@@ -29,10 +28,10 @@ enum class Error{
 class Locator {
 public:
 	// take greyscale image of music sheet
-	bool locateMusicSheetFrom(cv::Mat);
+	void locateFrom(cv::Mat);
 
 	// get binary image
-	cv::Mat imageBinary();
+	cv::Mat& imageBinary();
 
 	// get list of sheet lines in Vec4i
 	std::vector<cv::Vec4i> Lines();
@@ -42,9 +41,6 @@ public:
 
 	// get list of located symbols
 	std::vector<cv::Vec4i> Symbols();
-
-	// get status
-	Error Status();
 
 	// use to locate symbols
 	void locateSymbols(cv::Vec4i);
@@ -56,10 +52,7 @@ private:
 	LinesLocator  _lines;
 	ClefsLocator  _clefs;
 
-	Error _error;
-
 	cv::Mat _binary_image;
-	bool _success;
 
 	friend Debugger;
 };

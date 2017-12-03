@@ -39,22 +39,27 @@ void Program::processImage(char* image_name){
 		cout << "No image data!" << endl;
 		return;
 	}
+	cout << "Image successfully loaded." << endl;
+	cout << "Name: " << image_name << endl;
+	cout << "Size: " << image.cols << "x" << image.rows << endl;
 	pre.presentInput(image); // present input
 
 	// Clock start
 	double t = (double) getTickCount();
 
 	// Locate sheet music from image
-	bool suc = loc.locateMusicSheetFrom(image);
+	try {
+		loc.locateFrom(image);
+	} catch (Error e) {
+		dbg.debug(loc, e);
+		return;
+	}
 
 	// Clock ends
 	t = ((double) getTickCount() - t)/getTickFrequency();
 
 	// Present results
-	if (suc)
-		pre.presentResults(loc);
-	else
-		dbg.debug();
+	pre.presentResults(loc);
 
 	cout << "Times passed in seconds: " << t << endl;
 

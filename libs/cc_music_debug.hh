@@ -15,9 +15,12 @@
 
 namespace cc{
 
+enum class Error;
+class Locator;
+
 class Debugger{
 public:
-	void debug();
+	void debug(Locator&, Error);
 private:
 };
 

@@ -20,7 +20,7 @@ public:
 	std::vector<cv::Vec4i> staves;
 
 	// take binary image of music sheet
-	bool locateStavesFrom(cv::Mat);
+	bool locateFrom(cv::Mat);
 
 	// image used by HoughLinesP
 	cv::Mat lines_image;

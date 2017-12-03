@@ -46,7 +46,7 @@ void LinesLocator::_locateLinesFromFrame(Mat image, Vec4i frame){
 	int x1 = frame[0];
 	int x2 = frame[2];
 	int y1 = frame[1] - 2;
-	int y2 = frame[3] + 4;
+	int y2 = frame[3] + 2;
 
 	// list
 	vector<int> v;

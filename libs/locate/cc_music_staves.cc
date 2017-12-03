@@ -20,7 +20,7 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-bool StavesLocator::locateStavesFrom(Mat binary_image){
+bool StavesLocator::locateFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise
 	lines_image = applyMorphFilter(binary_image,9,1);

@@ -26,7 +26,7 @@ namespace cc {
 // Interfaces
 
 // Status: Locked
-cv::Mat Locator::imageBinary(){
+cv::Mat& Locator::imageBinary(){
 	return _binary_image;
 }
 
@@ -45,34 +45,23 @@ std::vector<cv::Vec4i> Locator::Symbols(){
 	return _clefs.GClefs;
 }
 
-Error Locator::Status(){
-	return _error;
-}
-
-// Heavy-lifting code
-
 // Status: Open
-bool Locator::locateMusicSheetFrom(Mat image){
-
-	// Initialize _error
-	_error = Error::Normal;
+void Locator::locateFrom(Mat image){
 
 	// Convert greyscale image to binary image by adaptive threshold
 	_binary_image = polarize(image);
 
 	// Locate staves from binary image
 	cout << "Locating staves ... " << endl;
-	if (!_staves.locateStavesFrom(_binary_image)){
-		_error = Error::StavesFail;
-		return false;
+	if (!_staves.locateFrom(_binary_image)){
+		throw Error::StavesFail;
 	}
 	cout << " Done." << endl;
 
 	// Locate lines from greyscale image
 	cout << "Locating lines ..." << endl;
 	if (!_lines.locateLinesFrom(image, _staves.staves)){
-		_error = Error::LinesFail;
-		return false;
+		throw Error::LinesFail;
 	}
 	cout << " Done." << endl;
 
@@ -81,7 +70,6 @@ bool Locator::locateMusicSheetFrom(Mat image){
 //	s.Test(image);
 	_clefs.locateClefsFrom(image);
 	// --------------------------------------------------------
-	return true;
 }
 
 // Status: Legacy
