@@ -13,7 +13,7 @@
 
 ### Installation guide:
  - *Step 1:* Make sure all dependencies are installed.
- - *Step 2:* Run this command in your build folder (the folder where you want to place your program)
+ - *Step 2:* Run this command in your build folder (the folder where you want to place your complied file)
 ```
 $ cmake {path to the source directory}
 ```
