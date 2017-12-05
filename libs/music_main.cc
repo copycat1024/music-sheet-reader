@@ -44,7 +44,6 @@ void Program::processImage(char* image_name){
 	cout << "Name: " << image_name << endl;
 	cout << "Size: " << image.cols << "x" << image.rows << endl;
 	cout << endl;
-	pre.presentInput(image); // present input
 
 	// Clock start
 	double t = (double) getTickCount();
@@ -61,7 +60,7 @@ void Program::processImage(char* image_name){
 	t = ((double) getTickCount() - t)/getTickFrequency();
 
 	// Present results
-	pre.presentResults(loc);
+	pre.presentResults(loc, image);
 
 	cout << "Times passed in seconds: " << t << endl;
 

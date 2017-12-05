@@ -16,28 +16,15 @@
 
 namespace cc{
 
-std::vector<cv::Mat> splitStaves(cv::Mat, std::vector<cv::Vec4i>);
-
 class Presenter{
 public:
-	// present input image
-	void presentInput(cv::Mat);
-
 	// present results
-	void presentResults(Locator);
+	void presentResults(const Locator&, const cv::Mat&);
 
 	// hold the images being shown until a key is pressed
 	void presentHold();
 private:
-	cv::Mat _input_image;
-
-	Locator _loc;
-
-	void _drawLines(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
-	void _drawRects(cv::Mat, std::vector<cv::Vec4i>, cv::Scalar);
-
-	void _presentStavesAndLines();
-
+	void _presentStavesAndLines(const Locator&, const cv::Mat&);
 };
 
 }

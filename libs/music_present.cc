@@ -23,41 +23,22 @@ using namespace std;
 
 namespace cc {
 
-// Status: Legacy
-vector<Mat> splitStaves(Mat src, vector<Vec4i> staves){
-	vector<Mat> res;
-	for (auto v: staves){
-		auto f = src(Rect(v[0], v[1], v[2] - v[0], v[3] - v[1]));
-		res.push_back(f);
-	}
-	return res;
-}
-
 // Status: Locked
-void Presenter::presentInput(Mat input_image){
-	_input_image = input_image;
-	showImage("Input", input_image);
-}
-
-// Status: Locked
-void Presenter::presentResults(Locator loc){
-	_loc = loc;
-
+void Presenter::presentResults(const Locator& loc, const Mat& input_image){
 	// staves and lines
-	_presentStavesAndLines();
+	_presentStavesAndLines(loc, input_image);
 
 	// hold
 	showHold();
 }
 
 // Status: Open
-void Presenter::_presentStavesAndLines(){
+void Presenter::_presentStavesAndLines(const Locator& _loc, const Mat& input_image){
 	Mat show_image;
+	cvtColor(input_image, show_image, CV_GRAY2BGR);
 
-	cvtColor(_input_image, show_image, CV_GRAY2BGR);
 	drawRects(show_image, _loc.Staves(), Scalar(0,255,0));
 	drawLines(show_image, _loc.Lines(), Scalar(255,0,255));
-	drawRects(show_image, _loc.Symbols(), Scalar(255,0,0));
 
 	imwrite("present/staves+lines.jpg", show_image);
 
