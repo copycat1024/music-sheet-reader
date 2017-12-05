@@ -12,6 +12,7 @@
 #include "music_locate.hh"
 #include "music_present.hh"
 #include "music_debug.hh"
+#include "music_error.hh"
 
 using namespace std;
 using namespace cv;

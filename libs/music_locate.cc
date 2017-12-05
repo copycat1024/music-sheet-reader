@@ -9,14 +9,15 @@
  *
  */
 
-#include "music_locate.hh"
-#include "music_io.hh"
-#include "music_transform.hh"
-#include "opencv_utils.hh"
-#include "locate/symbols.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
+#include "opencv_utils.hh"
+#include "music_locate.hh"
+#include "music_io.hh"
+#include "music_transform.hh"
+#include "music_error.hh"
+#include "locate/symbols.hh"
 
 using namespace std;
 using namespace cv;
@@ -48,16 +49,12 @@ void Locator::locateFrom(Mat image){
 
 	// Locate staves from binary image
 	cout << "Locating staves ... " << endl;
-	if (!_staves.locateFrom(_binary_image)){
-		throw Error::StavesFail;
-	}
+	_staves.locateFrom(_binary_image);
 	cout << " Done." << endl;
 
 	// Locate lines from greyscale image
 	cout << "Locating lines ..." << endl;
-	if (!_lines.locateFrom(image, _staves.staves)){
-		throw Error::LinesFail;
-	}
+	_lines.locateFrom(image, _staves.staves);
 	cout << " Done." << endl;
 
 	// Open ---------------------------------------------------

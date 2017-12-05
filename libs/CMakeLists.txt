@@ -12,6 +12,9 @@ add_library(CcMusicSheet
 	music_io.hh
 	music_io.cc
 
+	# Error object
+	music_error.hh
+
 	# Locating functions
 	music_locate.hh
 	music_locate.cc

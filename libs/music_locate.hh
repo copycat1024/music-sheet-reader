@@ -19,12 +19,6 @@ namespace cc {
 
 class Debugger;
 
-// error codes
-enum class Error{
-	StavesFail,
-	LinesFail
-};
-
 class Locator {
 public:
 	// take greyscale image of music sheet

@@ -7,11 +7,12 @@
  *
  */
 
-#include "staves.hh"
-#include "music_transform.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
+#include "music_transform.hh"
+#include "music_error.hh"
+#include "staves.hh"
 
 using namespace std;
 using namespace cv;
@@ -19,7 +20,7 @@ using namespace cv;
 namespace cc {
 
 // Status: Locked
-bool StavesLocator::locateFrom(Mat binary_image){
+void StavesLocator::locateFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise
 	lines_image = applyMorphFilter(binary_image,9,1);
@@ -28,11 +29,7 @@ bool StavesLocator::locateFrom(Mat binary_image){
 	_useHough(lines_image, hough_lines);
 
 	// locate staves from list of sheet lines
-	if (!_locateStaves(hough_lines, lines_image.cols))
-		return false;
-
-	// if locateStaves succeeded
-	return true;
+	_locateStaves(hough_lines, lines_image.cols);
 }
 
 // Status: Locked
@@ -45,7 +42,7 @@ void StavesLocator::_useHough(Mat& image, vector<Vec4i>& res){
 }
 
 // Status: Locked
-bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
+void StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	// sort the result base on y1
 	auto cmp = [](const Vec4i& l, const Vec4i& r){
 		return l[1]<r[1];
@@ -82,7 +79,7 @@ bool StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	}
 	staves.push_back(Vec4i(x1, y1, x2, y2));
 
-	return a == 0;
+	if (a != 0) throw Error::StavesFail; // throw
 }
 
 }

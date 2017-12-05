@@ -8,12 +8,13 @@
  *
  */
 
-#include "lines.hh"
-#include "music_transform.hh"
-#include "opencv_utils.hh"
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
+#include "opencv_utils.hh"
+#include "music_error.hh"
+#include "music_transform.hh"
+#include "lines.hh"
 
 using namespace std;
 using namespace cv;
@@ -21,11 +22,11 @@ using namespace cv;
 namespace cc {
 
 // Status: Open
-bool LinesLocator::locateFrom(Mat image, vector<Vec4i> frames){
+void LinesLocator::locateFrom(Mat image, vector<Vec4i> frames){
 	for (auto f: frames)
 		_locateFromFrame(image, f);
 
-	return lines.size() == frames.size()*5;
+	if (lines.size() != frames.size()*5) throw Error::LinesFail; // throw
 }
 
 // Status: Locked
