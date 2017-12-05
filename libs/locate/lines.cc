@@ -22,7 +22,7 @@ using namespace cv;
 // Private functions ----------------------------------------------------
 
 // Status: Locked
-void _locateFromFrame(const Mat& image, const Vec4i& frame, vector<Vec4i>& lines){
+void locateFromFrame(const Mat& image, const Vec4i& frame, vector<Vec4i>& lines){
 	// set up area of interest and add padding
 	int x1 = frame[0];
 	int x2 = frame[2];
@@ -47,6 +47,18 @@ void _locateFromFrame(const Mat& image, const Vec4i& frame, vector<Vec4i>& lines
 			lines.push_back(Vec4i(x1, i+y1, x2, i+y1));
 }
 
+// Status: Final
+double calculateGapSize(const vector<Vec4i>& lines){
+	int i;
+	double s=0;
+
+	for (i=1; i<lines.size(); i++){
+		if (i%5 != 0) s += lines[i][1] - lines[i-1][1];
+	}
+
+	return s / (i/5) / 4;
+}
+
 // Objects members ------------------------------------------------------
 
 namespace cc {
@@ -54,9 +66,14 @@ namespace cc {
 // Status: Open
 void LinesLocator::locateFrom(Mat image, vector<Vec4i> frames){
 	for (auto f: frames)
-		_locateFromFrame(image, f, lines);
+		locateFromFrame(image, f, lines);
 
+	// check if lines locator work properly
 	if (lines.size() != frames.size()*5) throw Error::LinesFail; // throw
+
+	// calculate gap size
+	gap_size = calculateGapSize(lines);
+	cout << gap_size << endl;
 }
 
 }

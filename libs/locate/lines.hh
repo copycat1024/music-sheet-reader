@@ -19,6 +19,9 @@ public:
 	// list of located lines
 	std::vector<cv::Vec4i> lines;
 
+	// size of the gap between lines
+	double gap_size;
+
 	// take greyscale image and list of staves
 	void locateFrom(cv::Mat, std::vector<cv::Vec4i>);
 };
