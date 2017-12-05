@@ -21,8 +21,6 @@ public:
 
 	// take greyscale image and list of staves
 	void locateFrom(cv::Mat, std::vector<cv::Vec4i>);
-private:
-	void _locateFromFrame(cv::Mat, cv::Vec4i);
 };
 
 }

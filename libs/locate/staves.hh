@@ -27,9 +27,6 @@ public:
 
 	// direct result from HoughLinesP
 	std::vector<cv::Vec4i> hough_lines;
-private:
-	void _useHough(cv::Mat&, std::vector<cv::Vec4i>&);
-	void _locateStaves(std::vector<cv::Vec4i>&, int);
 };
 
 }

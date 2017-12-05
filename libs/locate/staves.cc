@@ -17,23 +17,10 @@
 using namespace std;
 using namespace cv;
 
-namespace cc {
+// Private functions ----------------------------------------------------
 
 // Status: Locked
-void StavesLocator::locateFrom(Mat binary_image){
-
-	// Apply Morph transform to eliminate noise
-	lines_image = applyMorphFilter(binary_image,9,1);
-
-	// use Hough transform to find the sheet lines
-	_useHough(lines_image, hough_lines);
-
-	// locate staves from list of sheet lines
-	_locateStaves(hough_lines, lines_image.cols);
-}
-
-// Status: Locked
-void StavesLocator::_useHough(Mat& image, vector<Vec4i>& res){
+void useHough(const Mat& image, vector<Vec4i>& res){
 	// set up HoughLinesP
 	int threshold = image.cols / 4;
 	int minLen = image.cols / 2;
@@ -42,7 +29,7 @@ void StavesLocator::_useHough(Mat& image, vector<Vec4i>& res){
 }
 
 // Status: Locked
-void StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
+bool locateStaves(vector<Vec4i>& lines, const int width, vector<Vec4i>& staves){
 	// sort the result base on y1
 	auto cmp = [](const Vec4i& l, const Vec4i& r){
 		return l[1]<r[1];
@@ -79,7 +66,24 @@ void StavesLocator::_locateStaves(vector<Vec4i> &lines, int width){
 	}
 	staves.push_back(Vec4i(x1, y1, x2, y2));
 
-	if (a != 0) throw Error::StavesFail; // throw
+	return a != 0;
+}
+
+// Objects members ------------------------------------------------------
+
+namespace cc {
+
+// Status: Locked
+void StavesLocator::locateFrom(Mat binary_image){
+
+	// Apply Morph transform to eliminate noise
+	lines_image = applyMorphFilter(binary_image,9,1);
+
+	// use Hough transform to find the sheet lines
+	useHough(lines_image, hough_lines);
+
+	// locate staves from list of sheet lines
+	if (locateStaves(hough_lines, lines_image.cols, staves)) throw Error::StavesFail; // throw
 }
 
 }
