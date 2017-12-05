@@ -27,9 +27,6 @@ namespace cc {
 void Presenter::presentResults(const Locator& loc, const Mat& input_image){
 	// staves and lines
 	_presentStavesAndLines(loc, input_image);
-
-	// hold
-	showHold();
 }
 
 // Status: Open

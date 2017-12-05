@@ -21,8 +21,6 @@ public:
 	// present results
 	void presentResults(const Locator&, const cv::Mat&);
 
-	// hold the images being shown until a key is pressed
-	void presentHold();
 private:
 	void _presentStavesAndLines(const Locator&, const cv::Mat&);
 };
