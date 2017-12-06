@@ -8,7 +8,8 @@ namespace cc {
 // error codes
 enum class Error{
 	StavesFail,
-	LinesFail
+	LinesFail,
+	SymbolsFail
 };
 
 

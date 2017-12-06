@@ -39,9 +39,10 @@ public:
 	// developing function
 	void locateSymbols2(cv::Mat);
 private:
-	StavesLocator _staves;
-	LinesLocator  _lines;
-	ClefsLocator  _clefs;
+	StavesLocator  _staves;
+	LinesLocator   _lines;
+	ClefsLocator   _clefs;
+	SymbolsLocator _sym;
 
 	cv::Mat _binary_image;
 

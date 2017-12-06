@@ -42,6 +42,16 @@ void Debugger::debug(Locator& loc, Error e){
 
 		imwrite("debug/line.jpg", stv.lines_image);
 
+	} else if (e == Error::SymbolsFail){
+		auto sym = loc._sym;
+		cout << "s " << sym.result.size() << endl;
+
+		Mat show_image;
+		cvtColor(loc._binary_image, show_image, CV_GRAY2BGR);
+
+		drawRects(show_image, sym.result, Scalar(255,0,255));
+
+		imwrite("debug/sym.jpg", show_image);
 	}
 }
 

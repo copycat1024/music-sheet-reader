@@ -18,10 +18,8 @@ namespace cc{
 cv::Mat applyMorphFilter(cv::Mat, int, int);
 cv::Mat applyMorphFilter(cv::Mat, int);
 cv::Mat polarize(cv::Mat);
-void removeLine(cv::Mat, cv::Vec4i, int);
-void removeAllLines(cv::Mat, std::vector<cv::Vec4i>);
-void inverse(cv::Mat);
 
+	
 }
 
 #endif

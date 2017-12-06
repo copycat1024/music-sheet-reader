@@ -38,7 +38,7 @@ const std::vector<cv::Vec4i>& Locator::Staves() const{
 
 // Status: Legacy
 std::vector<cv::Vec4i> Locator::Symbols(){
-	return _clefs.GClefs;
+	return _sym.result;
 }
 
 // Status: Open
@@ -46,7 +46,9 @@ void Locator::locateFrom(Mat image){
 
 	// Convert greyscale image to binary image by adaptive threshold
 	_binary_image = polarize(image);
+	Mat _symbol_image = applyMorphFilter(_binary_image, 1, 3);
 
+	imwrite("debug/sym.jpg", _symbol_image);
 	imwrite("debug/binary.jpg", _binary_image);
 
 	// Locate staves from binary image
@@ -59,6 +61,7 @@ void Locator::locateFrom(Mat image){
 //	SymbolsLocator s;
 //	s.Test(image);
 	_clefs.locateFrom(image, _lines.gap_size);
+	_sym.locateFrom(_symbol_image);
 	// --------------------------------------------------------
 }
 

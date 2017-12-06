@@ -3,8 +3,8 @@
  * Contain the base object for symbols locating.
  *
  * Status:
- *  Open:   1
- *  Locked: 3
+ *  Locked: 1
+ *  Final:  5
  *
  */
 
@@ -15,24 +15,9 @@
 using namespace std;
 using namespace cv;
 
-namespace cc{
-
-// Status: Open
-void SymbolsLocator::Test(Mat image){
-	int percentage = 75;
-
-	Mat pattern = imread("N4.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-	Mat result  = _matchPattern(pattern, image);
-
-	threshold(result, result, percentage * 255 / 100, 255, 0);
-	auto contour = _locateContours(result);
-	imshow("p", result);
-	return;
-
-}
-
+// Private functions -----------------------------------------------
 // Status: Final
-Mat SymbolsLocator::_matchPattern(Mat pattern, Mat image){
+Mat matchPattern(const Mat& image, const Mat& pattern){
 	Mat result_f, result;
 
 	// run matchTemplate with normalization
@@ -41,17 +26,36 @@ Mat SymbolsLocator::_matchPattern(Mat pattern, Mat image){
 	// convert the normalized result in float to unsigned char
 	((Mat) (result_f*255)).convertTo(result, CV_8UC1);
 
-	double minVal, maxVal;
-	Point minLoc, maxLoc;
-	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-
-	cout << "max " << (maxVal*100)/255 << endl;
-
 	return result;
 }
 
 // Status: Locked
-vector<Vec4i> SymbolsLocator::_locateContours(Mat image){
+double getPatternQuality(const Mat& result){
+	double minVal, maxVal;
+	Point minLoc, maxLoc;
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+
+	return (maxVal*100)/255;
+}
+
+// Status: Final
+Point locateMax(Mat image, Vec4i frame){
+	Mat src = image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
+
+	double minVal, maxVal;
+	Point minLoc, maxLoc;
+	minMaxLoc(src, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+
+	int x = frame[0];
+	int y = frame[1];
+	if (maxLoc.x > 0) x += maxLoc.x;
+	if (maxLoc.y > 0) y += maxLoc.y;
+
+	return Point(x, y);
+}
+
+// Status: Final
+vector<Vec4i> locateContours(const Mat& image){
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy, res;
 
@@ -74,27 +78,31 @@ vector<Vec4i> SymbolsLocator::_locateContours(Mat image){
 	return res;
 }
 
-// Status: Final
-Point SymbolsLocator::_locateMax(Mat image, Vec4i frame){
-	Mat src = image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
+// Object methods --------------------------------------------------
+namespace cc{
 
-	double minVal, maxVal;
-	Point minLoc, maxLoc;
-	minMaxLoc(src, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-
-	return Point(maxLoc.x + frame[0], maxLoc.y + frame[1]);
+// Status: Open
+void SymbolsLocator::locateFrom(const cv::Mat& image){
+	result = locateContours(image);
+	throw Error::SymbolsFail;
 }
 
-vector<Vec4i> SymbolsLocator::_locatePatterns(Mat image, Mat pattern, int percentage){
+// Status: Final
+vector<Vec4i> SymbolsLocator::_locateContours(const Mat& image){
+	return locateContours(image);
+}
+
+// Status: Final
+vector<Vec4i> SymbolsLocator::_locatePatterns(const Mat& image, const Mat& pattern, const int percentage){
 	vector<Vec4i> res;
-	Mat result = _matchPattern(pattern, image);
-	Mat bin;
+	Mat bin, result = matchPattern(image, pattern);
+	quality = getPatternQuality(result);
 
 	threshold(result, bin, percentage * 255 / 100, 255, 0);
 
-	auto blocks = _locateContours(bin);
+	auto blocks = locateContours(bin);
 	for (auto b : blocks){
-		Point p = _locateMax(result, b);
+		Point p = locateMax(result, b);
 		res.push_back(Vec4i(p.x, p.y, p.x + pattern.cols, p.y + pattern.rows));
 	}
 	return res;

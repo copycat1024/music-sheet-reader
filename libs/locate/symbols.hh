@@ -11,18 +11,20 @@
 
 #include <opencv2/core/core.hpp>
 #include <vector>
+#include "music_error.hh"
 
 namespace cc {
 
 class SymbolsLocator {
 public:
-	void Test(cv::Mat);
+	void locateFrom(const cv::Mat&);
+
+	std::vector<cv::Vec4i> result;
 protected:
-	std::vector<cv::Vec4i> _locateContours(cv::Mat);
-	std::vector<cv::Vec4i> _locatePatterns(cv::Mat, cv::Mat, int);
-private:
-	cv::Mat _matchPattern(cv::Mat, cv::Mat);
-	cv::Point _locateMax(cv::Mat, cv::Vec4i);
+	double quality;
+protected:
+	std::vector<cv::Vec4i> _locateContours(const cv::Mat&);
+	std::vector<cv::Vec4i> _locatePatterns(const cv::Mat&, const cv::Mat&, const int);
 };
 
 }
