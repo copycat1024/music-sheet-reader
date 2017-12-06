@@ -78,12 +78,36 @@ vector<Vec4i> locateContours(const Mat& image){
 	return res;
 }
 
+bool intersect(const int a, const int b1, const int b2){
+	return (a > b1) && (a < b2);
+}
+
+bool intersect(const Vec4i& a, const Vec4i& b){
+//	bool res = (a[2]>b[0]) || (b[2]>a[0]) || (a[3]>b[1]) || (b[3]>a[1]);
+	bool res = (a[2]<b[0]) || (b[2]<a[0]) || (a[3]<b[1]) || (b[3]<a[1]);
+	return !res;
+}
+
 // Object methods --------------------------------------------------
 namespace cc{
 
 // Status: Open
-void SymbolsLocator::locateFrom(const cv::Mat& image){
-	result = locateContours(image);
+void SymbolsLocator::locateFrom(const cv::Mat& image, const vector<Vec4i>& staves){
+	vector<Vec4i> raw = locateContours(image);
+	vector<Vec4i> raw1;
+
+	cout << raw.size() << endl;
+	cout << staves.size() << endl;
+
+	for (auto c : raw){
+		for (auto s : staves){
+			if (intersect(c, s)){
+				raw1.push_back(c);
+				break;
+			}
+		}
+	}
+
 	throw Error::SymbolsFail;
 }
 

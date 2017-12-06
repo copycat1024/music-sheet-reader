@@ -61,7 +61,7 @@ void Locator::locateFrom(Mat image){
 //	SymbolsLocator s;
 //	s.Test(image);
 	_clefs.locateFrom(image, _lines.gap_size);
-	_sym.locateFrom(_symbol_image);
+	_sym.locateFrom(_symbol_image, _staves.staves);
 	// --------------------------------------------------------
 }
 
