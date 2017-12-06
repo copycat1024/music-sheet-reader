@@ -47,20 +47,18 @@ void Locator::locateFrom(Mat image){
 	// Convert greyscale image to binary image by adaptive threshold
 	_binary_image = polarize(image);
 
+	imwrite("debug/binary.jpg", _binary_image);
+
 	// Locate staves from binary image
-	cout << "Locating staves ... " << endl;
 	_staves.locateFrom(_binary_image);
-	cout << " Done." << endl;
 
 	// Locate lines from greyscale image
-	cout << "Locating lines ..." << endl;
 	_lines.locateFrom(image, _staves.staves);
-	cout << " Done." << endl;
 
 	// Open ---------------------------------------------------
 //	SymbolsLocator s;
 //	s.Test(image);
-	_clefs.locateClefsFrom(image);
+	_clefs.locateFrom(image, _lines.gap_size);
 	// --------------------------------------------------------
 }
 

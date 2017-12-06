@@ -34,9 +34,19 @@ void SymbolsLocator::Test(Mat image){
 // Status: Final
 Mat SymbolsLocator::_matchPattern(Mat pattern, Mat image){
 	Mat result_f, result;
-	matchTemplate(image, pattern, result_f, CV_TM_CCOEFF);
-	normalize(result_f, result_f, 0, 255, NORM_MINMAX, -1, Mat() );
-	result_f.convertTo(result, CV_8UC1);
+
+	// run matchTemplate with normalization
+	matchTemplate(image, pattern, result_f, CV_TM_CCOEFF_NORMED);
+
+	// convert the normalized result in float to unsigned char
+	((Mat) (result_f*255)).convertTo(result, CV_8UC1);
+
+	double minVal, maxVal;
+	Point minLoc, maxLoc;
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+
+	cout << "max " << (maxVal*100)/255 << endl;
+
 	return result;
 }
 
@@ -67,9 +77,11 @@ vector<Vec4i> SymbolsLocator::_locateContours(Mat image){
 // Status: Final
 Point SymbolsLocator::_locateMax(Mat image, Vec4i frame){
 	Mat src = image(Rect(frame[0], frame[1], frame[2] - frame[0], frame[3] - frame[1]));
+
 	double minVal, maxVal;
 	Point minLoc, maxLoc;
 	minMaxLoc(src, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+
 	return Point(maxLoc.x + frame[0], maxLoc.y + frame[1]);
 }
 
@@ -79,6 +91,7 @@ vector<Vec4i> SymbolsLocator::_locatePatterns(Mat image, Mat pattern, int percen
 	Mat bin;
 
 	threshold(result, bin, percentage * 255 / 100, 255, 0);
+
 	auto blocks = _locateContours(bin);
 	for (auto b : blocks){
 		Point p = _locateMax(result, b);

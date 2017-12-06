@@ -73,7 +73,6 @@ void LinesLocator::locateFrom(Mat image, vector<Vec4i> frames){
 
 	// calculate gap size
 	gap_size = calculateGapSize(lines);
-	cout << gap_size << endl;
 }
 
 }

@@ -17,7 +17,7 @@ namespace cc {
 
 class ClefsLocator : SymbolsLocator {
 public:
-	void locateClefsFrom(cv::Mat);
+	void locateFrom(cv::Mat, double);
 	std::vector<cv::Vec4i> GClefs;
 private:
 

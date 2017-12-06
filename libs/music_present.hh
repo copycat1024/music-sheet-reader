@@ -12,9 +12,10 @@
 #include <opencv2/core/core.hpp>
 #include <string>
 #include <vector>
-#include "music_locate.hh"
 
 namespace cc{
+
+class Locator;
 
 class Presenter{
 public:

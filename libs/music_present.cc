@@ -16,6 +16,7 @@
 
 #include "opencv_utils.hh"
 #include "music_present.hh"
+#include "music_locate.hh"
 #include "music_io.hh"
 
 using namespace cv;
@@ -25,6 +26,9 @@ namespace cc {
 
 // Status: Locked
 void Presenter::presentResults(const Locator& loc, const Mat& input_image){
+	cout << endl;
+	cout << "Present: " << endl;
+
 	// staves and lines
 	_presentStavesAndLines(loc, input_image);
 }
