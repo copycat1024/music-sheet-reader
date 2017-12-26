@@ -2,33 +2,28 @@
  *
  * Contain the object used to locate music staves from images.
  *
- * Status:
- *  Locked: 3
- *
  */
 
 #include <iostream>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
-#include "music_transform.hh"
+#include "opencv_utils.hh"
 #include "music_error.hh"
 #include "staves.hh"
 
 using namespace std;
 using namespace cv;
 
-// Private functions ----------------------------------------------------
+// Private functions
 
-// Status: Locked
 void useHough(const Mat& image, vector<Vec4i>& res){
-	// set up HoughLinesP
+	// HoughLinesP setting
 	int threshold = image.cols / 4;
 	int minLen = image.cols / 2;
 	int maxGap = 10;
 	HoughLinesP(image, res, 1, CV_PI/2, threshold, minLen, maxGap);
 }
 
-// Status: Locked
 bool locateStaves(vector<Vec4i>& lines, const int width, vector<Vec4i>& staves){
 	// sort the result base on y1
 	auto cmp = [](const Vec4i& l, const Vec4i& r){
@@ -69,11 +64,10 @@ bool locateStaves(vector<Vec4i>& lines, const int width, vector<Vec4i>& staves){
 	return a != 0;
 }
 
-// Objects members ------------------------------------------------------
+// Objects members
 
 namespace cc {
 
-// Status: Locked
 void StavesLocator::locateFrom(Mat binary_image){
 
 	// Apply Morph transform to eliminate noise

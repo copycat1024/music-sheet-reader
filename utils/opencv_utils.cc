@@ -74,3 +74,15 @@ void drawRects(Mat image, vector<Vec4i> vec, Scalar color){
 		rectangle(image, Point(v[0] - 1, v[1] - 1), Point(v[2] + 1, v[3] + 1), color);
 	}
 }
+
+Mat applyMorphFilter(Mat binary_image, int x, int y){
+	Mat morphStructure = getStructuringElement(MORPH_RECT, Size(x,y));
+	Mat r = binary_image.clone();
+	erode(r, r, morphStructure, Point(-1, -1));
+	dilate(r, r, morphStructure, Point(-1, -1));
+	return r;
+}
+
+Mat crop(Mat src, Vec4i v){
+	return src(Rect(v[0], v[1], v[2] - v[0], v[3] - v[1]));
+}

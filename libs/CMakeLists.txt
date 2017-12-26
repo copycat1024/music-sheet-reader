@@ -1,7 +1,4 @@
-add_library(CcOpencvUltils
-	opencv_utils.hh
-	opencv_utils.cc
-)
+include_directories( "${PROJECT_SOURCE_DIR}/utils" )
 
 add_library(CcMusicSheet
 	# Main functions
@@ -22,14 +19,8 @@ add_library(CcMusicSheet
 	locate/staves.cc
 	locate/lines.hh    #locate lines
 	locate/lines.cc
-	locate/symbols.hh  #locate symbols (base)
-	locate/symbols.cc
-	locate/clefs.hh    #locate clefs
-	locate/clefs.cc
-
-	# Editting functions
-	music_transform.hh
-	music_transform.cc
+	locate/contour.hh  #locate symbols (contours)
+	locate/contour.cc
 
 	# Present and debug
 	music_present.hh

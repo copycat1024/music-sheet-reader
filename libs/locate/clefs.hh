@@ -2,9 +2,7 @@
  *
  * Contain the base object for clefs locating.
  *
- * Status: Open
  *
- */
 
 #ifndef CC_MUSIC_CLEFS
 #define CC_MUSIC_CLEFS
@@ -19,9 +17,8 @@ class ClefsLocator : SymbolsLocator {
 public:
 	void locateFrom(cv::Mat, double);
 	std::vector<cv::Vec4i> GClefs;
-private:
-
 };
 
 }
 #endif
+*/

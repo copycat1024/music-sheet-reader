@@ -2,10 +2,7 @@
  *
  * Contain the base object for clefs locating.
  *
- * Status:
- *  Open: 1
  *
- */
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -16,7 +13,6 @@ using namespace cv;
 
 namespace cc{
 
-//Status: Open
 void ClefsLocator::locateFrom(Mat image, double gap_size){
 	const int percentage = 75;
 	const double model_size = 7.75;
@@ -36,8 +32,8 @@ void ClefsLocator::locateFrom(Mat image, double gap_size){
 	Vec4i v = GClefs[0];
 	Mat c = image(Rect(v[0], v[1], v[2] - v[0], v[3] - v[1]));
 	imwrite("present/clef.jpg", c);
-*/
 	return;
 }
 
 }
+*/

@@ -2,8 +2,6 @@
  *
  * Contain the object used to locate music staves from images.
  *
- * Status: Legacy
- *
  */
 
 #ifndef CC_MUSIC_FRAMES

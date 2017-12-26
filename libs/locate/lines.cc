@@ -2,10 +2,6 @@
  *
  * Contain the object used to precisely locate stave lines from images.
  *
- * Status:
- *  Locked: 1
- *  Open:   1
- *
  */
 
 #include <iostream>
@@ -13,15 +9,13 @@
 #include <opencv2/opencv.hpp>
 #include "opencv_utils.hh"
 #include "music_error.hh"
-#include "music_transform.hh"
 #include "lines.hh"
 
 using namespace std;
 using namespace cv;
 
-// Private functions ----------------------------------------------------
+// Private functions
 
-// Status: Locked
 void locateFromFrame(const Mat& image, const Vec4i& frame, vector<Vec4i>& lines){
 	// set up area of interest and add padding
 	int x1 = frame[0];
@@ -47,7 +41,6 @@ void locateFromFrame(const Mat& image, const Vec4i& frame, vector<Vec4i>& lines)
 			lines.push_back(Vec4i(x1, i+y1, x2, i+y1));
 }
 
-// Status: Final
 double calculateGapSize(const vector<Vec4i>& lines){
 	int i;
 	double s=0;
@@ -59,11 +52,10 @@ double calculateGapSize(const vector<Vec4i>& lines){
 	return s / (i/5) / 4;
 }
 
-// Objects members ------------------------------------------------------
+// Objects members
 
 namespace cc {
 
-// Status: Open
 void LinesLocator::locateFrom(Mat image, vector<Vec4i> frames){
 	for (auto f: frames)
 		locateFromFrame(image, f, lines);

@@ -2,8 +2,6 @@
  *
  * Contain the object used to locate the elements of the music sheet.
  *
- * Status: Legacy
- *
  */
 
 #ifndef CC_MUSIC_LOCATE
@@ -13,7 +11,7 @@
 #include <vector>
 #include "locate/staves.hh"
 #include "locate/lines.hh"
-#include "locate/clefs.hh"
+#include "locate/contour.hh"
 
 namespace cc {
 
@@ -41,8 +39,8 @@ public:
 private:
 	StavesLocator  _staves;
 	LinesLocator   _lines;
-	ClefsLocator   _clefs;
-	SymbolsLocator _sym;
+//	ClefsLocator   _clefs;
+	ContoursLocator _con;
 
 	cv::Mat _binary_image;
 
