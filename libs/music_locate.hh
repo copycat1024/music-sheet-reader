@@ -12,6 +12,7 @@
 #include "locate/staves.hh"
 #include "locate/lines.hh"
 #include "locate/contour.hh"
+#include "locate/classify.hh"
 
 namespace cc {
 
@@ -41,6 +42,7 @@ private:
 	LinesLocator   _lines;
 //	ClefsLocator   _clefs;
 	ContoursLocator _con;
+	SymbolsClassifier _cls;
 
 	cv::Mat _binary_image;
 

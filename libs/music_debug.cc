@@ -49,8 +49,25 @@ void Debugger::debug(Locator& loc, Error e){
 		Mat show_image;
 		cvtColor(loc._binary_image, show_image, CV_GRAY2BGR);
 		drawRects(show_image, con.result, Scalar(255,0,255));
-
 		imwrite("debug/con_result.jpg", show_image);
+	} else if (e == Error::debug) {
+		cout << "debug" << endl;
+
+		auto r = loc._cls.result;
+		auto con = loc._con.result;
+		int i;
+
+		for (i=0; i<r.size(); ++i){
+			vector<Vec4i> items;
+			for (int n : r[i]){
+				items.push_back(con[n]);
+			}
+
+			Mat show_image;
+			cvtColor(loc._binary_image, show_image, CV_GRAY2BGR);
+			drawRects(show_image, items, Scalar(255,0,255));
+			imwrite("debug/item"+to_string(i)+".jpg", show_image);
+		}
 	}
 }
 

@@ -21,6 +21,8 @@ add_library(CcMusicSheet
 	locate/lines.cc
 	locate/contour.hh  #locate symbols (contours)
 	locate/contour.cc
+	locate/classify.hh #classify symbols
+	locate/classify.cc
 
 	# Present and debug
 	music_present.hh

@@ -17,6 +17,7 @@ class ContoursLocator {
 public:
 	void locateFrom(const cv::Mat&, const std::vector<cv::Vec4i>&);
 	std::vector<cv::Vec4i> result;
+	std::vector<cv::Mat> crops;
 	cv::Mat symbol_image;
 };
 

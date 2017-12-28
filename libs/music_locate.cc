@@ -55,6 +55,7 @@ void Locator::locateFrom(Mat image){
 	// Open ---------------------------------------------------
 //	_clefs.locateFrom(image, _lines.gap_size);
 	_con.locateFrom(_binary_image, _staves.staves);
+	_cls.locateFrom(_con.crops);
 	// --------------------------------------------------------
 }
 

@@ -1,4 +1,4 @@
-/* CC Music Reader Match contuors header
+/* CC Music Reader Match contours header
  *
  * Contain the base object for symbols locating by contours locating.
  *
@@ -56,20 +56,18 @@ namespace cc{
 
 void ContoursLocator::locateFrom(const Mat& image, const vector<Vec4i>& staves){
 	Mat symbol_image = isolate(image);
+	imwrite("debug/iso.bmp", symbol_image);
 	vector<Vec4i> raw = locateContours(symbol_image);
 
 	for (auto c : raw){
 		for (auto s : staves){
 			if (intersect(c, s)){
 				result.push_back(c);
+				crops.push_back(crop(symbol_image, c));
 				break;
 			}
 		}
 	}
-
-	cout << result.size() << endl;
-
-	throw Error::SymbolsFail;
 }
 
 }
