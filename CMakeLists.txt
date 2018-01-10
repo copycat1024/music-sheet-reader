@@ -8,8 +8,8 @@ set( CcMusicSheet_LIBS
 )
 
 find_package( OpenCV REQUIRED )
-add_executable( MusicSheet MusicSheet.cpp )
-target_link_libraries( MusicSheet
+add_executable( msr_extract msr_extract.cpp )
+target_link_libraries( msr_extract
 	${OpenCV_LIBS}
 	${CcMusicSheet_LIBS}
 )
@@ -19,8 +19,3 @@ add_subdirectory( libs )
 
 include_directories( "${PROJECT_SOURCE_DIR}/utils" )
 add_subdirectory( utils )
-
-configure_file(
-	"${CMAKE_CURRENT_SOURCE_DIR}/pattern/g-clef.jpg"
-	"${CMAKE_CURRENT_BINARY_DIR}/pattern/g-clef.jpg"
-COPYONLY)
