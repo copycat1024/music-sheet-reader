@@ -35,11 +35,10 @@ void Debugger::debug(Locator& loc, Error e){
 			cout << endl;
 		}
 
-		Mat show_image;
-		cvtColor(loc._binary_image, show_image, CV_GRAY2BGR);
+		Mat show_image = makePresent(loc._binary_image);
 		drawLines(show_image, stv.hough_lines, Scalar(255, 0, 0));
-		imwrite("debug/hough.jpg", show_image);
 
+		imwrite("debug/hough.jpg", show_image);
 		imwrite("debug/line.jpg", stv.lines_image);
 
 	} else if (e == Error::SymbolsFail){

@@ -86,3 +86,8 @@ Mat applyMorphFilter(Mat binary_image, int x, int y){
 Mat crop(Mat src, Vec4i v){
 	return src(Rect(v[0], v[1], v[2] - v[0], v[3] - v[1]));
 }
+
+Mat makePresent(Mat src){
+	Mat show_image;
+	cvtColor(loc._binary_image, show_image, CV_GRAY2BGR);
+}

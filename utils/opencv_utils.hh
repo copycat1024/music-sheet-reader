@@ -13,4 +13,5 @@ void drawRects(cv::Mat image, std::vector<cv::Vec4i> vec, cv::Scalar color);
 
 cv::Mat applyMorphFilter(cv::Mat, int, int);
 cv::Mat crop(cv::Mat, cv::Vec4i);
+cv::Mat makePresent(cv::Mat);
 #endif
