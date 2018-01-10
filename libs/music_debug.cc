@@ -1,6 +1,6 @@
 #include <iostream>
 #include <iomanip>
-#include <opencv/cv.hpp>
+#include <opencv2/opencv.hpp>
 #include "opencv_utils.hh"
 #include "music_debug.hh"
 #include "music_locate.hh"
