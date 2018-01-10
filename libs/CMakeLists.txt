@@ -1,10 +1,6 @@
 include_directories( "${PROJECT_SOURCE_DIR}/utils" )
 
 add_library(CcMusicSheet
-	# Main functions
-	music_main.hh
-	music_main.cc
-
 	# I/O functions
 	music_io.hh
 	music_io.cc
