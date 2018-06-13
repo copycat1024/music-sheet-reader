@@ -2,6 +2,7 @@
 
 ### Status:
 - Being able to locate staves and staves lines
+- Development on this porject has been halted due to the lack of a working concept for universally identifying different symbols of a music sheets.
 
 ### Next step:
 - Using pattern matching to recognize symbols
